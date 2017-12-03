@@ -11,8 +11,8 @@ class TestSlugnetOnXOR(unittest.TestCase):
     def setUpClass(cls):
         cls.model = Model()
 
-        cls.model.add_layer(Dense(2, 2, Sigmoid()))
-        cls.model.add_layer(Dense(2, 1))
+        cls.model.add_layer(Dense(2, 3, Sigmoid()))
+        cls.model.add_layer(Dense(3, 1))
 
         cls.X_train = np.array([
             [0, 0],
