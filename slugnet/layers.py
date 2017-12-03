@@ -19,6 +19,7 @@ class Dense(Layer):
     def backprop(self, inp, d_nxt, hidden_output=None):
         """
         Computes the derivative for the next layer
+        and computes update for this layers weights
         """
         if hidden_output is not None:
             d_nxt *= self.activation.derivative(hidden_output)
