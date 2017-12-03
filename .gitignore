@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.swo
 # experimental notebooks for local dev
 notebooks/
 
