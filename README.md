@@ -1,10 +1,9 @@
 # Slugnet
 
-Slugnet is an expiremental neural networks library intended
+Slugnet is a modest expiremental neural networks library intended
 to edify the author ([@kahnvex](https://github.com/kahnvex))
 on the workings of deep learning.
 
-The API and some of the source is based on
-[Keras](https://github.com/fchollet/keras).
+As of today, I've only tested an XOR network.
 
-Please, do not use this project in production.
+This project is not intended for production use.
