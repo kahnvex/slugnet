@@ -38,7 +38,7 @@ class Dense(Layer):
         \\end{flalign}
 
     When looking at the source, there is a notable absence of
-    :math:`\\bm{W}^T` and :math:`\\frac{\partial \ell}{\partial z^{(i + 1)}}`.
+    :math:`\\bm{W}^{(i + 1)^T}` and :math:`\\frac{\partial \ell}{\partial z^{(i + 1)}}`.
     This is because their dot product is calculated in the previous layer.
     The model propogates that gradient to this layer.
     """
