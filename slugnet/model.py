@@ -25,7 +25,8 @@ class Model(object):
         return out, ins
 
     def _backward(self, X, ins, out, y):
-        error = y - out
+        grads = []
+        error = out - y
         dz = error * self.lr
 
         for i, layer in list(enumerate(self.layers))[::-1]:
@@ -34,6 +35,8 @@ class Model(object):
 
             else:
                 dz = layer.backprop(ins[i], dz, ins[i + 1])
+
+        return error, grads
 
     def fit(self, X, y):
 
@@ -44,7 +47,10 @@ class Model(object):
             for Xi, yi in zip(X_mb, y_mb):
 
                 out, ins = self._forward(Xi)
-                grads = self._backward(Xi, ins, out, y)
+                error, grads = self._backward(Xi, ins, out, y)
+
+            if epoch % 5000 == 0:
+                print(sum(error))
 
     def transform(self, X):
         return self._forward(X)[0]
