@@ -24,7 +24,7 @@ class Dense(Layer):
         if hidden_output is not None:
             d_nxt *= self.activation.derivative(hidden_output)
 
-        self.w += np.dot(inp.T, d_nxt)
+        self.w -= np.dot(inp.T, d_nxt)
         d_prev = np.dot(d_nxt, self.w.T)
 
         return d_prev
