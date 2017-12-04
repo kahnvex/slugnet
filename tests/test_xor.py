@@ -30,17 +30,17 @@ class TestSlugnetOnXOR(unittest.TestCase):
         cls.model.fit(cls.X_train, cls.Y_train)
 
     def test_xor_01(self):
-        output = self.model.transform([0, 1])[0]
+        output = self.model.transform([0, 1])
         self.assertGreater(output, 0.9)
 
     def test_xor_10(self):
-        output = self.model.transform([1, 0])[0]
+        output = self.model.transform([1, 0])
         self.assertGreater(output, 0.9)
 
     def test_xor_00(self):
-        output = self.model.transform([0, 0])[0]
+        output = self.model.transform([0, 0])
         self.assertLess(output, 0.1)
 
     def test_xor_11(self):
-        output = self.model.transform([1, 1])[0]
+        output = self.model.transform([1, 1])
         self.assertLess(output, 0.1)

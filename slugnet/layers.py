@@ -1,6 +1,7 @@
 import numpy as np
 
 from slugnet.activation import Noop
+from slugnet.initializations import _zero
 
 
 class Layer(object):
@@ -33,32 +34,47 @@ class Dense(Layer):
         \\begin{flalign}
             \\frac{\partial \ell}{\partial \\bm{z}^{(i)}} &=
                 g'(z^{(i)}) .*\
-                \Big[ \\bm{W}^{(i + 1)^T} \\frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\\\
-            \\frac{\partial \ell}{\partial \\bm{W}^{(i)}} &= \\frac{\partial \ell}{\partial \\bm{z}^{(i)}} \\bm{x}^T
+                \Big[ \\bm{W}^{(i + 1)^T}
+                \\frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\\\
+            \\frac{\partial \ell}{\partial \\bm{W}^{(i)}} &=
+                \\frac{\partial \ell}{\partial \\bm{z}^{(i)}} \\bm{x}^T
         \\end{flalign}
 
     When looking at the source, there is a notable absence of
-    :math:`\\bm{W}^{(i + 1)^T}` and :math:`\\frac{\partial \ell}{\partial z^{(i + 1)}}`.
+    :math:`\\bm{W}^{(i + 1)^T}`
+    and :math:`\\frac{\partial \ell}{\partial z^{(i + 1)}}`.
     This is because their dot product is calculated in the previous layer.
     The model propogates that gradient to this layer.
     """
+
+    @property
+    def params(self):
+        return self.w, self.b
+
+    @property
+    def grads(self):
+        return self.dw, self.db
+
     def __init__(self, ind, outd, activation=Noop()):
         self.shape = ind, outd
         self.w = np.random.normal(0, 0.1, self.shape)
+        self.b = _zero((outd, ))
+        self.dw = None
+        self.db = None
         self.activation = activation
 
     def call(self, X):
-        return self.activation.call(np.dot(X, self.w))
+        self.last_X = X
 
-    def backprop(self, inp, d_nxt, hidden_output=None):
+        return self.activation.call(np.dot(X, self.w) + self.b)
+
+    def backprop(self, nxt_grad):
         """
         Computes the derivative for the next layer
         and computes update for this layers weights
         """
-        if hidden_output is not None:
-            d_nxt *= self.activation.derivative(hidden_output)
+        act_grad = nxt_grad * self.activation.derivative()
+        self.dw = np.dot(self.last_X.T, act_grad)
+        self.db = np.mean(act_grad, axis=0)
 
-        self.w -= np.dot(inp.T, d_nxt)
-        d_prev = np.dot(d_nxt, self.w.T)
-
-        return d_prev
+        return np.dot(act_grad, self.w.T)
