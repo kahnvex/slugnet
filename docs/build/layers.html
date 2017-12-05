@@ -1,0 +1,149 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Layers &#8212; Slugnet 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Loss Function" href="loss.html" />
+    <link rel="prev" title="Slugnet" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-slugnet.layers">
+<span id="layers"></span><h1>Layers<a class="headerlink" href="#module-slugnet.layers" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="slugnet.layers.Dense">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>ind</em>, <em>outd</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A common densely connected neural network layer.</p>
+<p>The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
+<div class="math">
+<p><img src="_images/math/10e9ec8ebd0a8eb23ae5454eec791cb5cc69cacd.svg" alt="\[
+    \mathbf{z} = g(\mathbf{W}_i^T \mathbf{x} + \mathbf{b})
+\]"/></p>
+</div><p>where <img class="math" src="_images/math/d2ec5c128d53e7e32cfc2b38a233b82a881a511a.svg" alt="z"/> is output, <img class="math" src="_images/math/fcdbf65b218832dcf6daf8972cb10aa666b1c089.svg" alt="g"/> is the activation
+function, <img class="math" src="_images/math/ff364622c422d92cfb7de86803cff89e918d7ad4.svg" alt="W"/> are weights, <img class="math" src="_images/math/2abbc6e454a70253c7c907e980816469e5c4dc01.svg" alt="b"/> is our
+bias, and <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> is the index of the current layer.</p>
+<p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
+calculates two values as follows</p>
+<div class="math">
+<p><img src="_images/math/67f8ae5c2d9674841db544dd78e91f5ede192ad5.svg" alt="\begin{flalign}
+    \frac{\partial \ell}{\partial \bm{z}^{(i)}} &amp;=
+        g'(z^{(i)}) .*                \Big[ \bm{W}^{(i + 1)^T}
+        \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\
+    \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=
+        \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T
+\end{flalign}"/></p>
+</div><p>When looking at the source, there is a notable absence of
+<img class="math" src="_images/math/0fcba7c8bdc126b8dd953a3e585ec22ec63e9540.svg" alt="\bm{W}^{(i + 1)^T}"/>
+and <img class="math" src="_images/math/a17a4e983d483913357df62e3c967fd45d0c5159.svg" alt="\frac{\partial \ell}{\partial z^{(i + 1)}}"/>.
+This is because their dot product is calculated in the previous layer.
+The model propogates that gradient to this layer.</p>
+<dl class="method">
+<dt id="slugnet.layers.Dense.backprop">
+<code class="descname">backprop</code><span class="sig-paren">(</span><em>nxt_grad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense.backprop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense.backprop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the derivative for the next layer
+and computes update for this layers weights</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Slugnet</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#api-documentation">API Documentation</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Slugnet</a></li>
+      <li>Next: <a href="loss.html" title="next chapter">Loss Function</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/layers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jarrod Kahn.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/layers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

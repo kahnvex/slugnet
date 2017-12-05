@@ -15,7 +15,6 @@ ann.*
 # Distribution / packaging
 .Python
 env/
-build/
 develop-eggs/
 dist/
 downloads/
@@ -66,9 +65,6 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 target/
 
@@ -110,4 +106,3 @@ stringer_build/
 .DS_Store
 
 data/
-docs/build
