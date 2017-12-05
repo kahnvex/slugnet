@@ -4,7 +4,7 @@ test:
 	nosetests --nocapture
 
 docs-auto:
-	sphinx-autobuild -z slugnet/ docs/source docs/build
+	sphinx-autobuild -z slugnet/ docs-src/ docs/
 
 docs:
-	sphinx-build docs/source docs/build
+	sphinx-build docs-src/ docs/
