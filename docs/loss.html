@@ -39,8 +39,80 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="loss-function">
-<h1>Loss Function<a class="headerlink" href="#loss-function" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-slugnet.loss">
+<span id="loss-function"></span><h1>Loss Function<a class="headerlink" href="#module-slugnet.loss" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="slugnet.loss.Objective">
+<em class="property">class </em><code class="descclassname">slugnet.loss.</code><code class="descname">Objective</code><a class="reference internal" href="_modules/slugnet/loss.html#Objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.Objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An objective function (or loss function, or optimization score
+function) is one of the two parameters required to compile a model.</p>
+<dl class="method">
+<dt id="slugnet.loss.Objective.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>outputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/loss.html#Objective.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.Objective.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forward function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="slugnet.loss.Objective.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>outputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/loss.html#Objective.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.Objective.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Backward function.</p>
+<dl class="docutils">
+<dt>outputs, targets <span class="classifier-delimiter">:</span> <span class="classifier">numpy.array</span></dt>
+<dd>The arrays to compute the derivatives of them.</dd>
+</dl>
+<dl class="docutils">
+<dt>numpy.array</dt>
+<dd>An array of derivative.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="slugnet.loss.BinaryCrossEntropy">
+<em class="property">class </em><code class="descclassname">slugnet.loss.</code><code class="descname">BinaryCrossEntropy</code><span class="sig-paren">(</span><em>epsilon=1e-11</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/loss.html#BinaryCrossEntropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.BinaryCrossEntropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#slugnet.loss.Objective" title="slugnet.loss.Objective"><code class="xref py py-class docutils literal"><span class="pre">slugnet.loss.Objective</span></code></a></p>
+<p>Computes the binary cross-entropy between predictions and targets.</p>
+<dl class="docutils">
+<dt>numpy array</dt>
+<dd>An expression for the element-wise binary cross-entropy.</dd>
+</dl>
+<p>This is the loss function of choice for binary classification problems
+and sigmoid output units.</p>
+<dl class="method">
+<dt id="slugnet.loss.BinaryCrossEntropy.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>yh</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/loss.html#BinaryCrossEntropy.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.BinaryCrossEntropy.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forward pass.</p>
+<div class="math">
+<p><img src="_images/math/3c2efa4447ca85b2f7eab6d355cb8f1b5cc5519c.svg" alt="\begin{flalign}
+    &amp;L_i = y_i \log(\hat{y}_i) +
+        (1 - y_i) \log(1 - \hat{y}_i) \\
+    &amp;L = -\frac{1}{N} \sum_{i=1}^N L_i
+\end{flalign}"/></p>
+</div><dl class="docutils">
+<dt>outputs <span class="classifier-delimiter">:</span> <span class="classifier">numpy.array</span></dt>
+<dd>Predictions in (0, 1), such as sigmoidal output of a neural network.</dd>
+<dt>targets <span class="classifier-delimiter">:</span> <span class="classifier">numpy.array</span></dt>
+<dd>Targets in [0, 1], such as ground truth labels.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="slugnet.loss.BinaryCrossEntropy.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>outputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/loss.html#BinaryCrossEntropy.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.BinaryCrossEntropy.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Backward pass.
+Parameters</p>
+<dl class="docutils">
+<dt>outputs <span class="classifier-delimiter">:</span> <span class="classifier">numpy.array</span></dt>
+<dd>Predictions in (0, 1), such as sigmoidal output of a neural network.</dd>
+<dt>targets <span class="classifier-delimiter">:</span> <span class="classifier">numpy.array</span></dt>
+<dd>Targets in [0, 1], such as ground truth labels.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
