@@ -7,15 +7,19 @@ class Activation(object):
 
 class Sigmoid(Activation):
     def call(self, x):
-        return 1. / (1 + np.exp(-x))
+        self.last_out = 1. / (1. + np.exp(-x))
 
-    def derivative(self, x):
-        return self.call(x) * (1 - self.call(x))
+        return self.last_out
+
+    def derivative(self, x=None):
+        z = self.call(x) if x else self.last_out
+
+        return z * (1 - z)
 
 
 class Noop(Activation):
     def call(self, x):
         return x
 
-    def derivative(self, x):
+    def derivative(self, x=1.):
         return x
