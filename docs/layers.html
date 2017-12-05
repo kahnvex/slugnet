@@ -58,9 +58,10 @@ bias, and <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf814
 <p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
 calculates two values as follows</p>
 <div class="math">
-<p><img src="_images/math/67f8ae5c2d9674841db544dd78e91f5ede192ad5.svg" alt="\begin{flalign}
+<p><img src="_images/math/c26b91fd89a5ea11d83f1353970ef9dbe4d5c94d.svg" alt="\begin{flalign}
     \frac{\partial \ell}{\partial \bm{z}^{(i)}} &amp;=
-        g'(z^{(i)}) .*                \Big[ \bm{W}^{(i + 1)^T}
+        g'(z^{(i)}) \circ
+        \Big[ \bm{W}^{(i + 1)^T}
         \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\
     \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=
         \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T

@@ -33,7 +33,7 @@ class Dense(Layer):
 
         \\begin{flalign}
             \\frac{\partial \ell}{\partial \\bm{z}^{(i)}} &=
-                g'(z^{(i)}) .*\
+                g'(z^{(i)}) \circ
                 \Big[ \\bm{W}^{(i + 1)^T}
                 \\frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\\\
             \\frac{\partial \ell}{\partial \\bm{W}^{(i)}} &=
