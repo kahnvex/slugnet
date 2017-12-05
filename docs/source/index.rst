@@ -12,3 +12,4 @@ API Documentation
 
    index
    layers
+   loss

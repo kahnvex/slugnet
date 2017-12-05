@@ -1,7 +1,7 @@
 import numpy as np
 
 from slugnet.activation import Noop
-from slugnet.initializations import _zero
+from slugnet.initializations import _zero, GlorotUniform
 
 
 class Layer(object):
@@ -47,17 +47,9 @@ class Dense(Layer):
     The model propogates that gradient to this layer.
     """
 
-    @property
-    def params(self):
-        return self.w, self.b
-
-    @property
-    def grads(self):
-        return self.dw, self.db
-
-    def __init__(self, ind, outd, activation=Noop()):
+    def __init__(self, ind, outd, activation=Noop(), init=GlorotUniform()):
         self.shape = ind, outd
-        self.w = np.random.normal(0, 0.1, self.shape)
+        self.w = init(self.shape)
         self.b = _zero((outd, ))
         self.dw = None
         self.db = None
@@ -78,3 +70,9 @@ class Dense(Layer):
         self.db = np.mean(act_grad, axis=0)
 
         return np.dot(act_grad, self.w.T)
+
+    def get_params(self):
+        return self.w, self.b
+
+    def get_grads(self):
+        return self.dw, self.db

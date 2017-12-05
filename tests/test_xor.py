@@ -12,7 +12,7 @@ class TestSlugnetOnXOR(unittest.TestCase):
         cls.model = Model()
 
         cls.model.add_layer(Dense(2, 3, Sigmoid()))
-        cls.model.add_layer(Dense(3, 1))
+        cls.model.add_layer(Dense(3, 1, Sigmoid()))
 
         cls.X_train = np.array([
             [0, 0],
