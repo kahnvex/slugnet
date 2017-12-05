@@ -30,7 +30,6 @@ class Model(object):
             grad = layer.backprop(grad)
 
     def fit(self, X, y):
-        print(self.layers[0].get_params())
         for epoch in range(self.n_epoch):
             X_mb = np.array_split(X, self.n_batches)
             y_mb = np.array_split(y, self.n_batches)
