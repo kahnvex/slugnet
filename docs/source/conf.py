@@ -40,6 +40,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
+    'sphinx.ext.githubpages',
     # 'sphinx.ext.mathjax',
     'sphinxcontrib.tikz',
     'sphinx.ext.imgmath',
