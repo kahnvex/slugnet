@@ -40,45 +40,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-slugnet.layers">
-<span id="layers"></span><h1>Layers<a class="headerlink" href="#module-slugnet.layers" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="slugnet.layers.Dense">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>ind</em>, <em>outd</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
-<p>A common densely connected neural network layer.</p>
-<p>The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
-<div class="math">
-<p><img src="_images/math/10e9ec8ebd0a8eb23ae5454eec791cb5cc69cacd.svg" alt="\[
-    \mathbf{z} = g(\mathbf{W}_i^T \mathbf{x} + \mathbf{b})
-\]"/></p>
-</div><p>where <img class="math" src="_images/math/d2ec5c128d53e7e32cfc2b38a233b82a881a511a.svg" alt="z"/> is output, <img class="math" src="_images/math/fcdbf65b218832dcf6daf8972cb10aa666b1c089.svg" alt="g"/> is the activation
-function, <img class="math" src="_images/math/ff364622c422d92cfb7de86803cff89e918d7ad4.svg" alt="W"/> are weights, <img class="math" src="_images/math/2abbc6e454a70253c7c907e980816469e5c4dc01.svg" alt="b"/> is our
-bias, and <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> is the index of the current layer.</p>
-<p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
-calculates two values as follows</p>
-<div class="math">
-<p><img src="_images/math/67f8ae5c2d9674841db544dd78e91f5ede192ad5.svg" alt="\begin{flalign}
-    \frac{\partial \ell}{\partial \bm{z}^{(i)}} &amp;=
-        g'(z^{(i)}) .*                \Big[ \bm{W}^{(i + 1)^T}
-        \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\
-    \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=
-        \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T
-\end{flalign}"/></p>
-</div><p>When looking at the source, there is a notable absence of
-<img class="math" src="_images/math/0fcba7c8bdc126b8dd953a3e585ec22ec63e9540.svg" alt="\bm{W}^{(i + 1)^T}"/>
-and <img class="math" src="_images/math/a17a4e983d483913357df62e3c967fd45d0c5159.svg" alt="\frac{\partial \ell}{\partial z^{(i + 1)}}"/>.
-This is because their dot product is calculated in the previous layer.
-The model propogates that gradient to this layer.</p>
-<dl class="method">
-<dt id="slugnet.layers.Dense.backprop">
-<code class="descname">backprop</code><span class="sig-paren">(</span><em>nxt_grad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense.backprop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense.backprop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the derivative for the next layer
-and computes update for this layers weights</p>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="layers">
+<h1>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
