@@ -15,11 +15,12 @@ machine learning techniques, linear algebra, and calculus.
 Before looking at any code, the following section will introduce the notation
 styles this library will follow as well as give a brief mathematical
 introduction to neural networks. In general, a neural network tries to
-approximate some function :math:`f^*`, where :math:`y = f^*(x)`. The neural
-network implements a function :math:`\hat{y} = f(x)`. We say a neural network
-is fully connected if each node in every layer is connected to every node
-in the adjacent layer. For now, we will only consider fully connected neural
-networks.
+approximate some function :math:`f^*`, where :math:`\bm{y} = f^*(\bm{x})`. The
+neural network implements a function :math:`\hat{\bm{y}} = f(\bm{x})`, where
+:math:`\hat{\bm{y}}` represents the prediction made by the network, and
+:math:`f` represents the model. We say a neural network is fully connected if
+each node in every layer is connected to every node in the adjacent layer. For
+now, we will only consider fully connected neural networks.
 
 Feedforward Mode
 ----------------
@@ -118,13 +119,14 @@ when our neural network is running in feedforward mode. The layer
 
 .. math::
 
-   \bm{z} = g(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)}).
+   \bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)}).
 
 
-In this diagram, :math:`\bm{z}` is output, :math:`g` represents the activation
-function, :math:`\bm{W}^{(i)^T}` represents a learned matrix of weights at this
-layer, :math:`\bm{b}^{(i)}` represents a learned vector of bias terms at this
-layer, and :math:`\bm{x}` represents the input at this layer.
+In this diagram, :math:`\bm{a}^{(i)}` is the activated output, :math:`\phi`
+represents the activation function, :math:`\bm{W}^{(i)^T}` represents a learned
+matrix of weights at this layer, :math:`\bm{b}^{(i)}` represents a learned
+vector of bias terms at this layer, and :math:`\bm{x}` represents the input at
+this layer.
 
 Neural networks rely on a nonlinear activation function to learn nonlinear
 relationships. Without a nonlinear activation function, a neural network is
@@ -172,12 +174,10 @@ occasionally referred to as objective functions.
 
 .. math::
 
-   \begin{flalign}
       \bm{\ell} = -\frac{1}{N}
          \sum_{i=1}^N \big[
             \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
          \big]
-      \end{flalign}
 
 .. rst-class:: caption
 
@@ -189,6 +189,57 @@ we are learning labels with multiple classes, we might use categorical cross
 entropy. The resulting loss value will inform us about how our network
 performed on the batch it just predicted. We can use this value along with
 validation to determine if our model is overfitting or underfitting the data.
+
+Backpropogation
+~~~~~~~~~~~~~~~
+
+Backpropogation involves computing gradients for the weights :math:`\bm{W}^{(i)}`
+and bias :math:`\bm{b}^{(i)}` for all layers :math:`i \in \{1, 2, \dots, l\}`
+where :math:`l` is the number of layers in our network. Once we've computed
+these gradients, the model can use a numerical optimization method to adjust
+weights and bias terms in such a way that error is reduced. Before defining the
+gradients of our weights and bias terms, we must compute the activated gradient
+of the current layer :math:`i` using the gradient computed by the previous
+layer :math:`i + 1`.
+
+.. math::
+
+   \bm{g}_{\text{activated}}^{(i)} = \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})
+
+.. rst-class:: caption
+
+   **Equation 2:** The definition of our activation gradient at layer :math:`i`.
+   The variable :math:`\bm{a}^{(i)}` reprsenets the activated output at layer
+   :math:`i` and :math:`\phi'` represents the derivative of the activation
+   function.
+
+
+Now, we have all we need to define the gradients of our weights and bias term.
+
+.. math::
+
+      \nabla_{\bm{W}^{(i)}}L &= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
+      \nabla_{\bm{b}^{(i)}}L &= \bm{g}_a^{(i)}
+
+.. rst-class:: caption
+
+   **Equation 3:** This equation defines the gradients of weight and bias terms,
+   :math:`\bm{W}^{(i)^T}` and :math:`\bm{b}^{(i)}`. In this equation,
+   :math:`\bm{h}^{i-1}` is the ouput from layer :math:`i - 1`.
+
+The only part of the computation that is missing is that of
+:math:`\bm{g}^{(i+1)}` for the next layer in the backpropogation algorithm.
+This is definted in equation 3, and we can now see a recursive method of
+computing gradients from layer to layer.
+
+.. math::
+
+      \bm{g}^{(i-1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}
+
+.. rst-class:: caption
+
+   **Equation 4:** This defines how to propogate the gradient from
+   layer :math:`i` to layer :math:`i - 1`.
 
 API Documentation
 -----------------
