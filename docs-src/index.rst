@@ -73,8 +73,9 @@ this mode.
    example :math:`h_3^{(4)}` represents the third unit of the forth layer.
 
 
-We can write the above network as :math:`\hat{y} = f(x) = f^{(3)}(f^{(2)}(f^{(1)}(x)))`.
-Each layer :math:`f^{(i)}` is composed of the layer that came before it,
+We can write the network in figure 1 as
+:math:`\hat{y} = f(x) = f^{(3)}(f^{(2)}(f^{(1)}(x)))`. Each layer
+:math:`f^{(i)}` is composed of the layer that came before it,
 :math:`f^{(i - 1)}`, the first layer :math:`f^{(1)}` takes the input :math:`x`.
 Additionally, we may represent the network with the shorthand diagram below.
 
@@ -120,6 +121,9 @@ function, :math:`\bm{W}^{(i)^T}` represents a learned matrix of weights at this
 layer, :math:`\bm{b}^{(i)}` represents a learned vector of bias terms at this
 layer, and :math:`\bm{x}` represents the input at this layer.
 
+In this equation we have bolded the input variable :math:`\bm{x}` to signify
+that it is a vector.
+
 Neural networks rely on a nonlinear activation function to learn nonlinear
 functions. Without a nonlinear activation function, a neural network is nothing
 more than a linear model. There are several choices one can make for activation
@@ -131,7 +135,9 @@ is ouput from the final layer.
 
 Slugnet represents a neural network as a :code:`Model`. You can run a
 neural network in feedforward mode by calling :code:`model.transform(X)`
-on a model, where :code:`X` is a matrix of inputs. Before you can run a model
+on a model, where :code:`X` is a matrix of inputs. In this case :code:`X`
+is a matrix to allow users of Slugnet to make several predictions
+in one call to :code:`model.transform`. Before you can run a model
 in feedforward mode, it must be trained. This leads us to backpropogation and
 optimization.
 
