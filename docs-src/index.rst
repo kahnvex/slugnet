@@ -10,9 +10,10 @@ loss functions, forward propogation, backward propogation, and more.
 
 Before looking at any code, the following diagram will introduce the notation
 styles this library will follow. In general, a neural network tries to
-approximate some function :math:`f^*`, where :math:`y = f^*(x)`.
+approximate some function :math:`f^*`, where :math:`y = f^*(x)`. The neural
+network implements a function :math:`\hat{y} = f(x)`.
 
-.. tikz:: Above is a simple three layer neural network..
+.. tikz::
 
    \tikzset{%
       brace/.style = { decorate, decoration={brace, amplitude=5pt} }
@@ -50,6 +51,30 @@ approximate some function :math:`f^*`, where :math:`y = f^*(x)`.
          \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](7,\x) -- (10,\y);
 
    :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta
+
+We can write the above network as :math:`\hat{y} = f^{(3)}(f^{(2)}(f^{(1)}(x)))`.
+Additionally, we may represent the network with the shorthand diagram below.
+
+.. tikz::
+
+   \tikzset{%
+      brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+   }
+
+   \draw [brace] (0.5,2)  -- (1.5,2) node[yshift=0.5cm, xshift=-0.5cm] {Input};
+   \draw [brace] (3.5,2)  -- (7.5,2) node[yshift=0.5cm, xshift=-1.9cm] {Hidden Layers};
+   \draw [brace] (9.5,2)  -- (10.5,2) node[yshift=0.5cm, xshift=-0.5cm] {Output};
+
+   \draw(1,1) circle(0.5cm) node {$\boldmath{x}$};
+   \draw(4,1)[fill=gray!30]circle(0.5cm) node {$\boldmath{h}^{(1)}$};
+   \draw(7,1)[fill=gray!30] circle(0.5cm) node {$\boldmath{h}^{(2)}$};
+   \draw(10,1) circle(0.5cm) node {$\boldmath{y}$};
+
+   \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](1,1) -- (4,1);
+   \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](4,1) -- (7,1);
+   \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](7,1) -- (10,1);
+
+   :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta,bm
 
 API Documentation
 -----------------
