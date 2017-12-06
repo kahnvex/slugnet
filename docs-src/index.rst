@@ -9,7 +9,7 @@ of a working neural networks library. This includes models, layers, optimizers,
 activation functions, loss functions, forward propogation, backward
 propogation, and more.
 
-Before looking at any code, the following diagram will introduce the notation
+Before looking at any code, the following section will introduce the notation
 styles this library will follow as well as give a brief mathematical
 introduction to neural networks. In general, a neural network tries to
 approximate some function :math:`f^*`, where :math:`y = f^*(x)`. The neural
