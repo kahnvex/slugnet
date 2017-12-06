@@ -48,6 +48,8 @@ the author’s understanding of deep learning.</p>
 of a working neural networks library. This includes models, layers, optimizers,
 activation functions, loss functions, forward propogation, backward
 propogation, and more.</p>
+<p>The mathematical documentation assumes basic understanding of generative
+machine learning techniques, linear algebra, and calculus.</p>
 <p>Before looking at any code, the following section will introduce the notation
 styles this library will follow as well as give a brief mathematical
 introduction to neural networks. In general, a neural network tries to
@@ -163,6 +165,17 @@ must compute derivatives, and we must implement some numerical algorithm to
 optimize the model. On the other hand, neural networks are somewhat unique in
 that they require us to compute a gradient at each layer with which we may
 learn weights. To compute this graident, we use the backpropogation algorithm.</p>
+<p>Before we can run backpropogation, a version of the feedforward algorithm
+described earlier must be run, only instead of throwing away the intermedite
+outputs at each layer, we store them, knowing that we’ll need them later
+for backpropogation. Additionally, during training, we require the ground truth
+labels or values of each sample. That is, the dataset <img class="math" src="_images/math/29ad5318b3172b2c8e972f82e660851caaa82604.svg" alt="\mathcal{D}"/>
+consists of <img class="math" src="_images/math/e1773ea381d3987ec9613e3818347fa7aa0f4538.svg" alt="\{\bm{x}_n, \bm{y}_n\}_{n=1}^N"/>, where <img class="math" src="_images/math/4a6eff0e4345cd8624454f268afd65f3a16bae7b.svg" alt="N"/> is the
+number of samples, and <img class="math" src="_images/math/7af6d1f5cbfcec7adb47dd68dd6d2a5ffd24e352.svg" alt="\bm{y}_n"/> is the ground truth label or output
+value for sample <img class="math" src="_images/math/990111a4bffdbd510dcb5eb173596c710d263d58.svg" alt="\bm{x}_n"/>.</p>
+<p>Upon completion of the forward pass on a batch of inputs, we can compute the
+loss for the batch using the predicted outputs, <img class="math" src="_images/math/54262162b9b81471ce8b512e5296071cfa65febf.svg" alt="\hat{\bm{y}}"/>, and
+the ground truth labels or values <img class="math" src="_images/math/f0577c9959f48ae42e6672975292fa403559f0dd.svg" alt="\bm{y}"/>.</p>
 </div>
 <div class="section" id="api-documentation">
 <h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>

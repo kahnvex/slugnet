@@ -9,6 +9,9 @@ of a working neural networks library. This includes models, layers, optimizers,
 activation functions, loss functions, forward propogation, backward
 propogation, and more.
 
+The mathematical documentation assumes basic understanding of generative
+machine learning techniques, linear algebra, and calculus.
+
 Before looking at any code, the following section will introduce the notation
 styles this library will follow as well as give a brief mathematical
 introduction to neural networks. In general, a neural network tries to
@@ -149,6 +152,19 @@ must compute derivatives, and we must implement some numerical algorithm to
 optimize the model. On the other hand, neural networks are somewhat unique in
 that they require us to compute a gradient at each layer with which we may
 learn weights. To compute this graident, we use the backpropogation algorithm.
+
+Before we can run backpropogation, a version of the feedforward algorithm
+described earlier must be run, only instead of throwing away the intermedite
+outputs at each layer, we store them, knowing that we'll need them later
+for backpropogation. Additionally, during training, we require the ground truth
+labels or values of each sample. That is, the dataset :math:`\mathcal{D}`
+consists of :math:`\{\bm{x}_n, \bm{y}_n\}_{n=1}^N`, where :math:`N` is the
+number of samples, and :math:`\bm{y}_n` is the ground truth label or output
+value for sample :math:`\bm{x}_n`.
+
+Upon completion of the forward pass on a batch of inputs, we can compute the
+loss for the batch using the predicted outputs, :math:`\hat{\bm{y}}`, and
+the ground truth labels or values :math:`\bm{y}`.
 
 API Documentation
 -----------------
