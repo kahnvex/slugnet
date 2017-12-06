@@ -114,6 +114,8 @@ html_static_path = ['_static']
 htmlhelp_basename = 'slugnetdoc'
 
 
+tikz_tikzlibraries = 'chains'
+
 # -- Options for LaTeX output ---------------------------------------------
 
 imgmath_font_size = 16
