@@ -52,6 +52,15 @@ network implements a function :math:`\hat{y} = f(x)`.
 
    :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta
 
+
+.. rst-class:: caption
+
+   **Figure 1:** A three layer neural network. The first layer has five hidden units.
+   The superscript number in parenthesis indicates the layer of the unit. The index
+   in subscript represents the unit's index. For example :math:`h_3^{(4)}`
+   represents the third unit of the forth layer.
+
+
 We can write the above network as :math:`\hat{y} = f^{(3)}(f^{(2)}(f^{(1)}(x)))`.
 Additionally, we may represent the network with the shorthand diagram below.
 
