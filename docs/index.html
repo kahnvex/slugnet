@@ -179,12 +179,6 @@ value for sample <img class="math" src="_images/math/990111a4bffdbd510dcb5eb1735
 loss for the batch using the predicted outputs, <img class="math" src="_images/math/54262162b9b81471ce8b512e5296071cfa65febf.svg" alt="\hat{\bm{y}}"/>, and
 the ground truth labels or values <img class="math" src="_images/math/f0577c9959f48ae42e6672975292fa403559f0dd.svg" alt="\bm{y}"/>. Loss functions are
 occasionally referred to as objective functions.</p>
-<p>If the outputs that we are learning are binary labels, then we might use
-a binary cross entropy loss function, seen in equation 1. On the other hand, if
-we are learning labels with multiple classes, we might use categorical cross
-entropy. The resulting loss value will inform us about how our network
-performed on the batch it just predicted. We can use this value along with
-validation to determine if our model is overfitting or underfitting the data.</p>
 <div class="math">
 <p><img src="_images/math/097e86d9ae7b9403335c2fbfa5fba8c418e0ad8a.svg" alt="\begin{flalign}
    \bm{\ell} = -\frac{1}{N}
@@ -192,7 +186,13 @@ validation to determine if our model is overfitting or underfitting the data.</p
          \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
       \big]
    \end{flalign}"/></p>
-</div><p class="caption"><strong>Equation 1:</strong> Binary cross entropy function.</p>
+</div><p class="caption"><strong>Equation 1:</strong> Binary cross entropy loss function.</p>
+<p>If the outputs that we are learning are binary labels, then we might use
+a binary cross entropy loss function, seen in equation 1. On the other hand, if
+we are learning labels with multiple classes, we might use categorical cross
+entropy. The resulting loss value will inform us about how our network
+performed on the batch it just predicted. We can use this value along with
+validation to determine if our model is overfitting or underfitting the data.</p>
 </div>
 </div>
 <div class="section" id="api-documentation">
