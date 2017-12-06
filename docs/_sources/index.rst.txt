@@ -241,6 +241,11 @@ computing gradients from layer to layer.
    **Equation 4:** This defines how to propogate the gradient from
    layer :math:`i` to layer :math:`i - 1`.
 
+This is all we need to implement a full backpropogation algorithm. It should be
+noted that upon completion of the algorithm, all we need are the gradients
+:math:`\nabla_{\bm{W}}L` and :math:`\nabla_{\bm{b}}L` at every layer.
+
+
 API Documentation
 -----------------
 

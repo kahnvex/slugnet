@@ -225,6 +225,9 @@ computing gradients from layer to layer.</p>
 <p><img src="_images/math/c411b098f7a69c61b0e1c5b5a7ad1bb1b0039fa3.svg" alt="\bm{g}^{(i-1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}"/></p>
 </div><p class="caption"><strong>Equation 4:</strong> This defines how to propogate the gradient from
 layer <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> to layer <img class="math" src="_images/math/79821eabe184f50bf3d5a0890388760a2083c442.svg" alt="i - 1"/>.</p>
+<p>This is all we need to implement a full backpropogation algorithm. It should be
+noted that upon completion of the algorithm, all we need are the gradients
+<img class="math" src="_images/math/e2654f7b219e4b38a87ba604599be708b161bbf8.svg" alt="\nabla_{\bm{W}}L"/> and <img class="math" src="_images/math/9a417232d72036f9baaec50304dd271afff3cddc.svg" alt="\nabla_{\bm{b}}L"/> at every layer.</p>
 </div>
 </div>
 <div class="section" id="api-documentation">
