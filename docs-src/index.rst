@@ -17,9 +17,12 @@ is fully connected if each node in a given layer is connected to every node
 in the adjacent layer. For now, we will only consider fully connected neural
 networks.
 
+Feedforward Mode
+----------------
+
 When making predictions, a neural network is said to be operating in
 feedforward mode. For now, we will inspect how neural networks operate in
-feedforward mode.
+this mode.
 
 .. tikz::
 
@@ -120,6 +123,8 @@ more than a linear model. There are several choices one can make for activation
 functions, including but not limited to tanh, sigmoid, and the rectified linear
 unit, or ReLU for short.
 
+Upon completion of the feedforward operation, the prediction :math:`\hat{y}`
+is ouput from the final layer.
 
 API Documentation
 -----------------

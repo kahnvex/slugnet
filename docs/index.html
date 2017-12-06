@@ -55,9 +55,11 @@ network implements a function <img class="math" src="_images/math/d36fe39086281b
 is fully connected if each node in a given layer is connected to every node
 in the adjacent layer. For now, we will only consider fully connected neural
 networks.</p>
+<div class="section" id="feedforward-mode">
+<h2>Feedforward Mode<a class="headerlink" href="#feedforward-mode" title="Permalink to this headline">¶</a></h2>
 <p>When making predictions, a neural network is said to be operating in
 feedforward mode. For now, we will inspect how neural networks operate in
-feedforward mode.</p>
+this mode.</p>
 <div class="figure">
 <p><img src="_images/tikz-057327f595d76bdf8e30f1f8efb330fed8c3556f.png" alt="\tikzset{%
    brace/.style = { decorate, decoration={brace, amplitude=5pt} }
@@ -137,11 +139,15 @@ functions. Without a nonlinear activation function, a neural network is nothing
 more than a linear model. There are several choices one can make for activation
 functions, including but not limited to tanh, sigmoid, and the rectified linear
 unit, or ReLU for short.</p>
+<p>Upon completion of the feedforward operation, the prediction <img class="math" src="_images/math/b2e9337d004c9936146ec54ec2adb06cbccaa371.svg" alt="\hat{y}"/>
+is ouput from the final layer.</p>
+</div>
 <div class="section" id="api-documentation">
 <h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
@@ -165,6 +171,7 @@ unit, or ReLU for short.</p>
 <h3><a href="#">Table Of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
