@@ -9,7 +9,7 @@ of a working neural networks library. This includes models, layers, optimizers,
 activation functions, loss functions, forward propogation, backward
 propogation, and more.
 
-The mathematical documentation assumes basic understanding of generative
+The mathematical documentation assumes basic understanding of discriminative
 machine learning techniques, linear algebra, and calculus.
 
 Before looking at any code, the following section will introduce the notation
