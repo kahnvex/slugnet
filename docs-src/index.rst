@@ -14,7 +14,7 @@ styles this library will follow as well as give a brief mathematical
 introduction to neural networks. In general, a neural network tries to
 approximate some function :math:`f^*`, where :math:`y = f^*(x)`. The neural
 network implements a function :math:`\hat{y} = f(x)`. We say a neural network
-is fully connected if each node in a given layer is connected to every node
+is fully connected if each node in every layer is connected to every node
 in the adjacent layer. For now, we will only consider fully connected neural
 networks.
 
