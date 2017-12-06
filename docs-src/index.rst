@@ -162,8 +162,8 @@ consists of :math:`\{\bm{x}_n, \bm{y}_n\}_{n=1}^N`, where :math:`N` is the
 number of samples, and :math:`\bm{y}_n` is the ground truth label or output
 value for sample :math:`\bm{x}_n`.
 
-Loss Function
-~~~~~~~~~~~~~
+Loss Functions
+~~~~~~~~~~~~~~
 
 Upon completion of the forward pass on a batch of inputs, we can compute the
 loss for the batch using the predicted outputs, :math:`\hat{\bm{y}}`, and
@@ -171,11 +171,24 @@ the ground truth labels or values :math:`\bm{y}`. Loss functions are
 occasionally referred to as objective functions.
 
 If the outputs that we are learning are binary labels, then we might use
-a binary cross entropy loss function. On the other hand, if we are learning
-labels with multiple classes, we might use categorical cross entropy. The
-resulting loss value will inform us about how our network performed on
-the batch it just predicted. We can use this value along with validation
-to determine if our model is overfitting or underfitting the data.
+a binary cross entropy loss function, seen in equation 1. On the other hand, if
+we are learning labels with multiple classes, we might use categorical cross
+entropy. The resulting loss value will inform us about how our network
+performed on the batch it just predicted. We can use this value along with
+validation to determine if our model is overfitting or underfitting the data.
+
+.. math::
+
+   \begin{flalign}
+      \bm{\ell} = -\frac{1}{N}
+         \sum_{i=1}^N \big[
+            \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
+         \big]
+      \end{flalign}
+
+.. rst-class:: caption
+
+   **Equation 1:** Binary cross entropy function.
 
 API Documentation
 -----------------
