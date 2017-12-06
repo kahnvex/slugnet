@@ -48,7 +48,8 @@ of a working neural networks library. This includes models, layers, optimizers,
 loss functions, forward propogation, backward propogation, and more.</p>
 <p>Before looking at any code, the following diagram will introduce the notation
 styles this library will follow. In general, a neural network tries to
-approximate some function <img class="math" src="_images/math/d0912de3a26537fc2fe761713c2e9d284607ca0e.svg" alt="f^*"/>, where <img class="math" src="_images/math/00a9ea7086b27f234af01748f891a9b5911eb073.svg" alt="y = f^*(x)"/>.</p>
+approximate some function <img class="math" src="_images/math/d0912de3a26537fc2fe761713c2e9d284607ca0e.svg" alt="f^*"/>, where <img class="math" src="_images/math/00a9ea7086b27f234af01748f891a9b5911eb073.svg" alt="y = f^*(x)"/>. The neural
+network implements a function <img class="math" src="_images/math/d36fe39086281b8e7fa6ffffa799e3375a14d1ec.svg" alt="\hat{y} = f(x)"/>.</p>
 <div class="figure">
 <p><img src="_images/tikz-057327f595d76bdf8e30f1f8efb330fed8c3556f.png" alt="\tikzset{%
    brace/.style = { decorate, decoration={brace, amplitude=5pt} }
@@ -86,7 +87,28 @@ approximate some function <img class="math" src="_images/math/d0912de3a26537fc2f
       \draw[-&gt;, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](7,\x) -- (10,\y);
 
 :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta" /></p>
-<p class="caption">Above is a simple three layer neural network..</p></div><div class="section" id="api-documentation">
+</div><p>We can write the above network as <img class="math" src="_images/math/d47d2bb1a578e235eceb8e93ea1d5d0b299443e3.svg" alt="\hat{y} = f^{(3)}(f^{(2)}(f^{(1)}(x)))"/>.
+Additionally, we may represent the network with the shorthand diagram below.</p>
+<div class="figure">
+<p><img src="_images/tikz-4994c41ea622d848d39e2e934b2476ef308dd67c.png" alt="\tikzset{%
+   brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+}
+
+\draw [brace] (0.5,2)  -- (1.5,2) node[yshift=0.5cm, xshift=-0.5cm] {Input};
+\draw [brace] (3.5,2)  -- (7.5,2) node[yshift=0.5cm, xshift=-1.9cm] {Hidden Layers};
+\draw [brace] (9.5,2)  -- (10.5,2) node[yshift=0.5cm, xshift=-0.5cm] {Output};
+
+\draw(1,1) circle(0.5cm) node {$\boldmath{x}$};
+\draw(4,1)[fill=gray!30]circle(0.5cm) node {$\boldmath{h}^{(1)}$};
+\draw(7,1)[fill=gray!30] circle(0.5cm) node {$\boldmath{h}^{(2)}$};
+\draw(10,1) circle(0.5cm) node {$\boldmath{y}$};
+
+\draw[-&gt;, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](1,1) -- (4,1);
+\draw[-&gt;, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](4,1) -- (7,1);
+\draw[-&gt;, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](7,1) -- (10,1);
+
+:libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta,bm" /></p>
+</div><div class="section" id="api-documentation">
 <h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul class="current">
