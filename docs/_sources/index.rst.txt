@@ -167,7 +167,8 @@ loss for the batch using the predicted outputs, :math:`\hat{\bm{y}}`, and
 the ground truth labels or values :math:`\bm{y}`.
 
 If the outputs that we are learning are binary labels, then we might use
-a binary cross entropy loss function.
+a binary cross entropy loss function. On the other hand, if we are learning
+labels with multiple classes, we might use categorical cross entropy.
 
 API Documentation
 -----------------
