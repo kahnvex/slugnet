@@ -77,9 +77,9 @@ We can write the network in figure 1 as
 :math:`\bm{\hat{y}} = f(\bm{x}) = f^{(3)}(f^{(2)}(f^{(1)}(\bm{x})))`. Each layer
 :math:`f^{(i)}` is composed of the layer that came before it,
 :math:`f^{(i - 1)}`, the first layer :math:`f^{(1)}` takes the input
-:math:`\bm{x}`. Additionally, we may represent the network with the shorthand
-diagram below. Lowercase, bold variable names represent vectors, and
-capitalized, bold variable names represent matrices.
+:math:`\bm{x}`. Lowercase, bold variable names represent vectors, and
+capitalized, bold variable names represent matrices. Additionally, we may
+represent the network with the shorthand diagram below.
 
 .. tikz::
 
