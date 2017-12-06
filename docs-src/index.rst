@@ -10,7 +10,8 @@ activation functions, loss functions, forward propogation, backward
 propogation, and more.
 
 Before looking at any code, the following diagram will introduce the notation
-styles this library will follow. In general, a neural network tries to
+styles this library will follow as well as give a brief mathematical
+introduction to neural networks. In general, a neural network tries to
 approximate some function :math:`f^*`, where :math:`y = f^*(x)`. The neural
 network implements a function :math:`\hat{y} = f(x)`. We say a neural network
 is fully connected if each node in a given layer is connected to every node
@@ -47,7 +48,7 @@ this mode.
       node {$h_{\n}^{(2)}$};
 
    \foreach \x/\n in {3/2, 5/1}
-      \draw (10, \x) circle(0.5cm) node {$y_{\n}$};
+      \draw (10, \x) circle(0.5cm) node {$\hat{y}_{\n}$};
 
    \foreach \x in {2,4,6}
       \foreach \y in {0, 2, 4, 6, 8}
@@ -72,7 +73,9 @@ this mode.
    example :math:`h_3^{(4)}` represents the third unit of the forth layer.
 
 
-We can write the above network as :math:`\hat{y} = f^{(3)}(f^{(2)}(f^{(1)}(x)))`.
+We can write the above network as :math:`\hat{y} = f(x) = f^{(3)}(f^{(2)}(f^{(1)}(x)))`.
+Each layer :math:`f^{(i)}` is composed of the layer that came before it,
+:math:`f^{(i - 1)}`, the first layer :math:`f^{(1)}` takes the input :math:`x`.
 Additionally, we may represent the network with the shorthand diagram below.
 
 .. tikz::
@@ -88,7 +91,7 @@ Additionally, we may represent the network with the shorthand diagram below.
    \draw(1,1) circle(0.5cm) node {$\boldmath{x}$};
    \draw(4,1)[fill=gray!30]circle(0.5cm) node {$\boldmath{h}^{(1)}$};
    \draw(7,1)[fill=gray!30] circle(0.5cm) node {$\boldmath{h}^{(2)}$};
-   \draw(10,1) circle(0.5cm) node {$\boldmath{y}$};
+   \draw(10,1) circle(0.5cm) node {$\hat{y}$};
 
    \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](1,1) -- (4,1);
    \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](4,1) -- (7,1);
@@ -113,9 +116,9 @@ when our neural network is running in feedforward mode. The layer
 
 
 In this diagram, :math:`\bm{z}` is output, :math:`g` represents the activation
-function, :math:`\bm{W}^{(i)^T}` represents a matrix of weights at this layer,
-:math:`\bm{b}^{(i)}` represents a vector of bias terms at this layer, and
-:math:`\bm{x}` represents the input at this layer.
+function, :math:`\bm{W}^{(i)^T}` represents a learned matrix of weights at this
+layer, :math:`\bm{b}^{(i)}` represents a learned vector of bias terms at this
+layer, and :math:`\bm{x}` represents the input at this layer.
 
 Neural networks rely on a nonlinear activation function to learn nonlinear
 functions. Without a nonlinear activation function, a neural network is nothing
@@ -125,6 +128,22 @@ unit, or ReLU for short.
 
 Upon completion of the feedforward operation, the prediction :math:`\hat{y}`
 is ouput from the final layer.
+
+Slugnet represents a neural network as a :code:`Model`. You can run a
+neural network in feedforward mode by calling :code:`model.transform(X)`
+on a model, where :code:`X` is a matrix of inputs. Before you can run a model
+in feedforward mode, it must be trained. This leads us to backpropogation and
+optimization.
+
+Backpropogation and Optimization
+--------------------------------
+
+Training a neural network is similar to training traditional discrininative
+models such as logistic regression. For instamce, we need a loss function, we
+must compute derivatives, and we must implement some numerical algorithm to
+optimize the model. On the other hand, neural networks are somewhat unique in
+that they require us to compute a gradient at each layer with which we may
+learn weights. To compute this graident, we use the backpropogation algorithm.
 
 API Documentation
 -----------------

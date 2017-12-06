@@ -49,7 +49,8 @@ of a working neural networks library. This includes models, layers, optimizers,
 activation functions, loss functions, forward propogation, backward
 propogation, and more.</p>
 <p>Before looking at any code, the following diagram will introduce the notation
-styles this library will follow. In general, a neural network tries to
+styles this library will follow as well as give a brief mathematical
+introduction to neural networks. In general, a neural network tries to
 approximate some function <img class="math" src="_images/math/d0912de3a26537fc2fe761713c2e9d284607ca0e.svg" alt="f^*"/>, where <img class="math" src="_images/math/00a9ea7086b27f234af01748f891a9b5911eb073.svg" alt="y = f^*(x)"/>. The neural
 network implements a function <img class="math" src="_images/math/d36fe39086281b8e7fa6ffffa799e3375a14d1ec.svg" alt="\hat{y} = f(x)"/>. We say a neural network
 is fully connected if each node in a given layer is connected to every node
@@ -61,7 +62,7 @@ networks.</p>
 feedforward mode. For now, we will inspect how neural networks operate in
 this mode.</p>
 <div class="figure">
-<p><img src="_images/tikz-057327f595d76bdf8e30f1f8efb330fed8c3556f.png" alt="\tikzset{%
+<p><img src="_images/tikz-adc8470529f14c217692ecb8a1fe29ff68ee34e9.png" alt="\tikzset{%
    brace/.style = { decorate, decoration={brace, amplitude=5pt} }
 }
 
@@ -82,7 +83,7 @@ this mode.</p>
    node {$h_{\n}^{(2)}$};
 
 \foreach \x/\n in {3/2, 5/1}
-   \draw (10, \x) circle(0.5cm) node {$y_{\n}$};
+   \draw (10, \x) circle(0.5cm) node {$\hat{y}_{\n}$};
 
 \foreach \x in {2,4,6}
    \foreach \y in {0, 2, 4, 6, 8}
@@ -101,10 +102,12 @@ this mode.</p>
 has five hidden units. The superscript number in parenthesis indicates the
 layer of the unit. The index in subscript represents the unit’s index. For
 example <img class="math" src="_images/math/0f553caa56681b28d6d9b70cee3ed32224fe45ef.svg" alt="h_3^{(4)}"/> represents the third unit of the forth layer.</p>
-<p>We can write the above network as <img class="math" src="_images/math/d47d2bb1a578e235eceb8e93ea1d5d0b299443e3.svg" alt="\hat{y} = f^{(3)}(f^{(2)}(f^{(1)}(x)))"/>.
+<p>We can write the above network as <img class="math" src="_images/math/795d1546efa98562ba0e268c33395f2b952c8a3c.svg" alt="\hat{y} = f(x) = f^{(3)}(f^{(2)}(f^{(1)}(x)))"/>.
+Each layer <img class="math" src="_images/math/ffcc44595749ed9dfa62ba18fd1dff0dadb9ba62.svg" alt="f^{(i)}"/> is composed of the layer that came before it,
+<img class="math" src="_images/math/091d43dc11acff048a12f403d5124d66d52c0337.svg" alt="f^{(i - 1)}"/>, the first layer <img class="math" src="_images/math/32e91852ddd1dd681567025ee8ff3b2c61ecccb6.svg" alt="f^{(1)}"/> takes the input <img class="math" src="_images/math/d55b90de788d6bbfe1bc1430a877000a97e5b8fd.svg" alt="x"/>.
 Additionally, we may represent the network with the shorthand diagram below.</p>
 <div class="figure">
-<p><img src="_images/tikz-4994c41ea622d848d39e2e934b2476ef308dd67c.png" alt="\tikzset{%
+<p><img src="_images/tikz-d9bccb73d8ea3ba26b4c2bec9f5308f8f54a1ad8.png" alt="\tikzset{%
    brace/.style = { decorate, decoration={brace, amplitude=5pt} }
 }
 
@@ -115,7 +118,7 @@ Additionally, we may represent the network with the shorthand diagram below.</p>
 \draw(1,1) circle(0.5cm) node {$\boldmath{x}$};
 \draw(4,1)[fill=gray!30]circle(0.5cm) node {$\boldmath{h}^{(1)}$};
 \draw(7,1)[fill=gray!30] circle(0.5cm) node {$\boldmath{h}^{(2)}$};
-\draw(10,1) circle(0.5cm) node {$\boldmath{y}$};
+\draw(10,1) circle(0.5cm) node {$\hat{y}$};
 
 \draw[-&gt;, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](1,1) -- (4,1);
 \draw[-&gt;, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](4,1) -- (7,1);
@@ -131,9 +134,9 @@ when our neural network is running in feedforward mode. The layer
 <div class="math">
 <p><img src="_images/math/bb364ff85340c63501d3e671f90a037ebc2e7f6f.svg" alt="\bm{z} = g(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})."/></p>
 </div><p>In this diagram, <img class="math" src="_images/math/e0b5a49a36dfc95da91a5d69959f147a9b929e7c.svg" alt="\bm{z}"/> is output, <img class="math" src="_images/math/fcdbf65b218832dcf6daf8972cb10aa666b1c089.svg" alt="g"/> represents the activation
-function, <img class="math" src="_images/math/a0e4f6e425d8ba95a8ad6b977225c9741f2c79ad.svg" alt="\bm{W}^{(i)^T}"/> represents a matrix of weights at this layer,
-<img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e1375437.svg" alt="\bm{b}^{(i)}"/> represents a vector of bias terms at this layer, and
-<img class="math" src="_images/math/9cb903938e2965877b3c1e0513f2545947e6ed25.svg" alt="\bm{x}"/> represents the input at this layer.</p>
+function, <img class="math" src="_images/math/a0e4f6e425d8ba95a8ad6b977225c9741f2c79ad.svg" alt="\bm{W}^{(i)^T}"/> represents a learned matrix of weights at this
+layer, <img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e1375437.svg" alt="\bm{b}^{(i)}"/> represents a learned vector of bias terms at this
+layer, and <img class="math" src="_images/math/9cb903938e2965877b3c1e0513f2545947e6ed25.svg" alt="\bm{x}"/> represents the input at this layer.</p>
 <p>Neural networks rely on a nonlinear activation function to learn nonlinear
 functions. Without a nonlinear activation function, a neural network is nothing
 more than a linear model. There are several choices one can make for activation
@@ -141,6 +144,20 @@ functions, including but not limited to tanh, sigmoid, and the rectified linear
 unit, or ReLU for short.</p>
 <p>Upon completion of the feedforward operation, the prediction <img class="math" src="_images/math/b2e9337d004c9936146ec54ec2adb06cbccaa371.svg" alt="\hat{y}"/>
 is ouput from the final layer.</p>
+<p>Slugnet represents a neural network as a <code class="code docutils literal"><span class="pre">Model</span></code>. You can run a
+neural network in feedforward mode by calling <code class="code docutils literal"><span class="pre">model.transform(X)</span></code>
+on a model, where <code class="code docutils literal"><span class="pre">X</span></code> is a matrix of inputs. Before you can run a model
+in feedforward mode, it must be trained. This leads us to backpropogation and
+optimization.</p>
+</div>
+<div class="section" id="backpropogation-and-optimization">
+<h2>Backpropogation and Optimization<a class="headerlink" href="#backpropogation-and-optimization" title="Permalink to this headline">¶</a></h2>
+<p>Training a neural network is similar to training traditional discrininative
+models such as logistic regression. For instamce, we need a loss function, we
+must compute derivatives, and we must implement some numerical algorithm to
+optimize the model. On the other hand, neural networks are somewhat unique in
+that they require us to compute a gradient at each layer with which we may
+learn weights. To compute this graident, we use the backpropogation algorithm.</p>
 </div>
 <div class="section" id="api-documentation">
 <h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
@@ -148,6 +165,7 @@ is ouput from the final layer.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backpropogation-and-optimization">Backpropogation and Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
@@ -172,6 +190,7 @@ is ouput from the final layer.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backpropogation-and-optimization">Backpropogation and Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
