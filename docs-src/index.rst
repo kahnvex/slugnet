@@ -74,10 +74,12 @@ this mode.
 
 
 We can write the network in figure 1 as
-:math:`\hat{y} = f(x) = f^{(3)}(f^{(2)}(f^{(1)}(x)))`. Each layer
+:math:`\bm{\hat{y}} = f(\bm{x}) = f^{(3)}(f^{(2)}(f^{(1)}(\bm{x})))`. Each layer
 :math:`f^{(i)}` is composed of the layer that came before it,
-:math:`f^{(i - 1)}`, the first layer :math:`f^{(1)}` takes the input :math:`x`.
-Additionally, we may represent the network with the shorthand diagram below.
+:math:`f^{(i - 1)}`, the first layer :math:`f^{(1)}` takes the input
+:math:`\bm{x}`. Additionally, we may represent the network with the shorthand
+diagram below. Lowercase, bold variable names represent vectors, and
+capitalized, bold variable names represent matrices.
 
 .. tikz::
 
@@ -120,9 +122,6 @@ In this diagram, :math:`\bm{z}` is output, :math:`g` represents the activation
 function, :math:`\bm{W}^{(i)^T}` represents a learned matrix of weights at this
 layer, :math:`\bm{b}^{(i)}` represents a learned vector of bias terms at this
 layer, and :math:`\bm{x}` represents the input at this layer.
-
-In this equation we have bolded the input variable :math:`\bm{x}` to signify
-that it is a vector.
 
 Neural networks rely on a nonlinear activation function to learn nonlinear
 relationships. Without a nonlinear activation function, a neural network is
