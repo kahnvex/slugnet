@@ -178,7 +178,10 @@ loss for the batch using the predicted outputs, <img class="math" src="_images/m
 the ground truth labels or values <img class="math" src="_images/math/f0577c9959f48ae42e6672975292fa403559f0dd.svg" alt="\bm{y}"/>.</p>
 <p>If the outputs that we are learning are binary labels, then we might use
 a binary cross entropy loss function. On the other hand, if we are learning
-labels with multiple classes, we might use categorical cross entropy.</p>
+labels with multiple classes, we might use categorical cross entropy. The
+resulting loss value will inform us about how our network performed on
+the batch it just predicted. We can use this value along with validation
+to determine if our model is overfitting or underfitting the data.</p>
 </div>
 <div class="section" id="api-documentation">
 <h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
