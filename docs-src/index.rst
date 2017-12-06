@@ -125,10 +125,10 @@ In this equation we have bolded the input variable :math:`\bm{x}` to signify
 that it is a vector.
 
 Neural networks rely on a nonlinear activation function to learn nonlinear
-functions. Without a nonlinear activation function, a neural network is nothing
-more than a linear model. There are several choices one can make for activation
-functions, including but not limited to tanh, sigmoid, and the rectified linear
-unit, or ReLU for short.
+relationships. Without a nonlinear activation function, a neural network is
+nothing more than a linear model. There are several choices one can make for
+activation functions, including but not limited to tanh, sigmoid, and the
+rectified linear unit, or ReLU for short.
 
 Upon completion of the feedforward operation, the prediction :math:`\hat{y}`
 is ouput from the final layer.
