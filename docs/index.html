@@ -53,11 +53,12 @@ machine learning techniques, linear algebra, and calculus.</p>
 <p>Before looking at any code, the following section will introduce the notation
 styles this library will follow as well as give a brief mathematical
 introduction to neural networks. In general, a neural network tries to
-approximate some function <img class="math" src="_images/math/d0912de3a26537fc2fe761713c2e9d284607ca0e.svg" alt="f^*"/>, where <img class="math" src="_images/math/00a9ea7086b27f234af01748f891a9b5911eb073.svg" alt="y = f^*(x)"/>. The neural
-network implements a function <img class="math" src="_images/math/d36fe39086281b8e7fa6ffffa799e3375a14d1ec.svg" alt="\hat{y} = f(x)"/>. We say a neural network
-is fully connected if each node in every layer is connected to every node
-in the adjacent layer. For now, we will only consider fully connected neural
-networks.</p>
+approximate some function <img class="math" src="_images/math/d0912de3a26537fc2fe761713c2e9d284607ca0e.svg" alt="f^*"/>, where <img class="math" src="_images/math/09467fcc0438cd7c1f8cf8fe693c7b558228dd97.svg" alt="\bm{y} = f^*(\bm{x})"/>. The
+neural network implements a function <img class="math" src="_images/math/9adb2712ff7597296f847ca0d2f6f5859530d154.svg" alt="\hat{\bm{y}} = f(\bm{x})"/>, where
+<img class="math" src="_images/math/54262162b9b81471ce8b512e5296071cfa65febf.svg" alt="\hat{\bm{y}}"/> represents the prediction made by the network, and
+<img class="math" src="_images/math/b347786cc6323c42f81386c840043844c270dcad.svg" alt="f"/> represents the model. We say a neural network is fully connected if
+each node in every layer is connected to every node in the adjacent layer. For
+now, we will only consider fully connected neural networks.</p>
 <div class="section" id="feedforward-mode">
 <h2>Feedforward Mode<a class="headerlink" href="#feedforward-mode" title="Permalink to this headline">¶</a></h2>
 <p>When making predictions, a neural network is said to be operating in
@@ -137,11 +138,12 @@ one circle.</p>
 when our neural network is running in feedforward mode. The layer
 <img class="math" src="_images/math/50d2fd5973156f7213ed886ae1acd607ef36fbbb.svg" alt="f^{(i)}(x)"/> performs the computation</p>
 <div class="math">
-<p><img src="_images/math/bb364ff85340c63501d3e671f90a037ebc2e7f6f.svg" alt="\bm{z} = g(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})."/></p>
-</div><p>In this diagram, <img class="math" src="_images/math/e0b5a49a36dfc95da91a5d69959f147a9b929e7c.svg" alt="\bm{z}"/> is output, <img class="math" src="_images/math/fcdbf65b218832dcf6daf8972cb10aa666b1c089.svg" alt="g"/> represents the activation
-function, <img class="math" src="_images/math/a0e4f6e425d8ba95a8ad6b977225c9741f2c79ad.svg" alt="\bm{W}^{(i)^T}"/> represents a learned matrix of weights at this
-layer, <img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e1375437.svg" alt="\bm{b}^{(i)}"/> represents a learned vector of bias terms at this
-layer, and <img class="math" src="_images/math/9cb903938e2965877b3c1e0513f2545947e6ed25.svg" alt="\bm{x}"/> represents the input at this layer.</p>
+<p><img src="_images/math/4e81fe183e6dc3573563a35e0283495aa01cec08.svg" alt="\bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})."/></p>
+</div><p>In this diagram, <img class="math" src="_images/math/47802046a50e7bd660362b55abedfc811fc20f68.svg" alt="\bm{a}^{(i)}"/> is the activated output, <img class="math" src="_images/math/50e4ea8ea3d41ae138489d95282106965cf95e9a.svg" alt="\phi"/>
+represents the activation function, <img class="math" src="_images/math/a0e4f6e425d8ba95a8ad6b977225c9741f2c79ad.svg" alt="\bm{W}^{(i)^T}"/> represents a learned
+matrix of weights at this layer, <img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e1375437.svg" alt="\bm{b}^{(i)}"/> represents a learned
+vector of bias terms at this layer, and <img class="math" src="_images/math/9cb903938e2965877b3c1e0513f2545947e6ed25.svg" alt="\bm{x}"/> represents the input at
+this layer.</p>
 <p>Neural networks rely on a nonlinear activation function to learn nonlinear
 relationships. Without a nonlinear activation function, a neural network is
 nothing more than a linear model. There are several choices one can make for
@@ -180,12 +182,10 @@ loss for the batch using the predicted outputs, <img class="math" src="_images/m
 the ground truth labels or values <img class="math" src="_images/math/f0577c9959f48ae42e6672975292fa403559f0dd.svg" alt="\bm{y}"/>. Loss functions are
 occasionally referred to as objective functions.</p>
 <div class="math">
-<p><img src="_images/math/097e86d9ae7b9403335c2fbfa5fba8c418e0ad8a.svg" alt="\begin{flalign}
-   \bm{\ell} = -\frac{1}{N}
-      \sum_{i=1}^N \big[
-         \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
-      \big]
-   \end{flalign}"/></p>
+<p><img src="_images/math/2262caea9297c0eecc32462ec2bc60769164cede.svg" alt="\bm{\ell} = -\frac{1}{N}
+   \sum_{i=1}^N \big[
+      \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
+   \big]"/></p>
 </div><p class="caption"><strong>Equation 1:</strong> Binary cross entropy loss function.</p>
 <p>If the outputs that we are learning are binary labels, then we might use
 a binary cross entropy loss function, seen in equation 1. On the other hand, if
@@ -193,6 +193,38 @@ we are learning labels with multiple classes, we might use categorical cross
 entropy. The resulting loss value will inform us about how our network
 performed on the batch it just predicted. We can use this value along with
 validation to determine if our model is overfitting or underfitting the data.</p>
+</div>
+<div class="section" id="backpropogation">
+<h3>Backpropogation<a class="headerlink" href="#backpropogation" title="Permalink to this headline">¶</a></h3>
+<p>Backpropogation involves computing gradients for the weights <img class="math" src="_images/math/4db22cfb85bacc78cb98d8717853c5828cf6e91b.svg" alt="\bm{W}^{(i)}"/>
+and bias <img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e1375437.svg" alt="\bm{b}^{(i)}"/> for all layers <img class="math" src="_images/math/2a7a413c7e151c3da66abb41f0c6b30b9e8748bb.svg" alt="i \in \{1, 2, \dots, l\}"/>
+where <img class="math" src="_images/math/a34aeb2a80a217bc4bdec69d13d207de3b573242.svg" alt="l"/> is the number of layers in our network. Once we’ve computed
+these gradients, the model can use a numerical optimization method to adjust
+weights and bias terms in such a way that error is reduced. Before defining the
+gradients of our weights and bias terms, we must compute the activated gradient
+of the current layer <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> using the gradient computed by the previous
+layer <img class="math" src="_images/math/6e047693ec0e05a5c3fd5d6af348953498a65b54.svg" alt="i + 1"/>.</p>
+<div class="math">
+<p><img src="_images/math/4f86199b6345e5415b2415cbc62a82c4b4c22fa6.svg" alt="\bm{g}_{\text{activated}}^{(i)} = \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})"/></p>
+</div><p class="caption"><strong>Equation 2:</strong> The definition of our activation gradient at layer <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/>.
+The variable <img class="math" src="_images/math/47802046a50e7bd660362b55abedfc811fc20f68.svg" alt="\bm{a}^{(i)}"/> reprsenets the activated output at layer
+<img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> and <img class="math" src="_images/math/caf441de348c2832ed4004334016e1b908c488a5.svg" alt="\phi'"/> represents the derivative of the activation
+function.</p>
+<p>Now, we have all we need to define the gradients of our weights and bias term.</p>
+<div class="math">
+<p><img src="_images/math/bb46cc77a8f4687ff1126034b75a420096e62bd1.svg" alt="\nabla_{\bm{W}^{(i)}}L &amp;= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
+\nabla_{\bm{b}^{(i)}}L &amp;= \bm{g}_a^{(i)}"/></p>
+</div><p class="caption"><strong>Equation 3:</strong> This equation defines the gradients of weight and bias terms,
+<img class="math" src="_images/math/a0e4f6e425d8ba95a8ad6b977225c9741f2c79ad.svg" alt="\bm{W}^{(i)^T}"/> and <img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e1375437.svg" alt="\bm{b}^{(i)}"/>. In this equation,
+<img class="math" src="_images/math/05e476d0c82dae43b8eade2376befd60d9f0f8fc.svg" alt="\bm{h}^{i-1}"/> is the ouput from layer <img class="math" src="_images/math/79821eabe184f50bf3d5a0890388760a2083c442.svg" alt="i - 1"/>.</p>
+<p>The only part of the computation that is missing is that of
+<img class="math" src="_images/math/831059f89f5fa65bfd18f06d503c3adefb6b1d24.svg" alt="\bm{g}^{(i+1)}"/> for the next layer in the backpropogation algorithm.
+This is definted in equation 3, and we can now see a recursive method of
+computing gradients from layer to layer.</p>
+<div class="math">
+<p><img src="_images/math/c411b098f7a69c61b0e1c5b5a7ad1bb1b0039fa3.svg" alt="\bm{g}^{(i-1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}"/></p>
+</div><p class="caption"><strong>Equation 4:</strong> This defines how to propogate the gradient from
+layer <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> to layer <img class="math" src="_images/math/79821eabe184f50bf3d5a0890388760a2083c442.svg" alt="i - 1"/>.</p>
 </div>
 </div>
 <div class="section" id="api-documentation">
@@ -203,6 +235,7 @@ validation to determine if our model is overfitting or underfitting the data.</p
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#backpropogation-and-optimization">Backpropogation and Optimization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#loss-functions">Loss Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#backpropogation">Backpropogation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
@@ -231,6 +264,7 @@ validation to determine if our model is overfitting or underfitting the data.</p
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#backpropogation-and-optimization">Backpropogation and Optimization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#loss-functions">Loss Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#backpropogation">Backpropogation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
