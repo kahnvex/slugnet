@@ -173,18 +173,26 @@ labels or values of each sample. That is, the dataset <img class="math" src="_im
 consists of <img class="math" src="_images/math/e1773ea381d3987ec9613e3818347fa7aa0f4538.svg" alt="\{\bm{x}_n, \bm{y}_n\}_{n=1}^N"/>, where <img class="math" src="_images/math/4a6eff0e4345cd8624454f268afd65f3a16bae7b.svg" alt="N"/> is the
 number of samples, and <img class="math" src="_images/math/7af6d1f5cbfcec7adb47dd68dd6d2a5ffd24e352.svg" alt="\bm{y}_n"/> is the ground truth label or output
 value for sample <img class="math" src="_images/math/990111a4bffdbd510dcb5eb173596c710d263d58.svg" alt="\bm{x}_n"/>.</p>
-<div class="section" id="loss-function">
-<h3>Loss Function<a class="headerlink" href="#loss-function" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="loss-functions">
+<h3>Loss Functions<a class="headerlink" href="#loss-functions" title="Permalink to this headline">¶</a></h3>
 <p>Upon completion of the forward pass on a batch of inputs, we can compute the
 loss for the batch using the predicted outputs, <img class="math" src="_images/math/54262162b9b81471ce8b512e5296071cfa65febf.svg" alt="\hat{\bm{y}}"/>, and
 the ground truth labels or values <img class="math" src="_images/math/f0577c9959f48ae42e6672975292fa403559f0dd.svg" alt="\bm{y}"/>. Loss functions are
 occasionally referred to as objective functions.</p>
 <p>If the outputs that we are learning are binary labels, then we might use
-a binary cross entropy loss function. On the other hand, if we are learning
-labels with multiple classes, we might use categorical cross entropy. The
-resulting loss value will inform us about how our network performed on
-the batch it just predicted. We can use this value along with validation
-to determine if our model is overfitting or underfitting the data.</p>
+a binary cross entropy loss function, seen in equation 1. On the other hand, if
+we are learning labels with multiple classes, we might use categorical cross
+entropy. The resulting loss value will inform us about how our network
+performed on the batch it just predicted. We can use this value along with
+validation to determine if our model is overfitting or underfitting the data.</p>
+<div class="math">
+<p><img src="_images/math/097e86d9ae7b9403335c2fbfa5fba8c418e0ad8a.svg" alt="\begin{flalign}
+   \bm{\ell} = -\frac{1}{N}
+      \sum_{i=1}^N \big[
+         \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
+      \big]
+   \end{flalign}"/></p>
+</div><p class="caption"><strong>Equation 1:</strong> Binary cross entropy function.</p>
 </div>
 </div>
 <div class="section" id="api-documentation">
@@ -194,7 +202,7 @@ to determine if our model is overfitting or underfitting the data.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#backpropogation-and-optimization">Backpropogation and Optimization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#loss-function">Loss Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loss-functions">Loss Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
@@ -222,7 +230,7 @@ to determine if our model is overfitting or underfitting the data.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#backpropogation-and-optimization">Backpropogation and Optimization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#loss-function">Loss Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loss-functions">Loss Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
