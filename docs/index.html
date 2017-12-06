@@ -102,8 +102,9 @@ this mode.</p>
 has five hidden units. The superscript number in parenthesis indicates the
 layer of the unit. The index in subscript represents the unit’s index. For
 example <img class="math" src="_images/math/0f553caa56681b28d6d9b70cee3ed32224fe45ef.svg" alt="h_3^{(4)}"/> represents the third unit of the forth layer.</p>
-<p>We can write the above network as <img class="math" src="_images/math/795d1546efa98562ba0e268c33395f2b952c8a3c.svg" alt="\hat{y} = f(x) = f^{(3)}(f^{(2)}(f^{(1)}(x)))"/>.
-Each layer <img class="math" src="_images/math/ffcc44595749ed9dfa62ba18fd1dff0dadb9ba62.svg" alt="f^{(i)}"/> is composed of the layer that came before it,
+<p>We can write the network in figure 1 as
+<img class="math" src="_images/math/795d1546efa98562ba0e268c33395f2b952c8a3c.svg" alt="\hat{y} = f(x) = f^{(3)}(f^{(2)}(f^{(1)}(x)))"/>. Each layer
+<img class="math" src="_images/math/ffcc44595749ed9dfa62ba18fd1dff0dadb9ba62.svg" alt="f^{(i)}"/> is composed of the layer that came before it,
 <img class="math" src="_images/math/091d43dc11acff048a12f403d5124d66d52c0337.svg" alt="f^{(i - 1)}"/>, the first layer <img class="math" src="_images/math/32e91852ddd1dd681567025ee8ff3b2c61ecccb6.svg" alt="f^{(1)}"/> takes the input <img class="math" src="_images/math/d55b90de788d6bbfe1bc1430a877000a97e5b8fd.svg" alt="x"/>.
 Additionally, we may represent the network with the shorthand diagram below.</p>
 <div class="figure">
@@ -137,6 +138,8 @@ when our neural network is running in feedforward mode. The layer
 function, <img class="math" src="_images/math/a0e4f6e425d8ba95a8ad6b977225c9741f2c79ad.svg" alt="\bm{W}^{(i)^T}"/> represents a learned matrix of weights at this
 layer, <img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e1375437.svg" alt="\bm{b}^{(i)}"/> represents a learned vector of bias terms at this
 layer, and <img class="math" src="_images/math/9cb903938e2965877b3c1e0513f2545947e6ed25.svg" alt="\bm{x}"/> represents the input at this layer.</p>
+<p>In this equation we have bolded the input variable <img class="math" src="_images/math/9cb903938e2965877b3c1e0513f2545947e6ed25.svg" alt="\bm{x}"/> to signify
+that it is a vector.</p>
 <p>Neural networks rely on a nonlinear activation function to learn nonlinear
 functions. Without a nonlinear activation function, a neural network is nothing
 more than a linear model. There are several choices one can make for activation
@@ -146,7 +149,9 @@ unit, or ReLU for short.</p>
 is ouput from the final layer.</p>
 <p>Slugnet represents a neural network as a <code class="code docutils literal"><span class="pre">Model</span></code>. You can run a
 neural network in feedforward mode by calling <code class="code docutils literal"><span class="pre">model.transform(X)</span></code>
-on a model, where <code class="code docutils literal"><span class="pre">X</span></code> is a matrix of inputs. Before you can run a model
+on a model, where <code class="code docutils literal"><span class="pre">X</span></code> is a matrix of inputs. In this case <code class="code docutils literal"><span class="pre">X</span></code>
+is a matrix to allow users of Slugnet to make several predictions
+in one call to <code class="code docutils literal"><span class="pre">model.transform</span></code>. Before you can run a model
 in feedforward mode, it must be trained. This leads us to backpropogation and
 optimization.</p>
 </div>
