@@ -12,7 +12,14 @@ propogation, and more.
 Before looking at any code, the following diagram will introduce the notation
 styles this library will follow. In general, a neural network tries to
 approximate some function :math:`f^*`, where :math:`y = f^*(x)`. The neural
-network implements a function :math:`\hat{y} = f(x)`.
+network implements a function :math:`\hat{y} = f(x)`. We say a neural network
+is fully connected if each node in a given layer is connected to every node
+in the adjacent layer. For now, we will only consider fully connected neural
+networks.
+
+When making predictions, a neural network is said to be operating in
+feedforward mode. For now, we will inspect how neural networks operate in
+feedforward mode.
 
 .. tikz::
 
@@ -56,10 +63,10 @@ network implements a function :math:`\hat{y} = f(x)`.
 
 .. rst-class:: caption
 
-   **Figure 1:** A three layer neural network. The first layer has five hidden units.
-   The superscript number in parenthesis indicates the layer of the unit. The index
-   in subscript represents the unit's index. For example :math:`h_3^{(4)}`
-   represents the third unit of the forth layer.
+   **Figure 1:** A three layer, fully connected neural network. The first layer
+   has five hidden units. The superscript number in parenthesis indicates the
+   layer of the unit. The index in subscript represents the unit's index. For
+   example :math:`h_3^{(4)}` represents the third unit of the forth layer.
 
 
 We can write the above network as :math:`\hat{y} = f^{(3)}(f^{(2)}(f^{(1)}(x)))`.
@@ -85,6 +92,34 @@ Additionally, we may represent the network with the shorthand diagram below.
    \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](7,1) -- (10,1);
 
    :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta,bm
+
+
+.. rst-class:: caption
+
+   **Figure 2:** The same three layer network as in Figure 1, represented
+   in a shorthand form where to units of each layer are collapsed onto
+   one circle.
+
+Let's "zoom in" on one of the layers to see what is happening under the hood
+when our neural network is running in feedforward mode. The layer
+:math:`f^{(i)}(x)` performs the computation
+
+.. math::
+
+   \bm{z} = g(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)}).
+
+
+In this diagram, :math:`\bm{z}` is output, :math:`g` represents the activation
+function, :math:`\bm{W}^{(i)^T}` represents a matrix of weights at this layer,
+:math:`\bm{b}^{(i)}` represents a vector of bias terms at this layer, and
+:math:`\bm{x}` represents the input at this layer.
+
+Neural networks rely on a nonlinear activation function to learn nonlinear
+functions. Without a nonlinear activation function, a neural network is nothing
+more than a linear model. There are several choices one can make for activation
+functions, including but not limited to tanh, sigmoid, and the rectified linear
+unit, or ReLU for short.
+
 
 API Documentation
 -----------------
