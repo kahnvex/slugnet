@@ -6,7 +6,8 @@ the author's understanding of deep learning.
 
 The goal of this library is to mathematically document all relevant components
 of a working neural networks library. This includes models, layers, optimizers,
-loss functions, forward propogation, backward propogation, and more.
+activation functions, loss functions, forward propogation, backward
+propogation, and more.
 
 Before looking at any code, the following diagram will introduce the notation
 styles this library will follow. In general, a neural network tries to
