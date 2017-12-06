@@ -183,3 +183,6 @@ sidebar_includehidden = False
 
 # Order autodoc docs by source order
 autodoc_member_order = 'bysource'
+
+def setup(app):
+    app.add_stylesheet('caption.css')
