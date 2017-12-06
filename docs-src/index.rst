@@ -168,7 +168,10 @@ the ground truth labels or values :math:`\bm{y}`.
 
 If the outputs that we are learning are binary labels, then we might use
 a binary cross entropy loss function. On the other hand, if we are learning
-labels with multiple classes, we might use categorical cross entropy.
+labels with multiple classes, we might use categorical cross entropy. The
+resulting loss value will inform us about how our network performed on
+the batch it just predicted. We can use this value along with validation
+to determine if our model is overfitting or underfitting the data.
 
 API Documentation
 -----------------
