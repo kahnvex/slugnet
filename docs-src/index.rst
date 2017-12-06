@@ -162,9 +162,13 @@ consists of :math:`\{\bm{x}_n, \bm{y}_n\}_{n=1}^N`, where :math:`N` is the
 number of samples, and :math:`\bm{y}_n` is the ground truth label or output
 value for sample :math:`\bm{x}_n`.
 
+Loss Function
+~~~~~~~~~~~~~
+
 Upon completion of the forward pass on a batch of inputs, we can compute the
 loss for the batch using the predicted outputs, :math:`\hat{\bm{y}}`, and
-the ground truth labels or values :math:`\bm{y}`.
+the ground truth labels or values :math:`\bm{y}`. Loss functions are
+occasionally referred to as objective functions.
 
 If the outputs that we are learning are binary labels, then we might use
 a binary cross entropy loss function. On the other hand, if we are learning
