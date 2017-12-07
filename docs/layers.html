@@ -50,16 +50,16 @@
 <p>A common densely connected neural network layer.</p>
 <p>The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
 <div class="math">
-<p><img src="_images/math/80f2f81f4966249ca43e97c5305236a2b1e608c1.svg" alt="\[
+<p><img src="_images/math/b59216276d2c8eba4168ac5ba602914045949efa.svg" alt="\[
     \mathbf{z} = g(\mathbf{W}_i^T \mathbf{x} + \mathbf{b})
 \]"/></p>
-</div><p>where <img class="math" src="_images/math/e6a3557b5c9ee49a058ef9c03a2c43a594587ca9.svg" alt="z"/> is output, <img class="math" src="_images/math/d8369e014fde1a9bc47d2d42e24a487ef636c462.svg" alt="g"/> is the activation
-function, <img class="math" src="_images/math/fe3493024b343e0d017333932351fa5660814bdd.svg" alt="W"/> are weights, <img class="math" src="_images/math/a4bc681633bcb30bfb7e8b586316ae1137812c95.svg" alt="b"/> is our
-bias, and <img class="math" src="_images/math/28cca5b83a4df1adcd23744e73c7044094c6e344.svg" alt="i"/> is the index of the current layer.</p>
+</div><p>where <img class="math" src="_images/math/a9654eeffe5008717c25642fa6e7181bc07cfa6f.svg" alt="z"/> is output, <img class="math" src="_images/math/54baf436df2160e1524fd4a27568f3329ab669ce.svg" alt="g"/> is the activation
+function, <img class="math" src="_images/math/53061b10fdfe4004aa50ccc32878c1531106c19b.svg" alt="W"/> are weights, <img class="math" src="_images/math/81131d17b1c194996cb459551d5d824315df0e8d.svg" alt="b"/> is our
+bias, and <img class="math" src="_images/math/f90a38d9d567cf496bea58bf58fb30fa524490a9.svg" alt="i"/> is the index of the current layer.</p>
 <p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
 calculates two values as follows</p>
 <div class="math">
-<p><img src="_images/math/60d2515c7fe1fdd51add0bd6e91649c4c93ec58d.svg" alt="\begin{flalign}
+<p><img src="_images/math/67bf8cd2dc133cfe4cf93c4b1409ab8ab707f10b.svg" alt="\begin{flalign}
     \frac{\partial \ell}{\partial \bm{z}^{(i)}} &amp;=
         g'(z^{(i)}) \circ
         \Big[ \bm{W}^{(i + 1)^T}
@@ -68,8 +68,8 @@ calculates two values as follows</p>
         \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T
 \end{flalign}"/></p>
 </div><p>When looking at the source, there is a notable absence of
-<img class="math" src="_images/math/0a0790362e833702fd109cf99c4bd2aa80fc22d3.svg" alt="\bm{W}^{(i + 1)^T}"/>
-and <img class="math" src="_images/math/7c759b849dde3a7f54173a995926e3f9952c7d06.svg" alt="\frac{\partial \ell}{\partial z^{(i + 1)}}"/>.
+<img class="math" src="_images/math/78fb3adeafdd7a5dfb407cbd21ce8a9ed74247a8.svg" alt="\bm{W}^{(i + 1)^T}"/>
+and <img class="math" src="_images/math/c330a1beefa1caed49ce26d4abfd2c537dfc31e0.svg" alt="\frac{\partial \ell}{\partial z^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.</p>
 <dl class="method">
