@@ -55,10 +55,10 @@ will loosely follow the notation found in <em>Deep Learning</em> (Goodfellow, Be
 <p>Before looking at any code, the following sections will introduce the notation
 styles this library will follow as well as give a brief mathematical
 introduction to neural networks. In general, a neural network tries to
-approximate some function <img class="math" src="_images/math/0bf8082cceae92ed8202a20b5ad502617337d3da.svg" alt="f^*"/>, where <img class="math" src="_images/math/d8c075e230bd4899a93670021b21bc7822a7c891.svg" alt="\bm{y} = f^*(\bm{x})"/>. The
-neural network implements a function <img class="math" src="_images/math/f5d2cf66e88bc32c5f6e495c4d71c65687dff2fb.svg" alt="\hat{\bm{y}} = f(\bm{x})"/>, where
-<img class="math" src="_images/math/f2d81081bbac939b3e5ebf340e479eb8d1494a6e.svg" alt="\hat{\bm{y}}"/> represents the prediction made by the network, and
-<img class="math" src="_images/math/4f1f328f5e45f2f94a2f5b9aca495b03440dc5b5.svg" alt="f"/> represents the model. We say a neural network is fully connected if
+approximate some function <img class="math" src="_images/math/59137622d3810ab23e5f9365af5102c7b3cff78f.svg" alt="f^*"/>, where <img class="math" src="_images/math/951cdf0e0e61cf7188e60364bfba2cd755799f8c.svg" alt="\bm{y} = f^*(\bm{x})"/>. The
+neural network implements a function <img class="math" src="_images/math/5f101aa7840a1b090c6a6f4dbb64d2fded57fd8c.svg" alt="\hat{\bm{y}} = f(\bm{x})"/>, where
+<img class="math" src="_images/math/258f3580c5732d3804337ce84e07a488ad7017cc.svg" alt="\hat{\bm{y}}"/> represents the prediction made by the network, and
+<img class="math" src="_images/math/0f1212acc53a3a89846aebe3471e8b29172badc8.svg" alt="f"/> represents the model. We say a neural network is fully connected if
 each node in every layer is connected to every node in the adjacent layer. For
 now, we will only consider fully connected neural networks.</p>
 <div class="section" id="feedforward-mode">
@@ -106,12 +106,12 @@ this mode.</p>
 </div><p class="caption"><strong>Figure 1:</strong> A three layer, fully connected neural network. The first layer
 has five hidden units. The superscript number in parenthesis indicates the
 layer of the unit. The index in subscript represents the unit’s index. For
-example <img class="math" src="_images/math/fa27f4d9ded58eb444cc64efee475bdfa9961583.svg" alt="h_3^{(4)}"/> represents the third unit of the forth layer.</p>
+example <img class="math" src="_images/math/2b15498f5cad8265658316d325d00cadff89ddeb.svg" alt="h_3^{(4)}"/> represents the third unit of the forth layer.</p>
 <p>We can write the network in figure 1 as
-<img class="math" src="_images/math/ff751c43d49517db189c1e26475c94a81b737d82.svg" alt="\bm{\hat{y}} = f(\bm{x}) = f^{(3)}(f^{(2)}(f^{(1)}(\bm{x})))"/>. Each layer
-<img class="math" src="_images/math/b3274ca364eff91490b90c541153754642195077.svg" alt="f^{(i)}"/> is composed of the layer that came before it,
-<img class="math" src="_images/math/0dffd69200cb2b69bf2fe117b7200af4023daa8a.svg" alt="f^{(i - 1)}"/>, the first layer <img class="math" src="_images/math/59d14fc152049a63e0a78c05587a0239308ad6bb.svg" alt="f^{(1)}"/> takes the input
-<img class="math" src="_images/math/af3bd7321993ce3dba629d08c9c7a78dc7d3b6fe.svg" alt="\bm{x}"/>. Variables that are lowercase and bold represent vectors, and
+<img class="math" src="_images/math/202b30d05dcb4af90cac0d42f2c179e794a56c35.svg" alt="\bm{\hat{y}} = f(\bm{x}) = f^{(3)}(f^{(2)}(f^{(1)}(\bm{x})))"/>. Each layer
+<img class="math" src="_images/math/3935d93e3bfe65e59cff2da6b6931ca331432b81.svg" alt="f^{(i)}"/> is composed of the layer that came before it,
+<img class="math" src="_images/math/8ce7d48cf6b55ce5d59b372f7b5f2f8add010e7e.svg" alt="f^{(i - 1)}"/>, the first layer <img class="math" src="_images/math/66df6e6adda9aa82dee368db83f47a10d4fbc709.svg" alt="f^{(1)}"/> takes the input
+<img class="math" src="_images/math/d147ded0e0ab05ba3bd673a84230b9b733f4fd16.svg" alt="\bm{x}"/>. Variables that are lowercase and bold represent vectors, and
 variables that are capitalized and bold represent matrices. Additionally, we may
 represent the network with the shorthand diagram below.</p>
 <div class="figure">
@@ -138,20 +138,20 @@ in a shorthand form where to units of each layer are collapsed onto
 one circle.</p>
 <p>Let’s “zoom in” on one of the layers to see what is happening under the hood
 when our neural network is running in feedforward mode. The layer
-<img class="math" src="_images/math/17327b91e250f9e8ab3d07718c607dd6dc0de73f.svg" alt="f^{(i)}(x)"/> performs the computation</p>
+<img class="math" src="_images/math/1b0f4e63b5ef61a2235a10e3926838cac63ff3f9.svg" alt="f^{(i)}(x)"/> performs the computation</p>
 <div class="math">
-<p><img src="_images/math/42ab588c315b211fc456c4d02f7b0ca81f8b6ad0.svg" alt="\bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})."/></p>
-</div><p>In this diagram, <img class="math" src="_images/math/4f90beabf3068e6f06ef2eb604929a4755aef31c.svg" alt="\bm{a}^{(i)}"/> is the activated output, <img class="math" src="_images/math/306fb1020b025c4d73ad727674587d928f9caaec.svg" alt="\phi"/>
-represents the activation function, <img class="math" src="_images/math/730c53079a0085060ff1e78442567c68bbc3ce63.svg" alt="\bm{W}^{(i)^T}"/> represents a learned
-matrix of weights at this layer, <img class="math" src="_images/math/b0bc41798bc1598fca9e1116b15704dcbd860dd2.svg" alt="\bm{b}^{(i)}"/> represents a learned
-vector of bias terms at this layer, and <img class="math" src="_images/math/af3bd7321993ce3dba629d08c9c7a78dc7d3b6fe.svg" alt="\bm{x}"/> represents the input at
+<p><img src="_images/math/49d453e4655b8cc7176ac058fbb6b133e4fc3f8b.svg" alt="\bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})."/></p>
+</div><p>In this diagram, <img class="math" src="_images/math/7a5db2c3e974c1c2501780a87682ce5a3b054106.svg" alt="\bm{a}^{(i)}"/> is the activated output, <img class="math" src="_images/math/65d70ebfe3495284d3410fd186c36cd545237d1d.svg" alt="\phi"/>
+represents the activation function, <img class="math" src="_images/math/418869483db287c7e2f8e0284d13b4dafa67227f.svg" alt="\bm{W}^{(i)^T}"/> represents a learned
+matrix of weights at this layer, <img class="math" src="_images/math/b77ea3f085c92795f7937ffaacbd2b12e4c73eb7.svg" alt="\bm{b}^{(i)}"/> represents a learned
+vector of bias terms at this layer, and <img class="math" src="_images/math/d147ded0e0ab05ba3bd673a84230b9b733f4fd16.svg" alt="\bm{x}"/> represents the input at
 this layer.</p>
 <p>Neural networks rely on a nonlinear activation function to learn nonlinear
 relationships. Without a nonlinear activation function, a neural network is
 nothing more than a linear model. There are several choices one can make for
 activation functions, including but not limited to tanh, sigmoid, and the
 rectified linear unit, or ReLU for short.</p>
-<p>Upon completion of the feedforward operation, the prediction <img class="math" src="_images/math/f9b75cd3e07105db2537594329c06667848ffc1e.svg" alt="\hat{y}"/>
+<p>Upon completion of the feedforward operation, the prediction <img class="math" src="_images/math/daebdecf2120a32139544d83f06c1ee9ec23112e.svg" alt="\hat{y}"/>
 is ouput from the final layer.</p>
 <p>Slugnet represents a neural network as a <code class="code docutils literal"><span class="pre">Model</span></code>. You can run a
 neural network in feedforward mode by calling <code class="code docutils literal"><span class="pre">model.transform(X)</span></code>
@@ -173,18 +173,18 @@ learn weights. To compute this graident, we use the backpropogation algorithm.</
 described earlier must be run, only instead of throwing away the intermedite
 outputs at each layer, we store them, knowing that we’ll need them later
 for backpropogation. Additionally, during training, we require the ground truth
-labels or values of each sample. That is, the dataset <img class="math" src="_images/math/8b7b43febd4138a01ad4b06610372a06b74b667c.svg" alt="\mathcal{D}"/>
-consists of <img class="math" src="_images/math/4c31329e419d757aa2b03ef1903a5f8150cb0c25.svg" alt="\{\bm{x}_n, \bm{y}_n\}_{n=1}^N"/>, where <img class="math" src="_images/math/bed30344ac41d739a1bf24e9775ca1a715a85354.svg" alt="N"/> is the
-number of samples, and <img class="math" src="_images/math/b2d4041c1d6aa42486df0065fe510aec6113fde7.svg" alt="\bm{y}_n"/> is the ground truth label or output
-value for sample <img class="math" src="_images/math/91d121b58f4ef2abed2d6efd2ea2e74c9d18e5fe.svg" alt="\bm{x}_n"/>.</p>
+labels or values of each sample. That is, the dataset <img class="math" src="_images/math/eef6d9dbf3561a3cbbccc3703d82bb337ff9e687.svg" alt="\mathcal{D}"/>
+consists of <img class="math" src="_images/math/b6c405a21059ca6ba1c1e828e34dc94a1f899cfc.svg" alt="\{\bm{x}_n, \bm{y}_n\}_{n=1}^N"/>, where <img class="math" src="_images/math/a9478380a1f79939dfb9ecae82a4893d31114a3c.svg" alt="N"/> is the
+number of samples, and <img class="math" src="_images/math/1fdae9013d1cd04f92f61d2de16fd7d2375af720.svg" alt="\bm{y}_n"/> is the ground truth label or output
+value for sample <img class="math" src="_images/math/a8c030bb94b9ae35f5df3d6ca72c0bd4a6f3b7e7.svg" alt="\bm{x}_n"/>.</p>
 <div class="section" id="loss-functions">
 <h3>Loss Functions<a class="headerlink" href="#loss-functions" title="Permalink to this headline">¶</a></h3>
 <p>Upon completion of the forward pass on a batch of inputs, we can compute the
-loss for the batch using the predicted outputs, <img class="math" src="_images/math/f2d81081bbac939b3e5ebf340e479eb8d1494a6e.svg" alt="\hat{\bm{y}}"/>, and
-the ground truth labels or values <img class="math" src="_images/math/5fc74089449a6afe03801523eb6b8bc88ab89387.svg" alt="\bm{y}"/>. Loss functions are
+loss for the batch using the predicted outputs, <img class="math" src="_images/math/258f3580c5732d3804337ce84e07a488ad7017cc.svg" alt="\hat{\bm{y}}"/>, and
+the ground truth labels or values <img class="math" src="_images/math/132e2b5b167024962a0ffe9e0d3c0fe09086e7a5.svg" alt="\bm{y}"/>. Loss functions are
 occasionally referred to as objective functions.</p>
 <div class="math">
-<p><img src="_images/math/ab2e9fabed8dbbaf1cd50ebb94252c352a82e93c.svg" alt="\bm{\ell} = -\frac{1}{N}
+<p><img src="_images/math/e23d580def29e226be734c265a095517459cb77a.svg" alt="\bm{\ell} = -\frac{1}{N}
    \sum_{i=1}^N \big[
       \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
    \big]"/></p>
@@ -198,64 +198,64 @@ validation to determine if our model is overfitting or underfitting the data.</p
 </div>
 <div class="section" id="backpropogation">
 <h3>Backpropogation<a class="headerlink" href="#backpropogation" title="Permalink to this headline">¶</a></h3>
-<p>Backpropogation involves computing gradients for the weights <img class="math" src="_images/math/1bef5cddb9633141b01ed2ca167a6944af192594.svg" alt="\bm{W}^{(i)}"/>
-and bias <img class="math" src="_images/math/b0bc41798bc1598fca9e1116b15704dcbd860dd2.svg" alt="\bm{b}^{(i)}"/> for all layers <img class="math" src="_images/math/601e6bb06ea3ad4eecc5fba7d95a619559e53838.svg" alt="i \in \{1, 2, \dots, l\}"/>
-where <img class="math" src="_images/math/4a748849171e0cc7038bacc6ef3099911a27a310.svg" alt="l"/> is the number of layers in our network. Once we’ve computed
+<p>Backpropogation involves computing gradients for the weights <img class="math" src="_images/math/74ea0445262bced72509c057f68021125e81475b.svg" alt="\bm{W}^{(i)}"/>
+and bias <img class="math" src="_images/math/b77ea3f085c92795f7937ffaacbd2b12e4c73eb7.svg" alt="\bm{b}^{(i)}"/> for all layers <img class="math" src="_images/math/7c14d5d4e11c30c5ea6be0da7028b3d224126e6d.svg" alt="i \in \{1, 2, \dots, l\}"/>
+where <img class="math" src="_images/math/627a253c52c8c60c09ab749f61b7f73d3310967e.svg" alt="l"/> is the number of layers in our network. Once we’ve computed
 these gradients, the model can use a numerical optimization method to adjust
 weights and bias terms in such a way that error is reduced. Before defining the
 gradients of our weights and bias terms, we must define how to compute loss
 gradient, and the gradient at each layer.</p>
 <div class="math">
-<p><img src="_images/math/63d756abd733cd121eb6b7f453e29f8a3d32107d.svg" alt="\bm{g}^{(\text{Loss})} &amp;= \bm{g}^{(L)} = \nabla_{\hat{\bm{y}}}L(\bm{\hat{y}}, \bm{y})"/></p>
+<p><img src="_images/math/4f216b9e1c23a92db28babfc3cace16777d57af3.svg" alt="\bm{g}^{(\text{Loss})} &amp;= \bm{g}^{(L)} = \nabla_{\hat{\bm{y}}}L(\bm{\hat{y}}, \bm{y})"/></p>
 </div><p class="caption"><strong>Equation 2:</strong> Defines how we compute the gradient of the loss function,
 which is the first gradient computed during backpropogation. From this
 gradient, we will compute all other gradients.</p>
 <p>Once the gradient of the loss function is calculated, we may begin performing
 backpropogation on the layers of our neural network. We start from the “top”
 of the network, or the output layer. Using the loss gradient
-<img class="math" src="_images/math/5695a779bee2516f04f21b16461a2ec68656cff3.svg" alt="\bm{g}^{(L)}"/> we can compute the gradient of the output layer as
+<img class="math" src="_images/math/11cccd6484c9adebb75b32ce910848b6e605ef03.svg" alt="\bm{g}^{(L)}"/> we can compute the gradient of the output layer as
 defined in equation 3. The definition given in equation 3 is generalized, that
 is, it applies to any hidden layer in the network.</p>
 <div class="math">
-<p><img src="_images/math/40c0c8092ea692477d97c67c81fcf73b5545bb38.svg" alt="\bm{g}_{\text{activated}}^{(i)} &amp;= \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})"/></p>
-</div><p class="caption"><strong>Equation 3:</strong> The definition of our activation gradient at layer <img class="math" src="_images/math/28cca5b83a4df1adcd23744e73c7044094c6e344.svg" alt="i"/>.
-The variable <img class="math" src="_images/math/4f90beabf3068e6f06ef2eb604929a4755aef31c.svg" alt="\bm{a}^{(i)}"/> reprsenets the activated output at layer
-<img class="math" src="_images/math/28cca5b83a4df1adcd23744e73c7044094c6e344.svg" alt="i"/> and <img class="math" src="_images/math/f36a14a3753b1ad8dbd51fd943259c520d829695.svg" alt="\phi'"/> represents the derivative of the activation
-function. The unfilled dot (<img class="math" src="_images/math/35debe5846bdbb9faa52b9d22c0c1835864d4f2a.svg" alt="\circ"/>) represents an item-wise
+<p><img src="_images/math/87ca4d845f1fa2d19b46407331320d64195dd387.svg" alt="\bm{g}_{\text{activated}}^{(i)} &amp;= \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})"/></p>
+</div><p class="caption"><strong>Equation 3:</strong> The definition of our activation gradient at layer <img class="math" src="_images/math/f90a38d9d567cf496bea58bf58fb30fa524490a9.svg" alt="i"/>.
+The variable <img class="math" src="_images/math/7a5db2c3e974c1c2501780a87682ce5a3b054106.svg" alt="\bm{a}^{(i)}"/> reprsenets the activated output at layer
+<img class="math" src="_images/math/f90a38d9d567cf496bea58bf58fb30fa524490a9.svg" alt="i"/> and <img class="math" src="_images/math/9082492f5081a94c6ecfb8001296522e75dd0e9b.svg" alt="\phi'"/> represents the derivative of the activation
+function. The unfilled dot (<img class="math" src="_images/math/1d0f777b70765933f117a76c1b57281945ee760b.svg" alt="\circ"/>) represents an item-wise
 multiplication between two vectors. It can also be used to represent item-wise
 multiplication between two matrices.</p>
 <p>Now, we have all we need to define the gradients of our weights and bias term.</p>
 <div class="math">
-<p><img src="_images/math/1995c61a2d6cd9b8e69d3a522d54e8657b7ff185.svg" alt="\nabla_{\bm{W}^{(i)}}L &amp;= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
+<p><img src="_images/math/bda2c791c3cb8dcc3b595755501f2866db75a37e.svg" alt="\nabla_{\bm{W}^{(i)}}L &amp;= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
 \nabla_{\bm{b}^{(i)}}L &amp;= \bm{g}_a^{(i)}"/></p>
 </div><p class="caption"><strong>Equation 4:</strong> This equation defines the gradients of weight and bias terms,
-<img class="math" src="_images/math/730c53079a0085060ff1e78442567c68bbc3ce63.svg" alt="\bm{W}^{(i)^T}"/> and <img class="math" src="_images/math/b0bc41798bc1598fca9e1116b15704dcbd860dd2.svg" alt="\bm{b}^{(i)}"/>. In this equation,
-<img class="math" src="_images/math/25be9dc50fe63547c50c4a24dc4334da03408220.svg" alt="\bm{h}^{i-1}"/> is the ouput from layer <img class="math" src="_images/math/ab7c371886564b92c269cdded3f6dee7453b1de3.svg" alt="i - 1"/>.</p>
+<img class="math" src="_images/math/418869483db287c7e2f8e0284d13b4dafa67227f.svg" alt="\bm{W}^{(i)^T}"/> and <img class="math" src="_images/math/b77ea3f085c92795f7937ffaacbd2b12e4c73eb7.svg" alt="\bm{b}^{(i)}"/>. In this equation,
+<img class="math" src="_images/math/10a42862795d5bd3aed34333c193568a04f92a31.svg" alt="\bm{h}^{i-1}"/> is the ouput from layer <img class="math" src="_images/math/5d828758c595cea6bd3ffcb64ad3610e72fbd713.svg" alt="i - 1"/>.</p>
 <p>The only part of the computation that is missing is that of
-<img class="math" src="_images/math/b2ed5cba098d3a39b7d785b4cfbbef65c771647a.svg" alt="\bm{g}^{(i+1)}"/> for the next layer in the backpropogation algorithm.
+<img class="math" src="_images/math/93e82efccba9d1a8325bc5e736abc676357bc802.svg" alt="\bm{g}^{(i+1)}"/> for the next layer in the backpropogation algorithm.
 This is definted in equation 3, and we can now see a recursive method of
 computing gradients from layer to layer.</p>
 <div class="math">
-<p><img src="_images/math/35c55ae7ccde5b6702e88d0b5b9c83d13672c7ea.svg" alt="\bm{g}^{(i-1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}"/></p>
-</div><p class="caption"><strong>Equation 5:</strong> How to propogate the gradient from layer <img class="math" src="_images/math/28cca5b83a4df1adcd23744e73c7044094c6e344.svg" alt="i"/> to layer
-<img class="math" src="_images/math/b88702ecc1c949f5a0f1810a5f1ec6a66ce0a2b3.svg" alt="i-1"/>.</p>
+<p><img src="_images/math/42e33134ba9a8fea3f93b8e8bdb65badc876180b.svg" alt="\bm{g}^{(i-1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}"/></p>
+</div><p class="caption"><strong>Equation 5:</strong> How to propogate the gradient from layer <img class="math" src="_images/math/f90a38d9d567cf496bea58bf58fb30fa524490a9.svg" alt="i"/> to layer
+<img class="math" src="_images/math/9e4c1807a2ae630905a0a87b5f6ed676a18c7139.svg" alt="i-1"/>.</p>
 <p>This is all we need to implement a full backpropogation algorithm. Repeated
 application of equations 3, 4, and 5 will give us the weight and bias
-gradients <img class="math" src="_images/math/8180d7922b7cfd25492d453e02f5a9da7483ae33.svg" alt="\nabla_{\bm{W}}L"/> and <img class="math" src="_images/math/af2dbcacbef29527528d89b3367a9c4a90d56d6c.svg" alt="\nabla_{\bm{b}}L"/> at every layer,
+gradients <img class="math" src="_images/math/d1f89832d9898ad034dc530bbdc6027aefb2cacd.svg" alt="\nabla_{\bm{W}}L"/> and <img class="math" src="_images/math/340be51317a4231689cbfc0d7af012399525f726.svg" alt="\nabla_{\bm{b}}L"/> at every layer,
 as indicated by the pseudocode of backpropogation given in alorithm 1.</p>
 <div class="algo math">
-<p><img src="_images/math/12b956e8b0b3b9097b0ee079d0b6aee6d72ea526.svg" alt="\begin{algorithm}
+<p><img src="_images/math/0f34b115927bcfd0a3467b86006a0c0a52c952b7.svg" alt="\begin{algorithm}
    \caption{The backward propogation algorithm's pseudocode from
       \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some notation
       modifications to match to style presented in this documentation.}\label{backprop}
    \begin{algorithmic}[1]
-      \Procedure{Backpropogation}{}
+      \Procedure{Backpropogation}{$L, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
          \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}L(\bm{\hat{y}}, \bm{y})$
          \For{$i=l, l-1, \dots 1$}
             \State $\bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
             \State $\nabla_{\bm{W}^{(i)}}L = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
             \State $\nabla_{\bm{b}^{(i)}}L = \bm{g}_a^{(i)}$
-            \State $\bm{g}^{(i + 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
+            \State $\bm{g}^{(i - 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
          \EndFor
       \EndProcedure
    \end{algorithmic}

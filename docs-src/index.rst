@@ -276,13 +276,13 @@ as indicated by the pseudocode of backpropogation given in alorithm 1.
          \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some notation
          modifications to match to style presented in this documentation.}\label{backprop}
       \begin{algorithmic}[1]
-         \Procedure{Backpropogation}{}
+         \Procedure{Backpropogation}{$L, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
             \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}L(\bm{\hat{y}}, \bm{y})$
             \For{$i=l, l-1, \dots 1$}
                \State $\bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
                \State $\nabla_{\bm{W}^{(i)}}L = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
                \State $\nabla_{\bm{b}^{(i)}}L = \bm{g}_a^{(i)}$
-               \State $\bm{g}^{(i + 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
+               \State $\bm{g}^{(i - 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
             \EndFor
          \EndProcedure
       \end{algorithmic}

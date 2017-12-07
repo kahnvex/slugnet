@@ -129,6 +129,14 @@ imgmath_latex_preamble = """
 \usepackage{dsfont}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{isomath}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{arrows}
 \\newcommand{\\thickhat}[1]{\mathbf{\hat{\\text{$#1$}}}}
 \\newcommand{\R}{\mathbb{R}}
 \\renewcommand{\\thesubsection}{\\thesection.\\alph{subsection}}
