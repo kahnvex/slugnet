@@ -237,26 +237,25 @@ This is definted in equation 3, and we can now see a recursive method of
 computing gradients from layer to layer.</p>
 <div class="math">
 <p><img src="_images/math/35c55ae7ccde5b6702e88d0b5b9c83d13672c7ea.svg" alt="\bm{g}^{(i-1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}"/></p>
-</div><p class="caption"><strong>Equation 5:</strong> This defines how to propogate the gradient from
-layer <img class="math" src="_images/math/28cca5b83a4df1adcd23744e73c7044094c6e344.svg" alt="i"/> to layer <img class="math" src="_images/math/b88702ecc1c949f5a0f1810a5f1ec6a66ce0a2b3.svg" alt="i-1"/>.</p>
+</div><p class="caption"><strong>Equation 5:</strong> How to propogate the gradient from layer <img class="math" src="_images/math/28cca5b83a4df1adcd23744e73c7044094c6e344.svg" alt="i"/> to layer
+<img class="math" src="_images/math/b88702ecc1c949f5a0f1810a5f1ec6a66ce0a2b3.svg" alt="i-1"/>.</p>
 <p>This is all we need to implement a full backpropogation algorithm. Repeated
 application of equations 3, 4, and 5 will give us the weight and bias
 gradients <img class="math" src="_images/math/8180d7922b7cfd25492d453e02f5a9da7483ae33.svg" alt="\nabla_{\bm{W}}L"/> and <img class="math" src="_images/math/af2dbcacbef29527528d89b3367a9c4a90d56d6c.svg" alt="\nabla_{\bm{b}}L"/> at every layer,
 as indicated by the pseudocode of backpropogation given in alorithm 1.</p>
-<div class="math">
-<p><img src="_images/math/270d7aefe84d6b63e856adcf0645b31c0ea9962e.svg" alt="\LARGE
-\begin{algorithm}
+<div class="algo math">
+<p><img src="_images/math/12b956e8b0b3b9097b0ee079d0b6aee6d72ea526.svg" alt="\begin{algorithm}
    \caption{The backward propogation algorithm's pseudocode from
       \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some notation
       modifications to match to style presented in this documentation.}\label{backprop}
    \begin{algorithmic}[1]
       \Procedure{Backpropogation}{}
-         \State $\bm{g}^{(l)} \gets \nabla_{\bm{\hat{y}}}L(\bm{\hat{y}}, \bm{y})$
+         \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}L(\bm{\hat{y}}, \bm{y})$
          \For{$i=l, l-1, \dots 1$}
-            \State $\bm{g}_a^{(i)} \gets \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
+            \State $\bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
             \State $\nabla_{\bm{W}^{(i)}}L = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
             \State $\nabla_{\bm{b}^{(i)}}L = \bm{g}_a^{(i)}$
-            \State $\bm{g}^{(i + 1)} \gets \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
+            \State $\bm{g}^{(i + 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
          \EndFor
       \EndProcedure
    \end{algorithmic}
