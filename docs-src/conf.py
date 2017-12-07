@@ -144,7 +144,7 @@ latex_elements = {
 
     # Additional stuff for the LaTeX preamble.
     #
-    'preamble': '\usepackage{tkiz}\n\usetikzlibrary{positioning}\n\usepackage{bm}',
+    'preamble': '\usepackage{tkiz}\n\usetikzlibrary{positioning}\n\usepackage{bm}\n\usepackage{amsmath}',
 
     # Latex figure (float) alignment
     #
