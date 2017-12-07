@@ -127,10 +127,16 @@ imgmath_latex_preamble = """
 \usepackage{xfrac}
 \usepackage{amssymb}
 \usepackage{dsfont}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \\newcommand{\\thickhat}[1]{\mathbf{\hat{\\text{$#1$}}}}
 \\newcommand{\R}{\mathbb{R}}
 \\renewcommand{\\thesubsection}{\\thesection.\\alph{subsection}}
 \DeclareMathOperator*{\\argmin}{arg\,min}
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
 """
 
 latex_elements = {
@@ -144,7 +150,10 @@ latex_elements = {
 
     # Additional stuff for the LaTeX preamble.
     #
-    'preamble': '\usepackage{tkiz}\n\usetikzlibrary{positioning}\n\usepackage{bm}\n\usepackage{amsmath}',
+    # 'preamble': ('\usepackage{tkiz}\n'
+    #              '\usetikzlibrary{positioning}\n'
+    #              '\usepackage{bm}\n'
+    #              '\usepackage{amsmath}'),
 
     # Latex figure (float) alignment
     #
@@ -179,6 +188,8 @@ html_sidebars = {'**': [
     'searchbox.html'
 ], }
 
+
+
 sidebar_includehidden = False
 
 # Order autodoc docs by source order
@@ -186,3 +197,8 @@ autodoc_member_order = 'bysource'
 
 def setup(app):
     app.add_stylesheet('caption.css')
+
+
+html_theme_options = {
+    'font_size': '19px'
+}

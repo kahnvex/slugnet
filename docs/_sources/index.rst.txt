@@ -14,7 +14,7 @@ machine learning techniques, linear algebra, and calculus. This documentation
 will loosely follow the notation found in *Deep Learning* (Goodfellow, Bengio,
 & Courville, 2016).
 
-Before looking at any code, the following section will introduce the notation
+Before looking at any code, the following sections will introduce the notation
 styles this library will follow as well as give a brief mathematical
 introduction to neural networks. In general, a neural network tries to
 approximate some function :math:`f^*`, where :math:`\bm{y} = f^*(\bm{x})`. The
@@ -260,11 +260,33 @@ computing gradients from layer to layer.
 .. rst-class:: caption
 
    **Equation 5:** This defines how to propogate the gradient from
-   layer :math:`i` to layer :math:`i - 1`.
+   layer :math:`i` to layer :math:`i-1`.
 
 This is all we need to implement a full backpropogation algorithm. Repeated
 application of equations 3, 4, and 5 will give us the weight and bias
-gradients :math:`\nabla_{\bm{W}}L` and :math:`\nabla_{\bm{b}}L` at every layer.
+gradients :math:`\nabla_{\bm{W}}L` and :math:`\nabla_{\bm{b}}L` at every layer,
+as indicated by the pseudocode of backpropogation given in alorithm 1..
+
+.. math::
+   :nowrap:
+
+   \LARGE
+   \begin{algorithm}
+      \caption{The backward propogation algorithm's pseudocode from
+         \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some notation
+         modifications to match to style presented in this documentation.}\label{backprop}
+      \begin{algorithmic}[1]
+         \Procedure{Backpropogation}{}
+            \State $\bm{g}^{(l)} \gets \nabla_{\bm{\hat{y}}}L(\bm{\hat{y}}, \bm{y})$
+            \For{$i=l, l-1, \dots 1$}
+               \State $\bm{g}_a^{(i)} \gets \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
+               \State $\nabla_{\bm{W}^{(i)}}L = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
+               \State $\nabla_{\bm{b}^{(i)}}L = \bm{g}_a^{(i)}$
+               \State $\bm{g}^{(i + 1)} \gets \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
+            \EndFor
+         \EndProcedure
+      \end{algorithmic}
+   \end{algorithm}
 
 
 API Documentation
