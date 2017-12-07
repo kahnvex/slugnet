@@ -203,20 +203,32 @@ and bias <img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e13
 where <img class="math" src="_images/math/a34aeb2a80a217bc4bdec69d13d207de3b573242.svg" alt="l"/> is the number of layers in our network. Once we’ve computed
 these gradients, the model can use a numerical optimization method to adjust
 weights and bias terms in such a way that error is reduced. Before defining the
-gradients of our weights and bias terms, we must compute the activated gradient
-of the current layer <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> using the gradient computed by the previous
-layer <img class="math" src="_images/math/6e047693ec0e05a5c3fd5d6af348953498a65b54.svg" alt="i + 1"/>.</p>
+gradients of our weights and bias terms, we must define how to compute loss
+gradient, and the gradient at each layer.</p>
 <div class="math">
-<p><img src="_images/math/4f86199b6345e5415b2415cbc62a82c4b4c22fa6.svg" alt="\bm{g}_{\text{activated}}^{(i)} = \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})"/></p>
-</div><p class="caption"><strong>Equation 2:</strong> The definition of our activation gradient at layer <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/>.
+<p><img src="_images/math/d5005be9466273805bb213fa8290dbaa791ba0d4.svg" alt="\bm{g}^{(\text{Loss})} &amp;= \bm{g}^{(L)} = \nabla_{\hat{\bm{y}}}L(\bm{\hat{y}}, \bm{y})"/></p>
+</div><p class="caption"><strong>Equation 2:</strong> Defines how we compute the gradient of the loss function,
+which is the first gradient computed during backpropogation. From this
+gradient, we will compute all other gradients.</p>
+<p>Once the gradient of the loss function is calculated, we may begin performing
+backpropogation on the layers of our neural network. We start from the “top”
+of the network, or the output layer. Using the loss gradient
+<img class="math" src="_images/math/f103688fee7742444fe9142b7b9c6049be5485b0.svg" alt="\bm{g}^{(L)}"/> we can compute the gradient of the output layer as
+defined in equation 3. The definition given in equation 3 is generalized, that
+is, it applies to any hidden layer in the network.</p>
+<div class="math">
+<p><img src="_images/math/3349c8ba1b817e75204d155b3032a49c83b52773.svg" alt="\bm{g}_{\text{activated}}^{(i)} &amp;= \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})"/></p>
+</div><p class="caption"><strong>Equation 3:</strong> The definition of our activation gradient at layer <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/>.
 The variable <img class="math" src="_images/math/47802046a50e7bd660362b55abedfc811fc20f68.svg" alt="\bm{a}^{(i)}"/> reprsenets the activated output at layer
 <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> and <img class="math" src="_images/math/caf441de348c2832ed4004334016e1b908c488a5.svg" alt="\phi'"/> represents the derivative of the activation
-function.</p>
+function. The unfilled dot (<img class="math" src="_images/math/426bb8ff40dafd796b874adb18a77fa1de14e881.svg" alt="\circ"/>) represents an item-wise
+multiplication between two vectors. It can also be used to represent item-wise
+multiplication between two matrices.</p>
 <p>Now, we have all we need to define the gradients of our weights and bias term.</p>
 <div class="math">
 <p><img src="_images/math/bb46cc77a8f4687ff1126034b75a420096e62bd1.svg" alt="\nabla_{\bm{W}^{(i)}}L &amp;= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
 \nabla_{\bm{b}^{(i)}}L &amp;= \bm{g}_a^{(i)}"/></p>
-</div><p class="caption"><strong>Equation 3:</strong> This equation defines the gradients of weight and bias terms,
+</div><p class="caption"><strong>Equation 4:</strong> This equation defines the gradients of weight and bias terms,
 <img class="math" src="_images/math/a0e4f6e425d8ba95a8ad6b977225c9741f2c79ad.svg" alt="\bm{W}^{(i)^T}"/> and <img class="math" src="_images/math/5e2c94cce7d4fa1c61e2b8d2040ac6c8e1375437.svg" alt="\bm{b}^{(i)}"/>. In this equation,
 <img class="math" src="_images/math/05e476d0c82dae43b8eade2376befd60d9f0f8fc.svg" alt="\bm{h}^{i-1}"/> is the ouput from layer <img class="math" src="_images/math/79821eabe184f50bf3d5a0890388760a2083c442.svg" alt="i - 1"/>.</p>
 <p>The only part of the computation that is missing is that of
@@ -225,11 +237,11 @@ This is definted in equation 3, and we can now see a recursive method of
 computing gradients from layer to layer.</p>
 <div class="math">
 <p><img src="_images/math/c411b098f7a69c61b0e1c5b5a7ad1bb1b0039fa3.svg" alt="\bm{g}^{(i-1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}"/></p>
-</div><p class="caption"><strong>Equation 4:</strong> This defines how to propogate the gradient from
+</div><p class="caption"><strong>Equation 5:</strong> This defines how to propogate the gradient from
 layer <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> to layer <img class="math" src="_images/math/79821eabe184f50bf3d5a0890388760a2083c442.svg" alt="i - 1"/>.</p>
-<p>This is all we need to implement a full backpropogation algorithm. It should be
-noted that upon completion of the algorithm, all we need are the gradients
-<img class="math" src="_images/math/e2654f7b219e4b38a87ba604599be708b161bbf8.svg" alt="\nabla_{\bm{W}}L"/> and <img class="math" src="_images/math/9a417232d72036f9baaec50304dd271afff3cddc.svg" alt="\nabla_{\bm{b}}L"/> at every layer.</p>
+<p>This is all we need to implement a full backpropogation algorithm. Repeated
+application of equations 3, 4, and 5 will give us the weight and bias
+gradients <img class="math" src="_images/math/e2654f7b219e4b38a87ba604599be708b161bbf8.svg" alt="\nabla_{\bm{W}}L"/> and <img class="math" src="_images/math/9a417232d72036f9baaec50304dd271afff3cddc.svg" alt="\nabla_{\bm{b}}L"/> at every layer.</p>
 </div>
 </div>
 <div class="section" id="api-documentation">

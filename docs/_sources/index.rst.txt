@@ -200,20 +200,39 @@ and bias :math:`\bm{b}^{(i)}` for all layers :math:`i \in \{1, 2, \dots, l\}`
 where :math:`l` is the number of layers in our network. Once we've computed
 these gradients, the model can use a numerical optimization method to adjust
 weights and bias terms in such a way that error is reduced. Before defining the
-gradients of our weights and bias terms, we must compute the activated gradient
-of the current layer :math:`i` using the gradient computed by the previous
-layer :math:`i + 1`.
+gradients of our weights and bias terms, we must define how to compute loss
+gradient, and the gradient at each layer.
+
 
 .. math::
 
-   \bm{g}_{\text{activated}}^{(i)} = \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})
+   \bm{g}^{(\text{Loss})} &= \bm{g}^{(L)} = \nabla_{\hat{\bm{y}}}L(\bm{\hat{y}}, \bm{y})
 
 .. rst-class:: caption
 
-   **Equation 2:** The definition of our activation gradient at layer :math:`i`.
+   **Equation 2:** Defines how we compute the gradient of the loss function,
+   which is the first gradient computed during backpropogation. From this
+   gradient, we will compute all other gradients.
+
+Once the gradient of the loss function is calculated, we may begin performing
+backpropogation on the layers of our neural network. We start from the "top"
+of the network, or the output layer. Using the loss gradient
+:math:`\bm{g}^{(L)}` we can compute the gradient of the output layer as
+defined in equation 3. The definition given in equation 3 is generalized, that
+is, it applies to any hidden layer in the network.
+
+.. math::
+
+   \bm{g}_{\text{activated}}^{(i)} &= \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})
+
+.. rst-class:: caption
+
+   **Equation 3:** The definition of our activation gradient at layer :math:`i`.
    The variable :math:`\bm{a}^{(i)}` reprsenets the activated output at layer
    :math:`i` and :math:`\phi'` represents the derivative of the activation
-   function.
+   function. The unfilled dot (:math:`\circ`) represents an item-wise
+   multiplication between two vectors. It can also be used to represent item-wise
+   multiplication between two matrices.
 
 
 Now, we have all we need to define the gradients of our weights and bias term.
@@ -225,7 +244,7 @@ Now, we have all we need to define the gradients of our weights and bias term.
 
 .. rst-class:: caption
 
-   **Equation 3:** This equation defines the gradients of weight and bias terms,
+   **Equation 4:** This equation defines the gradients of weight and bias terms,
    :math:`\bm{W}^{(i)^T}` and :math:`\bm{b}^{(i)}`. In this equation,
    :math:`\bm{h}^{i-1}` is the ouput from layer :math:`i - 1`.
 
@@ -240,12 +259,12 @@ computing gradients from layer to layer.
 
 .. rst-class:: caption
 
-   **Equation 4:** This defines how to propogate the gradient from
+   **Equation 5:** This defines how to propogate the gradient from
    layer :math:`i` to layer :math:`i - 1`.
 
-This is all we need to implement a full backpropogation algorithm. It should be
-noted that upon completion of the algorithm, all we need are the gradients
-:math:`\nabla_{\bm{W}}L` and :math:`\nabla_{\bm{b}}L` at every layer.
+This is all we need to implement a full backpropogation algorithm. Repeated
+application of equations 3, 4, and 5 will give us the weight and bias
+gradients :math:`\nabla_{\bm{W}}L` and :math:`\nabla_{\bm{b}}L` at every layer.
 
 
 API Documentation
