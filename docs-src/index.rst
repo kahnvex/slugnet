@@ -284,6 +284,7 @@ as indicated by the pseudocode of backpropogation given in alorithm 1.
                \State $\nabla_{\bm{b}^{(i)}}L = \bm{g}_a^{(i)}$
                \State $\bm{g}^{(i - 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
             \EndFor
+            \Return $\nabla_{\bm{W}}L, \nabla_{\bm{b}}L$
          \EndProcedure
       \end{algorithmic}
    \end{algorithm}

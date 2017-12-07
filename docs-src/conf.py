@@ -140,6 +140,8 @@ imgmath_latex_preamble = """
 \\newcommand{\\thickhat}[1]{\mathbf{\hat{\\text{$#1$}}}}
 \\newcommand{\R}{\mathbb{R}}
 \\renewcommand{\\thesubsection}{\\thesection.\\alph{subsection}}
+\let\oldReturn\Return
+\\renewcommand{\Return}{\State\oldReturn}
 \DeclareMathOperator*{\\argmin}{arg\,min}
 
 \makeatletter
