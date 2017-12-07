@@ -265,7 +265,7 @@ computing gradients from layer to layer.
 This is all we need to implement a full backpropogation algorithm. Repeated
 application of equations 3, 4, and 5 will give us the weight and bias
 gradients :math:`\nabla_{\bm{W}}L` and :math:`\nabla_{\bm{b}}L` at every layer,
-as indicated by the pseudocode of backpropogation given in alorithm 1..
+as indicated by the pseudocode of backpropogation given in alorithm 1.
 
 .. math::
    :nowrap:
