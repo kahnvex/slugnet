@@ -117,18 +117,20 @@ represent the network with the shorthand diagram below.
 
 Let's "zoom in" on one of the layers to see what is happening under the hood
 when our neural network is running in feedforward mode. The layer
-:math:`f^{(i)}(x)` performs the computation
+:math:`f^{(i)}(x)` performs the computation defined in equation 1.
 
 .. math::
 
-   \bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)}).
+   \bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})
 
+.. rst-class:: caption
 
-In this diagram, :math:`\bm{a}^{(i)}` is the activated output, :math:`\phi`
-represents the activation function, :math:`\bm{W}^{(i)^T}` represents a learned
-matrix of weights at this layer, :math:`\bm{b}^{(i)}` represents a learned
-vector of bias terms at this layer, and :math:`\bm{x}` represents the input at
-this layer.
+   **Equation 1:** Definition of computation performed in one layer of a
+   neural network. In this equation, :math:`\bm{a}^{(i)}` is the activated
+   output, :math:`\phi` represents the activation function,
+   :math:`\bm{W}^{(i)^T}` represents a learned matrix of weights at this
+   layer, :math:`\bm{b}^{(i)}` represents a learned vector of bias terms at
+   this layer, and :math:`\bm{x}` represents the input at this layer.
 
 Neural networks rely on a nonlinear activation function to learn nonlinear
 relationships. Without a nonlinear activation function, a neural network is
@@ -147,8 +149,8 @@ in one call to :code:`model.transform`. Before you can run a model
 in feedforward mode, it must be trained. This leads us to backpropogation and
 optimization.
 
-Backpropogation and Optimization
---------------------------------
+Loss, Backpropogation, and Optimization
+---------------------------------------
 
 Training a neural network is similar to training traditional discrininative
 models such as logistic regression. For instamce, we need a loss function, we
@@ -162,7 +164,7 @@ described earlier must be run, only instead of throwing away the intermedite
 outputs at each layer, we store them, knowing that we'll need them later
 for backpropogation. Additionally, during training, we require the ground truth
 labels or values of each sample. That is, the dataset :math:`\mathcal{D}`
-consists of :math:`\{\bm{x}_n, \bm{y}_n\}_{n=1}^N`, where :math:`N` is the
+consists of :math:`\{\bm{x}_i, \bm{y}_i\}_{i=1}^N`, where :math:`N` is the
 number of samples, and :math:`\bm{y}_n` is the ground truth label or output
 value for sample :math:`\bm{x}_n`.
 
@@ -176,17 +178,17 @@ occasionally referred to as objective functions.
 
 .. math::
 
-      \bm{\ell} = -\frac{1}{N}
+      \bm{\ell}(\bm{\hat{y}}, \bm{y}) = -\frac{1}{N}
          \sum_{i=1}^N \big[
             \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
          \big]
 
 .. rst-class:: caption
 
-   **Equation 1:** Binary cross entropy loss function.
+   **Equation 2:** Binary cross entropy loss function.
 
 If the outputs that we are learning are binary labels, then we might use
-a binary cross entropy loss function, seen in equation 1. On the other hand, if
+a binary cross entropy loss function, seen in equation 2. On the other hand, if
 we are learning labels with multiple classes, we might use categorical cross
 entropy. The resulting loss value will inform us about how our network
 performed on the batch it just predicted. We can use this value along with
@@ -206,11 +208,11 @@ gradient, and the gradient at each layer.
 
 .. math::
 
-   \bm{g}^{(\text{Loss})} &= \bm{g}^{(L)} = \nabla_{\hat{\bm{y}}}L(\bm{\hat{y}}, \bm{y})
+   \bm{g}^{(\text{Loss})} &= \bm{g}^{(\ell)} = \nabla_{\hat{\bm{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})
 
 .. rst-class:: caption
 
-   **Equation 2:** Defines how we compute the gradient of the loss function,
+   **Equation 3:** Defines how we compute the gradient of the loss function,
    which is the first gradient computed during backpropogation. From this
    gradient, we will compute all other gradients.
 
@@ -218,7 +220,7 @@ Once the gradient of the loss function is calculated, we may begin performing
 backpropogation on the layers of our neural network. We start from the "top"
 of the network, or the output layer. Using the loss gradient
 :math:`\bm{g}^{(L)}` we can compute the gradient of the output layer as
-defined in equation 3. The definition given in equation 3 is generalized, that
+defined in equation 3. The definition given in equation 4 is generalized, that
 is, it applies to any hidden layer in the network.
 
 .. math::
@@ -227,7 +229,7 @@ is, it applies to any hidden layer in the network.
 
 .. rst-class:: caption
 
-   **Equation 3:** The definition of our activation gradient at layer :math:`i`.
+   **Equation 4:** The definition of our activation gradient at layer :math:`i`.
    The variable :math:`\bm{a}^{(i)}` reprsenets the activated output at layer
    :math:`i` and :math:`\phi'` represents the derivative of the activation
    function. The unfilled dot (:math:`\circ`) represents an item-wise
@@ -239,12 +241,12 @@ Now, we have all we need to define the gradients of our weights and bias term.
 
 .. math::
 
-      \nabla_{\bm{W}^{(i)}}L &= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
-      \nabla_{\bm{b}^{(i)}}L &= \bm{g}_a^{(i)}
+      \nabla_{\bm{W}^{(i)}}\bm{\ell} &= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
+      \nabla_{\bm{b}^{(i)}}\bm{\ell} &= \bm{g}_a^{(i)}
 
 .. rst-class:: caption
 
-   **Equation 4:** This equation defines the gradients of weight and bias terms,
+   **Equation 5:** This equation defines the gradients of weight and bias terms,
    :math:`\bm{W}^{(i)^T}` and :math:`\bm{b}^{(i)}`. In this equation,
    :math:`\bm{h}^{i-1}` is the ouput from layer :math:`i - 1`.
 
@@ -259,13 +261,14 @@ computing gradients from layer to layer.
 
 .. rst-class:: caption
 
-   **Equation 5:** How to propogate the gradient from layer :math:`i` to layer
+   **Equation 6:** How to propogate the gradient from layer :math:`i` to layer
    :math:`i-1`.
 
 This is all we need to implement a full backpropogation algorithm. Repeated
 application of equations 3, 4, and 5 will give us the weight and bias
-gradients :math:`\nabla_{\bm{W}}L` and :math:`\nabla_{\bm{b}}L` at every layer,
-as indicated by the pseudocode of backpropogation given in alorithm 1.
+gradients :math:`\nabla_{\bm{W}}\bm{\ell}` and :math:`\nabla_{\bm{b}}\bm{\ell}`
+at every layer, as indicated by the pseudocode of backpropogation given in
+alorithm 1.
 
 .. rst-class:: algo
 .. math::
@@ -276,19 +279,60 @@ as indicated by the pseudocode of backpropogation given in alorithm 1.
          \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some notation
          modifications to match to style presented in this documentation.}\label{backprop}
       \begin{algorithmic}[1]
-         \Procedure{Backpropogation}{$L, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
-            \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}L(\bm{\hat{y}}, \bm{y})$
+         \Procedure{Backpropogation}{$\bm{\ell}, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
+            \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})$
             \For{$i=l, l-1, \dots 1$}
                \State $\bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
-               \State $\nabla_{\bm{W}^{(i)}}L = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
-               \State $\nabla_{\bm{b}^{(i)}}L = \bm{g}_a^{(i)}$
+               \State $\nabla_{\bm{W}^{(i)}}\bm{\ell} = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
+               \State $\nabla_{\bm{b}^{(i)}}\bm{\ell} = \bm{g}_a^{(i)}$
                \State $\bm{g}^{(i - 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
             \EndFor
-            \Return $\nabla_{\bm{W}}L, \nabla_{\bm{b}}L$
+            \Return $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle$
          \EndProcedure
       \end{algorithmic}
    \end{algorithm}
 
+
+Optimization
+~~~~~~~~~~~~
+
+Next, we can use the gradients computed in backpropogation (algorithm 1) to
+compute weight updates for each layer using a numerical optimization method.
+
+For this introduction, we'll focus on the stochastic gradient descent (SGD)
+optimization method. Stochastic gradient descent works by sampling data from
+the training set :math:`\{\bm{x}_i, \bm{y}_i\}_{i=1}^N`, computing the
+gradients with backpropogation, and applying our update using the a learning
+rate parameter :math:`\epsilon`. In practice, we must gradually decrease
+:math:`\epsilon` over time, so we will use the notation :math:`\epsilon_k`,
+where :math:`k` is the current iteration of stochastic gradient descent.
+
+.. rst-class:: algo
+.. math::
+   :nowrap:
+
+   \begin{algorithm}
+      \caption{Stochastic Gradient Descent pseudocode from
+         \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some notation
+         modifications to match to style presented in this documentation.}\label{backprop}
+      \begin{algorithmic}[1]
+         \State $\bm{W} \gets \text{InitWeights}()$
+         \State $\bm{b} \gets \text{InitBias}()$
+         \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}, \epsilon_k$}
+            \State Sample a minibatch of $m$ examples from dataset
+            $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
+            \State $\bm{\hat{y}}_s \gets \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
+            \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
+               \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
+            \For{$i = 1, 2, \dots, l$}
+               \State $\bm{W}^{(i)} \gets \bm{W}^{(i)} -
+                  \epsilon_k \nabla_{\bm{W}^{(i)}}\bm{\ell}$
+               \State $\bm{b}^{(i)} \gets \bm{b}^{(i)} -
+                  \epsilon_k \nabla_{\bm{b}^{(i)}}\bm{\ell}$
+            \EndFor
+         \EndProcedure
+      \end{algorithmic}
+   \end{algorithm}
 
 API Documentation
 -----------------
