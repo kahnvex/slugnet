@@ -276,7 +276,7 @@ rate parameter <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c90
 <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/> over time, so we will use the notation <img class="math" src="_images/math/0b04c9250b36c117043fb228d30e34d191df2d9e.svg" alt="\epsilon_k"/>,
 where <img class="math" src="_images/math/ee075027798dee91762b5ace22e31d158752d4c2.svg" alt="k"/> is the current iteration of stochastic gradient descent.</p>
 <div class="algo math">
-<p><img src="_images/math/f2112323be653a581b7c36dd0d1a72930c9d217f.svg" alt="\setcounter{algorithm}{1}
+<p><img src="_images/math/0a0c7bd9821a7c343ca32112f0581d8fb9440f06.svg" alt="\setcounter{algorithm}{1}
 \begin{algorithm}
    \caption{Stochastic Gradient Descent pseudocode from
       \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some notation
@@ -287,7 +287,8 @@ where <img class="math" src="_images/math/ee075027798dee91762b5ace22e31d158752d4
       \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}, \epsilon_k$}
          \State Sample a minibatch of $m$ examples from dataset
          $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
-         \State $\bm{\hat{y}}_s \gets \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
+         \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
+            \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
          \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
             \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
          \For{$i = 1, 2, \dots, l$}
@@ -299,7 +300,11 @@ where <img class="math" src="_images/math/ee075027798dee91762b5ace22e31d158752d4
       \EndProcedure
    \end{algorithmic}
 \end{algorithm}"/></p>
-</div></div>
+</div><p>In practice, we will decouple optimization methods from the backpropogation and
+feedforward algorithms in order to make a modular system of components that can
+be easily mixed and matched. This process is fairly straightforward and will be
+apparent as components are documented.</p>
+</div>
 </div>
 <div class="section" id="api-documentation">
 <h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
