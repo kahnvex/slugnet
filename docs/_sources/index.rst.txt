@@ -311,6 +311,7 @@ where :math:`k` is the current iteration of stochastic gradient descent.
 .. math::
    :nowrap:
 
+   \setcounter{algorithm}{1}
    \begin{algorithm}
       \caption{Stochastic Gradient Descent pseudocode from
          \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some notation
