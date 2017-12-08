@@ -304,8 +304,7 @@ optimization method. Stochastic gradient descent works by sampling data from
 the training set :math:`\{\bm{x}_i, \bm{y}_i\}_{i=1}^N`, computing the
 gradients with backpropogation, and applying our update using the a learning
 rate parameter :math:`\epsilon`. In practice, we must gradually decrease
-:math:`\epsilon` over time, so we will use the notation :math:`\epsilon_k`,
-where :math:`k` is the current iteration of stochastic gradient descent.
+:math:`\epsilon` over time.
 
 .. rst-class:: algo
 .. math::
@@ -317,11 +316,12 @@ where :math:`k` is the current iteration of stochastic gradient descent.
          \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some
          modifications to match the style presented in this documentation.}\label{backprop}
       \begin{algorithmic}[1]
-         \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}, \epsilon_k$}
+         \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}$}
             \State $\bm{W} \gets \text{InitWeights}()$
             \State $\bm{b} \gets \text{InitBias}()$
             \While{not converged}
-               \State Sample a minibatch of $m$ from
+               \State $\epsilon \gets \text{NextEpsilon}(\epsilon)$
+               \State Sample a minibatch of size $m$ from
                $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
                \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
                   \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
@@ -329,9 +329,9 @@ where :math:`k` is the current iteration of stochastic gradient descent.
                   \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
                \For{$i = 1, 2, \dots, l$}
                   \State $\bm{W}^{(i)} \gets \bm{W}^{(i)} -
-                     \epsilon_k \nabla_{\bm{W}^{(i)}}\bm{\ell}$
+                     \epsilon \nabla_{\bm{W}^{(i)}}\bm{\ell}$
                   \State $\bm{b}^{(i)} \gets \bm{b}^{(i)} -
-                     \epsilon_k \nabla_{\bm{b}^{(i)}}\bm{\ell}$
+                     \epsilon \nabla_{\bm{b}^{(i)}}\bm{\ell}$
                \EndFor
             \EndWhile
             \Return $\langle \bm{W}, \bm{b} \rangle$
