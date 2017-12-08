@@ -138,14 +138,15 @@ in a shorthand form where to units of each layer are collapsed onto
 one circle.</p>
 <p>Let’s “zoom in” on one of the layers to see what is happening under the hood
 when our neural network is running in feedforward mode. The layer
-<img class="math" src="_images/math/d78bf03971435b21b3ce658e06e60b16eb11a2e2.svg" alt="f^{(i)}(x)"/> performs the computation</p>
+<img class="math" src="_images/math/d78bf03971435b21b3ce658e06e60b16eb11a2e2.svg" alt="f^{(i)}(x)"/> performs the computation defined in equation 1.</p>
 <div class="math">
-<p><img src="_images/math/7ed51d000c007f06f31ea1e9bc75e60fd206ca0a.svg" alt="\bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})."/></p>
-</div><p>In this diagram, <img class="math" src="_images/math/1d6dac747de4206d6b979a650a47600fa7ef632d.svg" alt="\bm{a}^{(i)}"/> is the activated output, <img class="math" src="_images/math/e3bf1ef0dd807d03fb49d7b38cc22fb494d4009d.svg" alt="\phi"/>
-represents the activation function, <img class="math" src="_images/math/b144225c1c1a4b0ad1453469d24e8b9bd6627245.svg" alt="\bm{W}^{(i)^T}"/> represents a learned
-matrix of weights at this layer, <img class="math" src="_images/math/47dee745d92218e619416b6164fc6ae471beb669.svg" alt="\bm{b}^{(i)}"/> represents a learned
-vector of bias terms at this layer, and <img class="math" src="_images/math/68d8c7f34375f3f07d7cc145f5c3a959e8f20c01.svg" alt="\bm{x}"/> represents the input at
-this layer.</p>
+<p><img src="_images/math/ab7f4e82628b0e1392ffedef00b8b8049e63feef.svg" alt="\bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})"/></p>
+</div><p class="caption"><strong>Equation 1:</strong> Definition of computation performed in one layer of a
+neural network. In this equation, <img class="math" src="_images/math/1d6dac747de4206d6b979a650a47600fa7ef632d.svg" alt="\bm{a}^{(i)}"/> is the activated
+output, <img class="math" src="_images/math/e3bf1ef0dd807d03fb49d7b38cc22fb494d4009d.svg" alt="\phi"/> represents the activation function,
+<img class="math" src="_images/math/b144225c1c1a4b0ad1453469d24e8b9bd6627245.svg" alt="\bm{W}^{(i)^T}"/> represents a learned matrix of weights at this
+layer, <img class="math" src="_images/math/47dee745d92218e619416b6164fc6ae471beb669.svg" alt="\bm{b}^{(i)}"/> represents a learned vector of bias terms at
+this layer, and <img class="math" src="_images/math/68d8c7f34375f3f07d7cc145f5c3a959e8f20c01.svg" alt="\bm{x}"/> represents the input at this layer.</p>
 <p>Neural networks rely on a nonlinear activation function to learn nonlinear
 relationships. Without a nonlinear activation function, a neural network is
 nothing more than a linear model. There are several choices one can make for
@@ -161,8 +162,8 @@ in one call to <code class="code docutils literal"><span class="pre">model.trans
 in feedforward mode, it must be trained. This leads us to backpropogation and
 optimization.</p>
 </div>
-<div class="section" id="backpropogation-and-optimization">
-<h2>Backpropogation and Optimization<a class="headerlink" href="#backpropogation-and-optimization" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="loss-backpropogation-and-optimization">
+<h2>Loss, Backpropogation, and Optimization<a class="headerlink" href="#loss-backpropogation-and-optimization" title="Permalink to this headline">¶</a></h2>
 <p>Training a neural network is similar to training traditional discrininative
 models such as logistic regression. For instamce, we need a loss function, we
 must compute derivatives, and we must implement some numerical algorithm to
@@ -174,7 +175,7 @@ described earlier must be run, only instead of throwing away the intermedite
 outputs at each layer, we store them, knowing that we’ll need them later
 for backpropogation. Additionally, during training, we require the ground truth
 labels or values of each sample. That is, the dataset <img class="math" src="_images/math/929dbdae83e4025ff6e7dc3edc92e9da2c1b11b6.svg" alt="\mathcal{D}"/>
-consists of <img class="math" src="_images/math/b4cb77b5630878b9181d26ef2144f9ef87d5f53f.svg" alt="\{\bm{x}_n, \bm{y}_n\}_{n=1}^N"/>, where <img class="math" src="_images/math/421288f4eb5fddaf998992ab37a4687bba4c09d0.svg" alt="N"/> is the
+consists of <img class="math" src="_images/math/aef473bfad645dcce87e3b1272e714ba16169da7.svg" alt="\{\bm{x}_i, \bm{y}_i\}_{i=1}^N"/>, where <img class="math" src="_images/math/421288f4eb5fddaf998992ab37a4687bba4c09d0.svg" alt="N"/> is the
 number of samples, and <img class="math" src="_images/math/5b6427b81f869d716269971205b2bc7f5ecaee63.svg" alt="\bm{y}_n"/> is the ground truth label or output
 value for sample <img class="math" src="_images/math/ccae632eea818ad996b519b1c3f6fe4d2eae6ee9.svg" alt="\bm{x}_n"/>.</p>
 <div class="section" id="loss-functions">
@@ -184,13 +185,13 @@ loss for the batch using the predicted outputs, <img class="math" src="_images/m
 the ground truth labels or values <img class="math" src="_images/math/e48fce69feb80abe87163055adefde52d2b85471.svg" alt="\bm{y}"/>. Loss functions are
 occasionally referred to as objective functions.</p>
 <div class="math">
-<p><img src="_images/math/d015f123cf1db5ea152f557cfec7f176131b262d.svg" alt="\bm{\ell} = -\frac{1}{N}
+<p><img src="_images/math/4a70f6a45257578f3ae4489ed362a3431654ed42.svg" alt="\bm{\ell}(\bm{\hat{y}}, \bm{y}) = -\frac{1}{N}
    \sum_{i=1}^N \big[
       \bm{y}_i \log(\hat{\bm{y}}_i) + (1 - \bm{y}_i) \log(1 - \hat{\bm{y}}_i)
    \big]"/></p>
-</div><p class="caption"><strong>Equation 1:</strong> Binary cross entropy loss function.</p>
+</div><p class="caption"><strong>Equation 2:</strong> Binary cross entropy loss function.</p>
 <p>If the outputs that we are learning are binary labels, then we might use
-a binary cross entropy loss function, seen in equation 1. On the other hand, if
+a binary cross entropy loss function, seen in equation 2. On the other hand, if
 we are learning labels with multiple classes, we might use categorical cross
 entropy. The resulting loss value will inform us about how our network
 performed on the batch it just predicted. We can use this value along with
@@ -206,19 +207,19 @@ weights and bias terms in such a way that error is reduced. Before defining the
 gradients of our weights and bias terms, we must define how to compute loss
 gradient, and the gradient at each layer.</p>
 <div class="math">
-<p><img src="_images/math/4bad7fb1e9e4c555601d113fd2a295e126795079.svg" alt="\bm{g}^{(\text{Loss})} &amp;= \bm{g}^{(L)} = \nabla_{\hat{\bm{y}}}L(\bm{\hat{y}}, \bm{y})"/></p>
-</div><p class="caption"><strong>Equation 2:</strong> Defines how we compute the gradient of the loss function,
+<p><img src="_images/math/1000091386cb33edde4808a3a89d3167a705273d.svg" alt="\bm{g}^{(\text{Loss})} &amp;= \bm{g}^{(\ell)} = \nabla_{\hat{\bm{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})"/></p>
+</div><p class="caption"><strong>Equation 3:</strong> Defines how we compute the gradient of the loss function,
 which is the first gradient computed during backpropogation. From this
 gradient, we will compute all other gradients.</p>
 <p>Once the gradient of the loss function is calculated, we may begin performing
 backpropogation on the layers of our neural network. We start from the “top”
 of the network, or the output layer. Using the loss gradient
 <img class="math" src="_images/math/e8b2587e12faf6b485e98a690455ff3f84d45db7.svg" alt="\bm{g}^{(L)}"/> we can compute the gradient of the output layer as
-defined in equation 3. The definition given in equation 3 is generalized, that
+defined in equation 3. The definition given in equation 4 is generalized, that
 is, it applies to any hidden layer in the network.</p>
 <div class="math">
 <p><img src="_images/math/d1811c4c7ad5e78ee8befd52920acff3b7151ae7.svg" alt="\bm{g}_{\text{activated}}^{(i)} &amp;= \bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})"/></p>
-</div><p class="caption"><strong>Equation 3:</strong> The definition of our activation gradient at layer <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/>.
+</div><p class="caption"><strong>Equation 4:</strong> The definition of our activation gradient at layer <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/>.
 The variable <img class="math" src="_images/math/1d6dac747de4206d6b979a650a47600fa7ef632d.svg" alt="\bm{a}^{(i)}"/> reprsenets the activated output at layer
 <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/> and <img class="math" src="_images/math/eade04ef3d57250b9930e35b7040a78716500853.svg" alt="\phi'"/> represents the derivative of the activation
 function. The unfilled dot (<img class="math" src="_images/math/8b42ff56b9e0e5136ec491d80fafe9b1b9eb2bc9.svg" alt="\circ"/>) represents an item-wise
@@ -226,9 +227,9 @@ multiplication between two vectors. It can also be used to represent item-wise
 multiplication between two matrices.</p>
 <p>Now, we have all we need to define the gradients of our weights and bias term.</p>
 <div class="math">
-<p><img src="_images/math/540df34e60dd093139d751211bfbe6024be665e4.svg" alt="\nabla_{\bm{W}^{(i)}}L &amp;= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
-\nabla_{\bm{b}^{(i)}}L &amp;= \bm{g}_a^{(i)}"/></p>
-</div><p class="caption"><strong>Equation 4:</strong> This equation defines the gradients of weight and bias terms,
+<p><img src="_images/math/d14a6f95e253100e0dcdd359300cd8c5b6feab3d.svg" alt="\nabla_{\bm{W}^{(i)}}\bm{\ell} &amp;= \bm{g}_a^{(i)}\, \bm{h}^{(i-1)^T} \\
+\nabla_{\bm{b}^{(i)}}\bm{\ell} &amp;= \bm{g}_a^{(i)}"/></p>
+</div><p class="caption"><strong>Equation 5:</strong> This equation defines the gradients of weight and bias terms,
 <img class="math" src="_images/math/b144225c1c1a4b0ad1453469d24e8b9bd6627245.svg" alt="\bm{W}^{(i)^T}"/> and <img class="math" src="_images/math/47dee745d92218e619416b6164fc6ae471beb669.svg" alt="\bm{b}^{(i)}"/>. In this equation,
 <img class="math" src="_images/math/f474a067012d5f066f3e931e5e90dbdf3e8c4e82.svg" alt="\bm{h}^{i-1}"/> is the ouput from layer <img class="math" src="_images/math/bda75f587179263d101c2a85a273d480ce98efee.svg" alt="i - 1"/>.</p>
 <p>The only part of the computation that is missing is that of
@@ -237,27 +238,63 @@ This is definted in equation 3, and we can now see a recursive method of
 computing gradients from layer to layer.</p>
 <div class="math">
 <p><img src="_images/math/67cec326bd2bc7ec8cc6cd70adcfd79693af1e76.svg" alt="\bm{g}^{(i-1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}"/></p>
-</div><p class="caption"><strong>Equation 5:</strong> How to propogate the gradient from layer <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/> to layer
+</div><p class="caption"><strong>Equation 6:</strong> How to propogate the gradient from layer <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/> to layer
 <img class="math" src="_images/math/e3deed07f06cd9d71007ce4f357b29b0f0809c21.svg" alt="i-1"/>.</p>
 <p>This is all we need to implement a full backpropogation algorithm. Repeated
 application of equations 3, 4, and 5 will give us the weight and bias
-gradients <img class="math" src="_images/math/fc90c05cae16433eb669892ede2032451c23c1b5.svg" alt="\nabla_{\bm{W}}L"/> and <img class="math" src="_images/math/b65efb3d738c1bfc8a184f5db7ec4bb4c8f74816.svg" alt="\nabla_{\bm{b}}L"/> at every layer,
-as indicated by the pseudocode of backpropogation given in alorithm 1.</p>
+gradients <img class="math" src="_images/math/0cc078872ffad5b3dd9db5a3bbc44587be41d3dc.svg" alt="\nabla_{\bm{W}}\bm{\ell}"/> and <img class="math" src="_images/math/db6a69d3f9154ff72086d4e19aad57bccf10dcce.svg" alt="\nabla_{\bm{b}}\bm{\ell}"/>
+at every layer, as indicated by the pseudocode of backpropogation given in
+alorithm 1.</p>
 <div class="algo math">
-<p><img src="_images/math/1120a0d7b9d5001aa331f72198484de1b08d0c60.svg" alt="\begin{algorithm}
+<p><img src="_images/math/bdc413d03638f2c60aff4d23f7c6588af5477d05.svg" alt="\begin{algorithm}
    \caption{The backward propogation algorithm's pseudocode from
       \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some notation
       modifications to match to style presented in this documentation.}\label{backprop}
    \begin{algorithmic}[1]
-      \Procedure{Backpropogation}{$L, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
-         \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}L(\bm{\hat{y}}, \bm{y})$
+      \Procedure{Backpropogation}{$\bm{\ell}, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
+         \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})$
          \For{$i=l, l-1, \dots 1$}
             \State $\bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
-            \State $\nabla_{\bm{W}^{(i)}}L = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
-            \State $\nabla_{\bm{b}^{(i)}}L = \bm{g}_a^{(i)}$
+            \State $\nabla_{\bm{W}^{(i)}}\bm{\ell} = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
+            \State $\nabla_{\bm{b}^{(i)}}\bm{\ell} = \bm{g}_a^{(i)}$
             \State $\bm{g}^{(i - 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
          \EndFor
-         \Return $\nabla_{\bm{W}}L, \nabla_{\bm{b}}L$
+         \Return $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle$
+      \EndProcedure
+   \end{algorithmic}
+\end{algorithm}"/></p>
+</div></div>
+<div class="section" id="optimization">
+<h3>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">¶</a></h3>
+<p>Next, we can use the gradients computed in backpropogation (algorithm 1) to
+compute weight updates for each layer using a numerical optimization method.</p>
+<p>For this introduction, we’ll focus on the stochastic gradient descent (SGD)
+optimization method. Stochastic gradient descent works by sampling data from
+the training set <img class="math" src="_images/math/aef473bfad645dcce87e3b1272e714ba16169da7.svg" alt="\{\bm{x}_i, \bm{y}_i\}_{i=1}^N"/>, computing the
+gradients with backpropogation, and applying our update using the a learning
+rate parameter <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/>. In practice, we must gradually decrease
+<img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/> over time, so we will use the notation <img class="math" src="_images/math/0b04c9250b36c117043fb228d30e34d191df2d9e.svg" alt="\epsilon_k"/>,
+where <img class="math" src="_images/math/ee075027798dee91762b5ace22e31d158752d4c2.svg" alt="k"/> is the current iteration of stochastic gradient descent.</p>
+<div class="algo math">
+<p><img src="_images/math/94286282b34796f974b0f011722d6a10df45bf3c.svg" alt="\begin{algorithm}
+   \caption{Stochastic Gradient Descent pseudocode from
+      \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some notation
+      modifications to match to style presented in this documentation.}\label{backprop}
+   \begin{algorithmic}[1]
+      \State $\bm{W} \gets \text{InitWeights}()$
+      \State $\bm{b} \gets \text{InitBias}()$
+      \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}, \epsilon_k$}
+         \State Sample a minibatch of $m$ examples from dataset
+         $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
+         \State $\bm{\hat{y}}_s \gets \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
+         \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
+            \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
+         \For{$i = 1, 2, \dots, l$}
+            \State $\bm{W}^{(i)} \gets \bm{W}^{(i)} -
+               \epsilon_k \nabla_{\bm{W}^{(i)}}\bm{\ell}$
+            \State $\bm{b}^{(i)} \gets \bm{b}^{(i)} -
+               \epsilon_k \nabla_{\bm{b}^{(i)}}\bm{\ell}$
+         \EndFor
       \EndProcedure
    \end{algorithmic}
 \end{algorithm}"/></p>
@@ -269,9 +306,10 @@ as indicated by the pseudocode of backpropogation given in alorithm 1.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#backpropogation-and-optimization">Backpropogation and Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#loss-functions">Loss Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#backpropogation">Backpropogation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimization">Optimization</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
@@ -298,9 +336,10 @@ as indicated by the pseudocode of backpropogation given in alorithm 1.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#backpropogation-and-optimization">Backpropogation and Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#loss-functions">Loss Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#backpropogation">Backpropogation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimization">Optimization</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
