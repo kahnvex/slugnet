@@ -314,24 +314,27 @@ where :math:`k` is the current iteration of stochastic gradient descent.
    \setcounter{algorithm}{1}
    \begin{algorithm}
       \caption{Stochastic Gradient Descent pseudocode from
-         \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some notation
-         modifications to match to style presented in this documentation.}\label{backprop}
+         \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some
+         modifications to match the style presented in this documentation.}\label{backprop}
       \begin{algorithmic}[1]
-         \State $\bm{W} \gets \text{InitWeights}()$
-         \State $\bm{b} \gets \text{InitBias}()$
          \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}, \epsilon_k$}
-            \State Sample a minibatch of $m$ examples from dataset
-            $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
-            \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
-               \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
-            \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
-               \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
-            \For{$i = 1, 2, \dots, l$}
-               \State $\bm{W}^{(i)} \gets \bm{W}^{(i)} -
-                  \epsilon_k \nabla_{\bm{W}^{(i)}}\bm{\ell}$
-               \State $\bm{b}^{(i)} \gets \bm{b}^{(i)} -
-                  \epsilon_k \nabla_{\bm{b}^{(i)}}\bm{\ell}$
-            \EndFor
+            \State $\bm{W} \gets \text{InitWeights}()$
+            \State $\bm{b} \gets \text{InitBias}()$
+            \While{not converged}
+               \State Sample a minibatch of $m$ from
+               $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
+               \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
+                  \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
+               \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
+                  \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
+               \For{$i = 1, 2, \dots, l$}
+                  \State $\bm{W}^{(i)} \gets \bm{W}^{(i)} -
+                     \epsilon_k \nabla_{\bm{W}^{(i)}}\bm{\ell}$
+                  \State $\bm{b}^{(i)} \gets \bm{b}^{(i)} -
+                     \epsilon_k \nabla_{\bm{b}^{(i)}}\bm{\ell}$
+               \EndFor
+            \EndWhile
+            \Return $\langle \bm{W}, \bm{b} \rangle$
          \EndProcedure
       \end{algorithmic}
    \end{algorithm}
