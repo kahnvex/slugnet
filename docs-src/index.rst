@@ -322,7 +322,8 @@ where :math:`k` is the current iteration of stochastic gradient descent.
          \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}, \epsilon_k$}
             \State Sample a minibatch of $m$ examples from dataset
             $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
-            \State $\bm{\hat{y}}_s \gets \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
+            \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
+               \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
             \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
                \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
             \For{$i = 1, 2, \dots, l$}
@@ -334,6 +335,11 @@ where :math:`k` is the current iteration of stochastic gradient descent.
          \EndProcedure
       \end{algorithmic}
    \end{algorithm}
+
+In practice, we will decouple optimization methods from the backpropogation and
+feedforward algorithms in order to make a modular system of components that can
+be easily mixed and matched. This process is fairly straightforward and will be
+apparent as components are documented.
 
 API Documentation
 -----------------
