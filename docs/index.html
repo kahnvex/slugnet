@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Layers" href="layers.html" />
+    <link rel="next" title="Models" href="model.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -246,18 +246,18 @@ gradients <img class="math" src="_images/math/0cc078872ffad5b3dd9db5a3bbc44587be
 at every layer, as indicated by the pseudocode of backpropogation given in
 alorithm 1.</p>
 <div class="algo math">
-<p><img src="_images/math/bdc413d03638f2c60aff4d23f7c6588af5477d05.svg" alt="\begin{algorithm}
+<p><img src="_images/math/2eb23f39329a919f9f1a0caa4de042fb03c18087.svg" alt="\begin{algorithm}
    \caption{The backward propogation algorithm's pseudocode from
       \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some notation
       modifications to match to style presented in this documentation.}\label{backprop}
    \begin{algorithmic}[1]
       \Procedure{Backpropogation}{$\bm{\ell}, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
-         \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})$
+         \State $\bm{g} \gets \nabla_{\bm{\hat{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})$
          \For{$i=l, l-1, \dots 1$}
-            \State $\bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
+            \State $\bm{g} \gets \bm{g} \circ \phi'(\bm{a}^{(i)})$
             \State $\nabla_{\bm{W}^{(i)}}\bm{\ell} = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
             \State $\nabla_{\bm{b}^{(i)}}\bm{\ell} = \bm{g}_a^{(i)}$
-            \State $\bm{g}^{(i - 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
+            \State $\bm{g} \gets \bm{W}^{(i)^T} \bm{g}$
          \EndFor
          \Return $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle$
       \EndProcedure
@@ -322,12 +322,14 @@ apparent as components are documented.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
@@ -352,12 +354,14 @@ apparent as components are documented.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
@@ -365,7 +369,7 @@ apparent as components are documented.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="layers.html" title="next chapter">Layers</a></li>
+      <li>Next: <a href="model.html" title="next chapter">Models</a></li>
   </ul></li>
 </ul>
 </div>

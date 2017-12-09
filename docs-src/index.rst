@@ -280,12 +280,12 @@ alorithm 1.
          modifications to match to style presented in this documentation.}\label{backprop}
       \begin{algorithmic}[1]
          \Procedure{Backpropogation}{$\bm{\ell}, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
-            \State $\bm{g}^{(l)} = \nabla_{\bm{\hat{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})$
+            \State $\bm{g} \gets \nabla_{\bm{\hat{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})$
             \For{$i=l, l-1, \dots 1$}
-               \State $\bm{g}_a^{(i)} = \bm{g}^{(i)} \circ \phi'(\bm{a}^{(i)})$
+               \State $\bm{g} \gets \bm{g} \circ \phi'(\bm{a}^{(i)})$
                \State $\nabla_{\bm{W}^{(i)}}\bm{\ell} = \bm{g}_a^{(i)} \, \bm{h}^{(i-1)}$
                \State $\nabla_{\bm{b}^{(i)}}\bm{\ell} = \bm{g}_a^{(i)}$
-               \State $\bm{g}^{(i - 1)} = \bm{W}^{(i)^T} \bm{g}_a^{(i)}$
+               \State $\bm{g} \gets \bm{W}^{(i)^T} \bm{g}$
             \EndFor
             \Return $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle$
          \EndProcedure
@@ -351,5 +351,6 @@ API Documentation
    :maxdepth: 4
 
    index
+   model
    layers
    loss
