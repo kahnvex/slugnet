@@ -8,7 +8,6 @@
     <title>Layers &#8212; Slugnet 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/caption.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -24,8 +23,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Loss Function" href="loss.html" />
-    <link rel="prev" title="Models" href="model.html" />
+    <link rel="prev" title="Slugnet" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -45,31 +43,30 @@
 <span id="layers"></span><h1>Layers<a class="headerlink" href="#module-slugnet.layers" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="slugnet.layers.Dense">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>ind</em>, <em>outd</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>ind</em>, <em>outd</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
 <p>A common densely connected neural network layer.</p>
 <p>The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
 <div class="math">
-<p><img src="_images/math/1338ab40cf1b5715fc6b0b8e5f69a1ce72f000b1.svg" alt="\[
+<p><img src="_images/math/10e9ec8ebd0a8eb23ae5454eec791cb5cc69cacd.svg" alt="\[
     \mathbf{z} = g(\mathbf{W}_i^T \mathbf{x} + \mathbf{b})
 \]"/></p>
-</div><p>where <img class="math" src="_images/math/504123562ca3c51520b9887dc1bf86c415e6fdd7.svg" alt="z"/> is output, <img class="math" src="_images/math/ea565314720bd78d2cf93592415a00f2628b0ec3.svg" alt="g"/> is the activation
-function, <img class="math" src="_images/math/ffd0c61381f3022987ac242c4b6622f5ab0ee75c.svg" alt="W"/> are weights, <img class="math" src="_images/math/a94fea56b9d65ba255b6d212a8581536ac8d07fe.svg" alt="b"/> is our
-bias, and <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/> is the index of the current layer.</p>
+</div><p>where <img class="math" src="_images/math/d2ec5c128d53e7e32cfc2b38a233b82a881a511a.svg" alt="z"/> is output, <img class="math" src="_images/math/fcdbf65b218832dcf6daf8972cb10aa666b1c089.svg" alt="g"/> is the activation
+function, <img class="math" src="_images/math/ff364622c422d92cfb7de86803cff89e918d7ad4.svg" alt="W"/> are weights, <img class="math" src="_images/math/2abbc6e454a70253c7c907e980816469e5c4dc01.svg" alt="b"/> is our
+bias, and <img class="math" src="_images/math/86e98ad70727f445350b1850d18ebbf8140fe049.svg" alt="i"/> is the index of the current layer.</p>
 <p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
 calculates two values as follows</p>
 <div class="math">
-<p><img src="_images/math/bfcd4fc4b256688443e8b3104432f427381bab21.svg" alt="\begin{flalign}
+<p><img src="_images/math/67f8ae5c2d9674841db544dd78e91f5ede192ad5.svg" alt="\begin{flalign}
     \frac{\partial \ell}{\partial \bm{z}^{(i)}} &amp;=
-        g'(z^{(i)}) \circ
-        \Big[ \bm{W}^{(i + 1)^T}
+        g'(z^{(i)}) .*                \Big[ \bm{W}^{(i + 1)^T}
         \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\
     \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=
         \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T
 \end{flalign}"/></p>
 </div><p>When looking at the source, there is a notable absence of
-<img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
-and <img class="math" src="_images/math/58227ac7addf2f9d608620babff5434bfac870ed.svg" alt="\frac{\partial \ell}{\partial z^{(i + 1)}}"/>.
+<img class="math" src="_images/math/0fcba7c8bdc126b8dd953a3e585ec22ec63e9540.svg" alt="\bm{W}^{(i + 1)^T}"/>
+and <img class="math" src="_images/math/a17a4e983d483913357df62e3c967fd45d0c5159.svg" alt="\frac{\partial \ell}{\partial z^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.</p>
 <dl class="method">
@@ -92,26 +89,19 @@ and computes update for this layers weights</p>
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Slugnet</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="index.html#feedforward-mode">Feedforward Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#api-documentation">API Documentation</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Layers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Layers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="model.html" title="previous chapter">Models</a></li>
-      <li>Next: <a href="loss.html" title="next chapter">Loss Function</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Slugnet</a></li>
   </ul></li>
 </ul>
 </div>
