@@ -3,8 +3,9 @@ import unittest
 
 from sklearn.datasets import fetch_mldata
 
-from slugnet.activation import Sigmoid
+from slugnet.activation import ReLU, Softmax
 from slugnet.layers import Dense
+from slugnet.loss import SoftmaxCategoricalCrossEntropy as SCCE
 from slugnet.model import Model
 
 
@@ -23,10 +24,10 @@ class TestMNIST(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.X, self.y = get_mnist()
-        self.model = Model(lr=0.01, l1=0.0, l2=0.5)
+        self.model = Model(lr=0.01, l1=0.0, l2=0.5, loss=SCCE())
 
-        self.model.add_layer(Dense(784, 30, activation=Sigmoid()))
-        self.model.add_layer(Dense(30, 10))
+        self.model.add_layer(Dense(784, 200, activation=ReLU()))
+        self.model.add_layer(Dense(200, 10, activation=Softmax()))
 
         self.model.fit(self.X, self.y)
 

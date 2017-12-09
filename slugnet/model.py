@@ -44,8 +44,12 @@ class Model(object):
             for Xi, yi in zip(X_mb, y_mb):
 
                 yhi = self._forward(Xi)
+                loss = self.loss.forward(yhi, yi)
                 grad = self.loss.backward(yhi, yi)
                 self._backward(grad)
+
+                if epoch % 5000:
+                    print('loss at %s: %s' % (epoch, loss))
 
                 params = []
                 grads = []
