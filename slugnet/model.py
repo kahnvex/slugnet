@@ -37,6 +37,23 @@ class Model(object):
         for layer in self.layers[::-1]:
             grad = layer.backprop(grad)
 
+    def get_metrics(self, yh, y):
+        metrics = {}
+
+        if 'loss' in self.metrics:
+            metrics['loss'] = self.loss.forward(yh, y)
+
+        if 'accuracy' in self.metrics:
+            metrics['accuracy'] = self.accuracy(yh, y)
+
+        return metrics
+
+    def init_predictions(self):
+        self.metrics_dict = {
+            'yh': np.empty(dtype=np.float64, shape=(0, 10)),
+            'y': np.empty(dtype=np.int, shape=(0, 10))
+        }
+
     def log_metrics(self, yh, y, epoch, title='training'):
         if 'loss' in self.metrics:
             loss = self.loss.forward(yh, y)
@@ -45,6 +62,16 @@ class Model(object):
         if 'accuracy' in self.metrics:
             acc = self.accuracy(yh, y)
             print('%s accuracy at epoch %s: %s' % (title, epoch, acc))
+
+    def stash_predictions(self, yh, y):
+        yh_concat = [self.metrics_dict['yh'], yh]
+        y_concat = [self.metrics_dict['y'], y]
+
+        self.metrics_dict['yh'] = np.concatenate(yh_concat)
+        self.metrics_dict['y'] = np.concatenate(y_concat)
+
+    def get_predictions(self):
+        return self.metrics_dict['yh'], self.metrics_dict['y']
 
     def accuracy(self, yh, y):
         y_predicts = np.argmax(yh, axis=1)
@@ -63,6 +90,7 @@ class Model(object):
         n_samples = X_train.shape[0]
 
         for epoch in range(self.n_epoch):
+            self.init_predictions()
 
             for batch in range(n_samples // self.batch_size):
                 batch_start = self.batch_size * batch
@@ -82,9 +110,11 @@ class Model(object):
                     grads += layer.get_grads()
 
                 self.optimizer.update(params, grads)
+                self.stash_predictions(yhi, y_mb)
 
             val_yh = self.feedforward(X_test)
-            self.log_metrics(yhi, y_mb, epoch, title='training')
+            train_yh, train_y = self.get_predictions()
+            self.log_metrics(train_yh, train_y, epoch, title='training')
             self.log_metrics(val_yh, Y_test, epoch, title='validation')
 
     def transform(self, X):
