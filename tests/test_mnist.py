@@ -7,6 +7,7 @@ from slugnet.activation import ReLU, Softmax
 from slugnet.layers import Dense
 from slugnet.loss import SoftmaxCategoricalCrossEntropy as SCCE
 from slugnet.model import Model
+from slugnet.optimizers import RMSProp
 
 
 def get_mnist():
@@ -24,7 +25,8 @@ class TestMNIST(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.X, self.y = get_mnist()
-        self.model = Model(lr=0.01, l1=0.0, l2=0.5, loss=SCCE())
+        self.model = Model(lr=0.01, l1=0.0, l2=0.5, loss=SCCE(),
+                           metrics=['loss', 'accuracy'], optimizer=RMSProp())
 
         self.model.add_layer(Dense(784, 200, activation=ReLU()))
         self.model.add_layer(Dense(200, 10, activation=Softmax()))
