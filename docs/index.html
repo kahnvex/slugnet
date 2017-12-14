@@ -275,7 +275,7 @@ gradients with backpropogation, and applying our update using the a learning
 rate parameter <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/>. In practice, we must gradually decrease
 <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/> over time.</p>
 <div class="algo math">
-<p><img src="_images/math/186d81a31ffe35d324ce85f76b0c0f0d9d4a2331.svg" alt="\setcounter{algorithm}{1}
+<p><img src="_images/math/774c5c172e7175d45674fcbd099bd83cb34589a9.svg" alt="\setcounter{algorithm}{1}
 \begin{algorithm}
    \caption{Stochastic Gradient Descent pseudocode from
       \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some
@@ -291,12 +291,13 @@ rate parameter <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c90
             \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
                \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
             \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
+               \frac{1}{m} \sum_{x, y \in \bm{x}_s, \bm{y}_s}
                \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
-            \For{$i = 1, 2, \dots, l$}
-               \State $\bm{W}^{(i)} \gets \bm{W}^{(i)} -
-                  \epsilon \nabla_{\bm{W}^{(i)}}\bm{\ell}$
-               \State $\bm{b}^{(i)} \gets \bm{b}^{(i)} -
-                  \epsilon \nabla_{\bm{b}^{(i)}}\bm{\ell}$
+            \For{$k = 1, 2, \dots, l$}
+               \State $\bm{W}^{(k)} \gets \bm{W}^{(k)} -
+                  \epsilon \nabla_{\bm{W}^{(k)}}\bm{\ell}$
+               \State $\bm{b}^{(k)} \gets \bm{b}^{(k)} -
+                  \epsilon \nabla_{\bm{b}^{(k)}}\bm{\ell}$
             \EndFor
          \EndWhile
          \Return $\langle \bm{W}, \bm{b} \rangle$
