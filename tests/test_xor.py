@@ -9,7 +9,8 @@ from slugnet.activation import Sigmoid
 class TestSlugnetOnXOR(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.model = Model()
+        cls.model = Model(progress=False, validation_split=0, batch_size=4,
+                          metrics=['loss', 'accuracy'])
 
         cls.model.add_layer(Dense(2, 3, Sigmoid()))
         cls.model.add_layer(Dense(3, 1, Sigmoid()))

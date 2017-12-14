@@ -31,11 +31,14 @@ class Objective(object):
 
 
 class BinaryCrossEntropy(Objective):
+    """
+    Standard binary cross-entropy loss function.
+    """
     def __init__(self, epsilon=1e-11):
         self.epsilon = epsilon
 
     def forward(self, yh, y):
-        yh = np.clip(y, self.epsilon, 1 - self.epsilon)
+        yh = np.clip(yh, self.epsilon, 1 - self.epsilon)
         loss = -np.sum(y * np.log(yh) + (1 - y) * np.log(1 - yh), axis=1)
         return np.mean(loss)
 
