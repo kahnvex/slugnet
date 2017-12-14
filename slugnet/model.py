@@ -1,5 +1,8 @@
 import numpy as np
 
+from tabulate import tabulate
+from tqdm import tqdm, trange
+
 from slugnet.optimizers import SGD
 from slugnet.loss import BinaryCrossEntropy
 from sklearn.model_selection import train_test_split
@@ -12,7 +15,7 @@ class Model(object):
     """
     def __init__(self, lr=0.1, n_epoch=400000, batch_size=32, layers=[], l1=0.0,
                  l2=0.0, optimizer=SGD(), loss=BinaryCrossEntropy(),
-                 validation_split=0.2, metrics=['loss']):
+                 validation_split=0.2, metrics=['loss'], progress=True):
         self.layers = layers
         self.lr = lr
         self.n_epoch = n_epoch
@@ -23,6 +26,7 @@ class Model(object):
         self.batch_size = batch_size
         self.validation_split = validation_split
         self.metrics = metrics
+        self.progress = progress
 
     def add_layer(self, layer):
         self.layers.append(layer)
@@ -54,14 +58,15 @@ class Model(object):
             'y': np.empty(dtype=np.int, shape=(0, 10))
         }
 
-    def log_metrics(self, yh, y, epoch, title='training'):
-        if 'loss' in self.metrics:
-            loss = self.loss.forward(yh, y)
-            print('%s loss at epoch %s: %s' % (title, epoch, loss))
+    def log_metrics(self, metrics, epoch):
+        header = ['run', 'epoch'] + self.metrics
+        train, val = ['train', epoch], ['validation', epoch]
 
-        if 'accuracy' in self.metrics:
-            acc = self.accuracy(yh, y)
-            print('%s accuracy at epoch %s: %s' % (title, epoch, acc))
+        for metric_name in self.metrics:
+            train.append(metrics['train'][metric_name])
+            val.append(metrics['val'][metric_name])
+
+        tqdm.write(tabulate([train, val], header, tablefmt="grid"))
 
     def stash_predictions(self, yh, y):
         yh_concat = [self.metrics_dict['yh'], yh]
@@ -89,7 +94,11 @@ class Model(object):
             X, y, test_size=self.validation_split)
         n_samples = X_train.shape[0]
 
-        for epoch in range(self.n_epoch):
+        epoch_iter = trange(self.n_epoch, total=self.n_epoch,
+                            disable=not self.progress)
+
+        for epoch in epoch_iter:
+            epoch_iter.set_description('Epoch %s' % epoch)
             self.init_predictions()
 
             for batch in range(n_samples // self.batch_size):
@@ -114,8 +123,10 @@ class Model(object):
 
             val_yh = self.feedforward(X_test)
             train_yh, train_y = self.get_predictions()
-            self.log_metrics(train_yh, train_y, epoch, title='training')
-            self.log_metrics(val_yh, Y_test, epoch, title='validation')
+            metrics = {}
+            metrics['train'] = self.get_metrics(train_yh, train_y)
+            metrics['val'] = self.get_metrics(val_yh, Y_test)
+            self.log_metrics(metrics, epoch)
 
     def transform(self, X):
         """

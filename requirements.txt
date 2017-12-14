@@ -4,3 +4,5 @@ scipy==0.19.1
 sphinx-autobuild==0.7.1
 sphinxcontrib-fulltoc==1.2.0
 sphinxcontrib-websupport==1.0.1
+tqdm==4.19.5
+tabulate==0.8.2
