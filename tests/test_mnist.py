@@ -25,13 +25,16 @@ class TestMNIST(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.X, self.y = get_mnist()
-        self.model = Model(lr=0.01, n_epoch=10, loss=SCCE(),
+        self.model = Model(lr=0.01, n_epoch=3, loss=SCCE(),
                            metrics=['loss', 'accuracy'], optimizer=RMSProp())
 
         self.model.add_layer(Dense(784, 200, activation=ReLU()))
         self.model.add_layer(Dense(200, 10, activation=Softmax()))
 
-        self.model.fit(self.X, self.y)
+        self.fit_metrics = self.model.fit(self.X, self.y)
 
-    def test_mnist(self):
-        pass
+    def test_training_accuracy_above_ninety(self):
+        self.assertGreater(self.fit_metrics['train']['accuracy'], 0.9)
+
+    def test_validation_accuracy_above_ninety(self):
+        self.assertGreater(self.fit_metrics['val']['accuracy'], 0.9)

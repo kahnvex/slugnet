@@ -10,7 +10,7 @@ class TestSlugnetOnXOR(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.model = Model(progress=False, validation_split=0, batch_size=4,
-                          metrics=['loss', 'accuracy'])
+                          metrics=['loss', 'accuracy'], log_interval=5000)
 
         cls.model.add_layer(Dense(2, 3, Sigmoid()))
         cls.model.add_layer(Dense(3, 1, Sigmoid()))
