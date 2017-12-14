@@ -326,12 +326,13 @@ rate parameter :math:`\epsilon`. In practice, we must gradually decrease
                \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
                   \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
                \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
+                  \frac{1}{m} \sum_{x, y \in \bm{x}_s, \bm{y}_s}
                   \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
-               \For{$i = 1, 2, \dots, l$}
-                  \State $\bm{W}^{(i)} \gets \bm{W}^{(i)} -
-                     \epsilon \nabla_{\bm{W}^{(i)}}\bm{\ell}$
-                  \State $\bm{b}^{(i)} \gets \bm{b}^{(i)} -
-                     \epsilon \nabla_{\bm{b}^{(i)}}\bm{\ell}$
+               \For{$k = 1, 2, \dots, l$}
+                  \State $\bm{W}^{(k)} \gets \bm{W}^{(k)} -
+                     \epsilon \nabla_{\bm{W}^{(k)}}\bm{\ell}$
+                  \State $\bm{b}^{(k)} \gets \bm{b}^{(k)} -
+                     \epsilon \nabla_{\bm{b}^{(k)}}\bm{\ell}$
                \EndFor
             \EndWhile
             \Return $\langle \bm{W}, \bm{b} \rangle$
