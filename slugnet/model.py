@@ -13,10 +13,11 @@ class Model(object):
     Models implement functionality for fitting neural networks and
     making predictions.
     """
-    def __init__(self, lr=0.1, n_epoch=400000, batch_size=32, layers=[],
+    def __init__(self, lr=0.1, n_epoch=400000, batch_size=32, layers=None,
                  optimizer=SGD(), loss=BinaryCrossEntropy(),
-                 validation_split=0.2, metrics=['loss'], progress=True):
-        self.layers = layers
+                 validation_split=0.2, metrics=['loss'], progress=True,
+                 log_interval=1):
+        self.layers = layers if layers else []
         self.lr = lr
         self.n_epoch = n_epoch
         self.optimizer = optimizer
@@ -25,6 +26,7 @@ class Model(object):
         self.validation_split = validation_split
         self.metrics = metrics
         self.progress = progress
+        self.log_interval = log_interval
 
     def add_layer(self, layer):
         self.layers.append(layer)
@@ -89,9 +91,13 @@ class Model(object):
         return self.metrics_dict['yh'], self.metrics_dict['y']
 
     def accuracy(self, yh, y):
-        y_predicts = np.argmax(yh, axis=1)
-        y_targets = np.argmax(y, axis=1)
-        acc = y_predicts == y_targets
+        if len(y.shape) == 1 or (len(y.shape) == 2 and y.shape[1] == 1):
+            yh = np.rint(yh)
+            acc = yh == y
+        else:
+            y_predicts = np.argmax(yh, axis=1)
+            y_targets = np.argmax(y, axis=1)
+            acc = y_predicts == y_targets
 
         return np.mean(acc)
 
@@ -127,6 +133,7 @@ class Model(object):
                     grads += layer.get_grads()
                 self.optimizer.update(params, grads)
                 self.stash_predictions(yhi, y_mb)
+
             metrics = {}
             train_yh, train_y = self.get_predictions()
             metrics['train'] = self.get_metrics(train_yh, train_y)
@@ -135,7 +142,10 @@ class Model(object):
                 val_yh = self.feedforward(X_test)
                 metrics['val'] = self.get_metrics(val_yh, Y_test)
 
-            self.log_metrics(metrics, epoch)
+            if epoch % self.log_interval == 0:
+                self.log_metrics(metrics, epoch)
+
+        return metrics
 
     def transform(self, X):
         """
