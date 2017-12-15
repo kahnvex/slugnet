@@ -147,6 +147,7 @@ class Model(object):
 
         return metrics
 
+
     def transform(self, X):
         """
         Predict the labels or values of some input matrix :code:`X`.
