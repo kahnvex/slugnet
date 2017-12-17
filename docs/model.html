@@ -47,8 +47,31 @@
 <dt id="slugnet.model.Model">
 <em class="property">class </em><code class="descclassname">slugnet.model.</code><code class="descname">Model</code><span class="sig-paren">(</span><em>lr=0.1, n_epoch=400000, batch_size=32, layers=None, optimizer=&lt;slugnet.optimizers.SGD object&gt;, loss=&lt;slugnet.loss.BinaryCrossEntropy object&gt;, validation_split=0.2, metrics=['loss'], progress=True, log_interval=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.model.Model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Models implement functionality for fitting neural networks and
+<p>A model implement functionality for fitting a neural network and
 making predictions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lr</strong> (<em>float</em>) – The learning rate to be used during training.</li>
+<li><strong>n_epoch</strong> (<em>int</em>) – The number of training epochs to use.</li>
+<li><strong>batch_size</strong> (<em>int</em>) – The size of each batch for training.</li>
+<li><strong>layers</strong> (<em>list</em><em>[</em><em>slugnet.layers.Layer</em><em>]</em>) – Initial layers to add the the network, more can
+be added layer using the <code class="code docutils literal"><span class="pre">model.add_layer</span></code> method.</li>
+<li><strong>optimizer</strong> (<em>slugnet.optimizers.Optimizer</em>) – The opimization method to use during training.</li>
+<li><strong>loss</strong> (<a class="reference internal" href="loss.html#slugnet.loss.Objective" title="slugnet.loss.Objective"><em>slugnet.loss.Objective</em></a>) – The loss function to use during training and validation.</li>
+<li><strong>validation_split</strong> (<em>float</em>) – The percent of data to use for validation,
+default is zero.</li>
+<li><strong>metrics</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The metrics to print during training, options are
+<code class="code docutils literal"><span class="pre">loss</span></code> and <code class="code docutils literal"><span class="pre">accuracy</span></code>.</li>
+<li><strong>progress</strong> (<em>bool</em>) – Display progress-bar while training.</li>
+<li><strong>log_interval</strong> (<em>int</em>) – The epoch interval on which to print progress.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="slugnet.model.Model.fit">
 <code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/model.html#Model.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.model.Model.fit" title="Permalink to this definition">¶</a></dt>
@@ -73,18 +96,6 @@ making predictions.</p>
         <div class="sphinxsidebarwrapper">
 <h3><a href="index.html">Table Of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Slugnet</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="index.html#feedforward-mode">Feedforward Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#api-documentation">API Documentation</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="layers.html">Layers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="activation.html">Activation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="activation.html">Activation</a></li>

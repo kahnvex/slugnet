@@ -10,8 +10,41 @@ from sklearn.model_selection import train_test_split
 
 class Model(object):
     """
-    Models implement functionality for fitting neural networks and
+    A model implement functionality for fitting a neural network and
     making predictions.
+
+    :param lr: The learning rate to be used during training.
+    :type lr: float
+
+    :param n_epoch: The number of training epochs to use.
+    :type n_epoch: int
+
+    :param batch_size: The size of each batch for training.
+    :type batch_size: int
+
+    :param layers: Initial layers to add the the network, more can
+        be added layer using the :code:`model.add_layer` method.
+    :type layers: list[slugnet.layers.Layer]
+
+    :param optimizer: The opimization method to use during training.
+    :type optimizer: slugnet.optimizers.Optimizer
+
+    :param loss: The loss function to use during training and validation.
+    :type loss: slugnet.loss.Objective
+
+    :param validation_split: The percent of data to use for validation,
+        default is zero.
+    :type validation_split: float
+
+    :param metrics: The metrics to print during training, options are
+        :code:`loss` and :code:`accuracy`.
+    :type metrics: list[str]
+
+    :param progress: Display progress-bar while training.
+    :type progress: bool
+
+    :param log_interval: The epoch interval on which to print progress.
+    :type log_interval: int
     """
     def __init__(self, lr=0.1, n_epoch=400000, batch_size=32, layers=None,
                  optimizer=SGD(), loss=BinaryCrossEntropy(),
