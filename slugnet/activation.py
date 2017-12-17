@@ -135,7 +135,14 @@ class Sigmoid(Activation):
 
 class Softmax(Activation):
     """
-    Softmax activation function.
+    Softmax activation function is given by
+
+    .. math::
+
+        \phi(z_i) = \\frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}, \,
+        \\forall \, i \in \{1, \dots, K\}
+
+    where :math:`K` is the number of classes.
     """
     def __init__(self):
         super(Softmax, self).__init__()
