@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Slugnet &#8212; Slugnet 0.0.1 documentation</title>
+    <title>Introduction to Neural Nets &#8212; Slugnet 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/caption.css" type="text/css" />
@@ -40,22 +40,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="slugnet">
-<h1>Slugnet<a class="headerlink" href="#slugnet" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="activation.html">Activation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="introduction-to-neural-nets">
+<h1>Introduction to Neural Nets<a class="headerlink" href="#introduction-to-neural-nets" title="Permalink to this headline">¶</a></h1>
 <p>Slugnet is a modest expiremental neural networks library intended to solidify
 the author’s understanding of deep learning.</p>
 <p>The goal of this library is to mathematically document all relevant components
@@ -75,6 +61,22 @@ neural network implements a function <img class="math" src="_images/math/22dc284
 <img class="math" src="_images/math/11b7291c04f22276f2cfa1331a623cbb3adddf26.svg" alt="f"/> represents the model. We say a neural network is fully connected if
 each node in every layer is connected to every node in the adjacent layer. For
 now, we will only consider fully connected neural networks.</p>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Neural Nets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activation.html">Activation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
+</ul>
+</div>
 </div>
 <div class="section" id="feedforward-mode">
 <h2>Feedforward Mode<a class="headerlink" href="#feedforward-mode" title="Permalink to this headline">¶</a></h2>
@@ -332,15 +334,20 @@ apparent as components are documented.</p>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h3><a href="#">Table Of Contents</a></h3>
+        <div class="sphinxsidebarwrapper"><h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Slugnet</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Neural Nets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="activation.html">Activation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
