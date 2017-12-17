@@ -57,43 +57,6 @@ class ReLU(Activation):
         return res
 
 
-class Sigmoid(Activation):
-    """
-    The common sigmoid activation function.
-
-    The sigmoid function is given by :math:`g(z) = \\frac{1}{1 + e^{-z}}`.
-
-    .. plot::
-
-        import numpy as np
-        import matplotlib.pyplot as plt
-
-        z = np.arange(-4, 4, .01)
-        gz = 1 / (1 + np.exp(-z))
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax.plot(z, gz)
-        ax.set_ylim([0.0, 1.0])
-        ax.set_xlim([-4.0, 4.0])
-        ax.grid(True)
-        ax.set_xlabel('z')
-        ax.set_ylabel('g(z)')
-        ax.set_title('Sigmoid')
-
-        plt.show()
-    """
-    def call(self, x):
-        self.last_out = 1. / (1. + np.exp(-x))
-
-        return self.last_out
-
-    def derivative(self, x=None):
-        z = self.call(x) if x else self.last_out
-
-        return z * (1 - z)
-
-
 class Tanh(Activation):
     """
     The hyperbolic tangent activation function.
@@ -131,6 +94,43 @@ class Tanh(Activation):
         h = self.call(x) if x else self.last_forward
 
         return 1 - h**2
+
+
+class Sigmoid(Activation):
+    """
+    The common sigmoid activation function.
+
+    The sigmoid function is given by :math:`g(z) = \\frac{1}{1 + e^{-z}}`.
+
+    .. plot::
+
+        import numpy as np
+        import matplotlib.pyplot as plt
+
+        z = np.arange(-4, 4, .01)
+        gz = 1 / (1 + np.exp(-z))
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(z, gz)
+        ax.set_ylim([0.0, 1.0])
+        ax.set_xlim([-4.0, 4.0])
+        ax.grid(True)
+        ax.set_xlabel('z')
+        ax.set_ylabel('g(z)')
+        ax.set_title('Sigmoid')
+
+        plt.show()
+    """
+    def call(self, x):
+        self.last_out = 1. / (1. + np.exp(-x))
+
+        return self.last_out
+
+    def derivative(self, x=None):
+        z = self.call(x) if x else self.last_out
+
+        return z * (1 - z)
 
 
 class Softmax(Activation):
