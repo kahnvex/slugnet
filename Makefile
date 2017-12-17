@@ -6,8 +6,8 @@ test:
 docs-auto:
 	sphinx-autobuild -z slugnet/ docs-src/ docs/
 
-clean-docs:
-	rm -rf docs/	
+clean-docs-images:
+	rm -rf docs/plot_directive
 
 docs:
 	sphinx-build docs-src/ docs/
