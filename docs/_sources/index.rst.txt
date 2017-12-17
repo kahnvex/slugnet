@@ -5,8 +5,10 @@ Table of Contents
 -----------------
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
+   :titlesonly:
 
+   index
    model
    layers
    activation
