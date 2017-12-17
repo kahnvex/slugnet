@@ -94,7 +94,11 @@ equivalent to <img class="math" src="_images/math/6b60aa9c2ca5909999f91523493c21
 <dt id="slugnet.activation.Softmax">
 <em class="property">class </em><code class="descclassname">slugnet.activation.</code><code class="descname">Softmax</code><a class="reference internal" href="_modules/slugnet/activation.html#Softmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.activation.Softmax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.activation.Activation</span></code></p>
-<p>Softmax activation function.</p>
+<p>Softmax activation function is given by</p>
+<div class="math">
+<p><img src="_images/math/d3c0ebc78ad44c05bef6829f3a887da66603c510.svg" alt="\phi(z_i) = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}, \,
+\forall \, i \in \{1, \dots, K\}"/></p>
+</div><p>where <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> is the number of classes.</p>
 </dd></dl>
 
 </div>
