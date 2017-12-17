@@ -134,6 +134,9 @@ class Tanh(Activation):
 
 
 class Softmax(Activation):
+    """
+    Softmax activation function.
+    """
     def __init__(self):
         super(Softmax, self).__init__()
 
