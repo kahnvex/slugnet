@@ -43,6 +43,18 @@ class ReLU(Activation):
         return res
 
 
+class Tanh(Activation):
+    def call(self, x):
+        self.last_forward = np.tanh(x)
+
+        return self.last_forward
+
+    def derivative(self, x=None):
+        h = self.call(x) if x else self.last_forward
+
+        return 1 - h**2
+
+
 class Softmax(Activation):
     def __init__(self):
         super(Softmax, self).__init__()
