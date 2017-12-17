@@ -52,8 +52,41 @@
 
 <div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../model.html#slugnet.model.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Models implement functionality for fitting neural networks and</span>
+<span class="sd">    A model implement functionality for fitting a neural network and</span>
 <span class="sd">    making predictions.</span>
+
+<span class="sd">    :param lr: The learning rate to be used during training.</span>
+<span class="sd">    :type lr: float</span>
+
+<span class="sd">    :param n_epoch: The number of training epochs to use.</span>
+<span class="sd">    :type n_epoch: int</span>
+
+<span class="sd">    :param batch_size: The size of each batch for training.</span>
+<span class="sd">    :type batch_size: int</span>
+
+<span class="sd">    :param layers: Initial layers to add the the network, more can</span>
+<span class="sd">        be added layer using the :code:`model.add_layer` method.</span>
+<span class="sd">    :type layers: list[slugnet.layers.Layer]</span>
+
+<span class="sd">    :param optimizer: The opimization method to use during training.</span>
+<span class="sd">    :type optimizer: slugnet.optimizers.Optimizer</span>
+
+<span class="sd">    :param loss: The loss function to use during training and validation.</span>
+<span class="sd">    :type loss: slugnet.loss.Objective</span>
+
+<span class="sd">    :param validation_split: The percent of data to use for validation,</span>
+<span class="sd">        default is zero.</span>
+<span class="sd">    :type validation_split: float</span>
+
+<span class="sd">    :param metrics: The metrics to print during training, options are</span>
+<span class="sd">        :code:`loss` and :code:`accuracy`.</span>
+<span class="sd">    :type metrics: list[str]</span>
+
+<span class="sd">    :param progress: Display progress-bar while training.</span>
+<span class="sd">    :type progress: bool</span>
+
+<span class="sd">    :param log_interval: The epoch interval on which to print progress.</span>
+<span class="sd">    :type log_interval: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">optimizer</span><span class="o">=</span><span class="n">SGD</span><span class="p">(),</span> <span class="n">loss</span><span class="o">=</span><span class="n">BinaryCrossEntropy</span><span class="p">(),</span>
@@ -204,7 +237,6 @@
         <div class="sphinxsidebarwrapper">
 <h3><a href="../../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">Slugnet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../activation.html">Activation</a></li>

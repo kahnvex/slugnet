@@ -1,6 +1,20 @@
 Slugnet
 =======
 
+Table of Contents
+-----------------
+
+.. toctree::
+   :maxdepth: 3
+
+   model
+   layers
+   activation
+   loss
+
+Introduction
+------------
+
 Slugnet is a modest expiremental neural networks library intended to solidify
 the author's understanding of deep learning.
 
@@ -344,15 +358,3 @@ In practice, we will decouple optimization methods from the backpropogation and
 feedforward algorithms in order to make a modular system of components that can
 be easily mixed and matched. This process is fairly straightforward and will be
 apparent as components are documented.
-
-API Documentation
------------------
-
-.. toctree::
-   :maxdepth: 4
-
-   index
-   model
-   layers
-   activation
-   loss
