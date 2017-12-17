@@ -1,21 +1,5 @@
-Slugnet
-=======
-
-Table of Contents
------------------
-
-.. toctree::
-   :maxdepth: 1
-   :titlesonly:
-
-   index
-   model
-   layers
-   activation
-   loss
-
-Introduction
-------------
+Introduction to Neural Nets
+===========================
 
 Slugnet is a modest expiremental neural networks library intended to solidify
 the author's understanding of deep learning.
@@ -40,6 +24,21 @@ neural network implements a function :math:`\hat{\bm{y}} = f(\bm{x})`, where
 each node in every layer is connected to every node in the adjacent layer. For
 now, we will only consider fully connected neural networks.
 
+
+-----------------
+Table of Contents
+-----------------
+
+.. toctree::
+   :maxdepth: 2
+
+   index
+   model
+   layers
+   activation
+   loss
+
+----------------
 Feedforward Mode
 ----------------
 
@@ -165,6 +164,7 @@ in one call to :code:`model.transform`. Before you can run a model
 in feedforward mode, it must be trained. This leads us to backpropogation and
 optimization.
 
+---------------------------------------
 Loss, Backpropogation, and Optimization
 ---------------------------------------
 
