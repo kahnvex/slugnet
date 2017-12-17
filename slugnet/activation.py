@@ -18,7 +18,7 @@ class ReLU(Activation):
     The common rectified linean unit, or ReLU activation funtion.
 
     A rectified linear unit implements the nonlinear function
-    :math:`g(z) = \\text{max}\{0, z\}`.
+    :math:`\phi(z) = \\text{max}\{0, z\}`.
 
     .. plot::
 
@@ -36,7 +36,7 @@ class ReLU(Activation):
         ax.set_xlim([-2.0, 2.0])
         ax.grid(True)
         ax.set_xlabel('z')
-        ax.set_ylabel('g(z)')
+        ax.set_ylabel('phi(z)')
         ax.set_title('Rectified linear unit')
 
         plt.show()
@@ -62,8 +62,8 @@ class Tanh(Activation):
     The hyperbolic tangent activation function.
 
     A hyperbolic tangent activation function implements the
-    nonlinearity given by :math:`g(z) = \\text{tanh}(z)`, which is equivalent to
-    :math:`\\sfrac{\\text{sinh}(z)}{\\text{cosh}(z)}`.
+    nonlinearity given by :math:`\phi(z) = \\text{tanh}(z)`, which is
+    equivalent to :math:`\\sfrac{\\text{sinh}(z)}{\\text{cosh}(z)}`.
 
     .. plot::
 
@@ -71,16 +71,16 @@ class Tanh(Activation):
         import matplotlib.pyplot as plt
 
         z = np.arange(-2, 2, .01)
-        y = np.tanh(z)
+        phi_z = np.tanh(z)
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.plot(z, y)
+        ax.plot(z, phi_z)
         ax.set_ylim([-1.0, 1.0])
         ax.set_xlim([-2.0, 2.0])
         ax.grid(True)
         ax.set_xlabel('z')
-        ax.set_ylabel('g(z)')
+        ax.set_ylabel('phi(z)')
         ax.set_title('Hyperbolic Tangent')
 
         plt.show()
@@ -100,7 +100,7 @@ class Sigmoid(Activation):
     """
     The common sigmoid activation function.
 
-    The sigmoid function is given by :math:`g(z) = \\frac{1}{1 + e^{-z}}`.
+    The sigmoid function is given by :math:`\phi(z) = \\frac{1}{1 + e^{-z}}`.
 
     .. plot::
 
@@ -108,16 +108,16 @@ class Sigmoid(Activation):
         import matplotlib.pyplot as plt
 
         z = np.arange(-4, 4, .01)
-        gz = 1 / (1 + np.exp(-z))
+        phi_z = 1 / (1 + np.exp(-z))
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.plot(z, gz)
+        ax.plot(z, phi_z)
         ax.set_ylim([0.0, 1.0])
         ax.set_xlim([-4.0, 4.0])
         ax.grid(True)
         ax.set_xlabel('z')
-        ax.set_ylabel('g(z)')
+        ax.set_ylabel('phi(z)')
         ax.set_title('Sigmoid')
 
         plt.show()

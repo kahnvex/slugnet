@@ -60,7 +60,7 @@
 <span class="sd">    The common rectified linean unit, or ReLU activation funtion.</span>
 
 <span class="sd">    A rectified linear unit implements the nonlinear function</span>
-<span class="sd">    :math:`g(z) = \\text{max}\{0, z\}`.</span>
+<span class="sd">    :math:`\phi(z) = \\text{max}\{0, z\}`.</span>
 
 <span class="sd">    .. plot::</span>
 
@@ -78,7 +78,7 @@
 <span class="sd">        ax.set_xlim([-2.0, 2.0])</span>
 <span class="sd">        ax.grid(True)</span>
 <span class="sd">        ax.set_xlabel(&#39;z&#39;)</span>
-<span class="sd">        ax.set_ylabel(&#39;g(z)&#39;)</span>
+<span class="sd">        ax.set_ylabel(&#39;phi(z)&#39;)</span>
 <span class="sd">        ax.set_title(&#39;Rectified linear unit&#39;)</span>
 
 <span class="sd">        plt.show()</span>
@@ -104,8 +104,8 @@
 <span class="sd">    The hyperbolic tangent activation function.</span>
 
 <span class="sd">    A hyperbolic tangent activation function implements the</span>
-<span class="sd">    nonlinearity given by :math:`g(z) = \\text{tanh}(z)`, which is equivalent to</span>
-<span class="sd">    :math:`\\sfrac{\\text{sinh}(z)}{\\text{cosh}(z)}`.</span>
+<span class="sd">    nonlinearity given by :math:`\phi(z) = \\text{tanh}(z)`, which is</span>
+<span class="sd">    equivalent to :math:`\\sfrac{\\text{sinh}(z)}{\\text{cosh}(z)}`.</span>
 
 <span class="sd">    .. plot::</span>
 
@@ -113,16 +113,16 @@
 <span class="sd">        import matplotlib.pyplot as plt</span>
 
 <span class="sd">        z = np.arange(-2, 2, .01)</span>
-<span class="sd">        y = np.tanh(z)</span>
+<span class="sd">        phi_z = np.tanh(z)</span>
 
 <span class="sd">        fig = plt.figure()</span>
 <span class="sd">        ax = fig.add_subplot(111)</span>
-<span class="sd">        ax.plot(z, y)</span>
+<span class="sd">        ax.plot(z, phi_z)</span>
 <span class="sd">        ax.set_ylim([-1.0, 1.0])</span>
 <span class="sd">        ax.set_xlim([-2.0, 2.0])</span>
 <span class="sd">        ax.grid(True)</span>
 <span class="sd">        ax.set_xlabel(&#39;z&#39;)</span>
-<span class="sd">        ax.set_ylabel(&#39;g(z)&#39;)</span>
+<span class="sd">        ax.set_ylabel(&#39;phi(z)&#39;)</span>
 <span class="sd">        ax.set_title(&#39;Hyperbolic Tangent&#39;)</span>
 
 <span class="sd">        plt.show()</span>
@@ -142,7 +142,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The common sigmoid activation function.</span>
 
-<span class="sd">    The sigmoid function is given by :math:`g(z) = \\frac{1}{1 + e^{-z}}`.</span>
+<span class="sd">    The sigmoid function is given by :math:`\phi(z) = \\frac{1}{1 + e^{-z}}`.</span>
 
 <span class="sd">    .. plot::</span>
 
@@ -150,16 +150,16 @@
 <span class="sd">        import matplotlib.pyplot as plt</span>
 
 <span class="sd">        z = np.arange(-4, 4, .01)</span>
-<span class="sd">        gz = 1 / (1 + np.exp(-z))</span>
+<span class="sd">        phi_z = 1 / (1 + np.exp(-z))</span>
 
 <span class="sd">        fig = plt.figure()</span>
 <span class="sd">        ax = fig.add_subplot(111)</span>
-<span class="sd">        ax.plot(z, gz)</span>
+<span class="sd">        ax.plot(z, phi_z)</span>
 <span class="sd">        ax.set_ylim([0.0, 1.0])</span>
 <span class="sd">        ax.set_xlim([-4.0, 4.0])</span>
 <span class="sd">        ax.grid(True)</span>
 <span class="sd">        ax.set_xlabel(&#39;z&#39;)</span>
-<span class="sd">        ax.set_ylabel(&#39;g(z)&#39;)</span>
+<span class="sd">        ax.set_ylabel(&#39;phi(z)&#39;)</span>
 <span class="sd">        ax.set_title(&#39;Sigmoid&#39;)</span>
 
 <span class="sd">        plt.show()</span>
