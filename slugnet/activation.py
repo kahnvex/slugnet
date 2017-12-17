@@ -26,7 +26,12 @@ class Noop(Activation):
 
 
 class ReLU(Activation):
+    """
+    The common rectified linean unit, or ReLU activation funtion.
 
+    A rectified linear unit implements the nonlinear function
+    :math:`g(z) = \\text{max}(0, z)`.
+    """
     def __init__(self):
         super(ReLU, self).__init__()
 
@@ -44,6 +49,13 @@ class ReLU(Activation):
 
 
 class Tanh(Activation):
+    """
+    The hyperbolic tangent activation function.
+
+    A hyperbolic tangent activation function implements the
+    nonlinearity given by :math:`\\text{tanh}(x)`, which is equivalent to
+    :math:`\\sfrac{\\text{sinh}(x)}{\\text{cosh}(x)}`.
+    """
     def call(self, x):
         self.last_forward = np.tanh(x)
 

@@ -354,4 +354,5 @@ API Documentation
    index
    model
    layers
+   activation
    loss

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Models &#8212; Slugnet 0.0.1 documentation</title>
+    <title>Activation &#8212; Slugnet 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/caption.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Layers" href="layers.html" />
-    <link rel="prev" title="Slugnet" href="index.html" />
+    <link rel="next" title="Loss Function" href="loss.html" />
+    <link rel="prev" title="Layers" href="layers.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -41,26 +41,33 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-slugnet.model">
-<span id="models"></span><h1>Models<a class="headerlink" href="#module-slugnet.model" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="activation">
+<h1>Activation<a class="headerlink" href="#activation" title="Permalink to this headline">¶</a></h1>
+<p>Neural networks rely on a nonlinear transformation to learn
+nonlinear relationships in data. These nonlinear transformations
+are typically fixed functions that are applied after a linear transformation
+of the data. The linear transformation uses learned weights, while the
+nonlinear function is fixed in that there are no learned parameters. In
+most cases, these nonlinear functions can be thought of as activation
+functions that indicate the state of a unit within a layer of a neural
+network, given some data.</p>
+<span class="target" id="module-slugnet.activation"></span><dl class="class">
+<dt id="slugnet.activation.ReLU">
+<em class="property">class </em><code class="descclassname">slugnet.activation.</code><code class="descname">ReLU</code><a class="reference internal" href="_modules/slugnet/activation.html#ReLU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.activation.ReLU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.activation.Activation</span></code></p>
+<p>The common rectified linean unit, or ReLU activation funtion.</p>
+<p>A rectified linear unit implements the nonlinear function
+<img class="math" src="_images/math/2e1bd988ea1bfa96b2632e475a138e34b4075461.svg" alt="g(z) = \text{max}(0, z)"/>.</p>
+</dd></dl>
+
 <dl class="class">
-<dt id="slugnet.model.Model">
-<em class="property">class </em><code class="descclassname">slugnet.model.</code><code class="descname">Model</code><span class="sig-paren">(</span><em>lr=0.1, n_epoch=400000, batch_size=32, layers=None, optimizer=&lt;slugnet.optimizers.SGD object&gt;, loss=&lt;slugnet.loss.BinaryCrossEntropy object&gt;, validation_split=0.2, metrics=['loss'], progress=True, log_interval=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.model.Model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Models implement functionality for fitting neural networks and
-making predictions.</p>
-<dl class="method">
-<dt id="slugnet.model.Model.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/model.html#Model.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.model.Model.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Train the model given samples <code class="code docutils literal"><span class="pre">X</span></code> and labels or values :code`y`.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="slugnet.model.Model.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/model.html#Model.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.model.Model.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Predict the labels or values of some input matrix <code class="code docutils literal"><span class="pre">X</span></code>.</p>
-</dd></dl>
-
+<dt id="slugnet.activation.Tanh">
+<em class="property">class </em><code class="descclassname">slugnet.activation.</code><code class="descname">Tanh</code><a class="reference internal" href="_modules/slugnet/activation.html#Tanh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.activation.Tanh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.activation.Activation</span></code></p>
+<p>The hyperbolic tangent activation function.</p>
+<p>A hyperbolic tangent activation function implements the
+nonlinearity given by <img class="math" src="_images/math/c4a4a79d1e2e095597de62e26db04aed9df42d52.svg" alt="\text{tanh}(x)"/>, which is equivalent to
+<img class="math" src="_images/math/5febc571576f41c83b20f531db606d3afa584361.svg" alt="\sfrac{\text{sinh}(x)}{\text{cosh}(x)}"/>.</p>
 </dd></dl>
 
 </div>
@@ -77,32 +84,32 @@ making predictions.</p>
 <li class="toctree-l2"><a class="reference internal" href="index.html#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#api-documentation">API Documentation</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="layers.html">Layers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="activation.html">Activation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Activation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="activation.html">Activation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Activation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
 </ul>
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Slugnet</a></li>
-      <li>Next: <a href="layers.html" title="next chapter">Layers</a></li>
+      <li>Previous: <a href="layers.html" title="previous chapter">Layers</a></li>
+      <li>Next: <a href="loss.html" title="next chapter">Loss Function</a></li>
   </ul></li>
 </ul>
 </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/model.rst.txt"
+      <li><a href="_sources/activation.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -128,7 +135,7 @@ making predictions.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="_sources/model.rst.txt"
+      <a href="_sources/activation.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
