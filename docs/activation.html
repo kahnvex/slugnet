@@ -99,8 +99,14 @@ equivalent to <img class="math" src="_images/math/6b60aa9c2ca5909999f91523493c21
 <div class="math">
 <p><img src="_images/math/d3c0ebc78ad44c05bef6829f3a887da66603c510.svg" alt="\phi(z_i) = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}, \,
 \forall \, i \in \{1, \dots, K\}"/></p>
-</div><p>where <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> is the number of classes.</p>
-</dd></dl>
+</div><p>where <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> is the number of classes. We can see that softmax is
+a generalization of the sigmoid function to <img class="math" src="_images/math/32f0a59be9113850c78c51bd8bbf03c53f3d4e10.svg" alt="n"/> classes. Below,
+we derive the sigmoid function using softmax.</p>
+<div class="math">
+<p><img src="_images/math/e1e9dfb8533236ace92aa82d436feb702944f71a.svg" alt="\phi(z_1) &amp;= \frac{e^{z_1}}{\sum_{i=1}^2 e^{z_i}} \\
+          &amp;= \frac{1}{e^{z_1 - z_1} + e^{z_2 - z_1}} \\
+          &amp;= \frac{1}{1 + e^{-z}}"/></p>
+</div></dd></dl>
 
 </div>
 
