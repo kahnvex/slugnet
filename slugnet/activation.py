@@ -134,17 +134,25 @@ class Sigmoid(Activation):
 
 
 class Softmax(Activation):
-    """
+    r"""
     Represent a probability distribution over :math:`n` classes.
 
     The softmax activation function is given by
 
     .. math::
 
-        \phi(z_i) = \\frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}, \,
-        \\forall \, i \in \{1, \dots, K\}
+        \phi(z_i) = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}, \,
+        \forall \, i \in \{1, \dots, K\}
 
-    where :math:`K` is the number of classes.
+    where :math:`K` is the number of classes. We can see that softmax is
+    a generalization of the sigmoid function to :math:`n` classes. Below,
+    we derive the sigmoid function using softmax.
+
+    .. math::
+
+        \phi(z_1) &= \frac{e^{z_1}}{\sum_{i=1}^2 e^{z_i}} \\
+                  &= \frac{1}{e^{z_1 - z_1} + e^{z_2 - z_1}} \\
+                  &= \frac{1}{1 + e^{-z}}
     """
     def __init__(self):
         super(Softmax, self).__init__()
