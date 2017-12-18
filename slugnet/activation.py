@@ -152,7 +152,11 @@ class Softmax(Activation):
 
         \phi(z_1) &= \frac{e^{z_1}}{\sum_{i=1}^2 e^{z_i}} \\
                   &= \frac{1}{e^{z_1 - z_1} + e^{z_2 - z_1}} \\
-                  &= \frac{1}{1 + e^{-z}}
+                  &= \frac{1}{1 + e^{-z_1}}, \, \text{substituting} \, z_2 = 0
+
+    We substitute :math:`z_2 = 0` because we only need one variable to
+    represent the probability distribution over two classes. This leaves
+    us with the definition of the sigmoid function.
     """
     def __init__(self):
         super(Softmax, self).__init__()

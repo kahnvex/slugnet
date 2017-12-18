@@ -103,10 +103,13 @@ equivalent to <img class="math" src="_images/math/6b60aa9c2ca5909999f91523493c21
 a generalization of the sigmoid function to <img class="math" src="_images/math/32f0a59be9113850c78c51bd8bbf03c53f3d4e10.svg" alt="n"/> classes. Below,
 we derive the sigmoid function using softmax with two classes.</p>
 <div class="math">
-<p><img src="_images/math/e1e9dfb8533236ace92aa82d436feb702944f71a.svg" alt="\phi(z_1) &amp;= \frac{e^{z_1}}{\sum_{i=1}^2 e^{z_i}} \\
+<p><img src="_images/math/00ec6a31a68630434a8c636291b574a9c3fcdf13.svg" alt="\phi(z_1) &amp;= \frac{e^{z_1}}{\sum_{i=1}^2 e^{z_i}} \\
           &amp;= \frac{1}{e^{z_1 - z_1} + e^{z_2 - z_1}} \\
-          &amp;= \frac{1}{1 + e^{-z}}"/></p>
-</div></dd></dl>
+          &amp;= \frac{1}{1 + e^{-z_1}}, \, \text{substituting} \, z_2 = 0"/></p>
+</div><p>We substitute <img class="math" src="_images/math/89d95c4120b1dce2f40bde9489c0db93e7a4bb42.svg" alt="z_2 = 0"/> because we only need one variable to
+represent the probability distribution over two classes. This leaves
+us with the definition of the sigmoid function.</p>
+</dd></dl>
 
 </div>
 
