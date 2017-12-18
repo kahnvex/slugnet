@@ -146,7 +146,7 @@ class Softmax(Activation):
 
     where :math:`K` is the number of classes. We can see that softmax is
     a generalization of the sigmoid function to :math:`n` classes. Below,
-    we derive the sigmoid function using softmax.
+    we derive the sigmoid function using softmax with two classes.
 
     .. math::
 
