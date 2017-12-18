@@ -31,9 +31,8 @@ class Optimizer(object):
 
 
 class SGD(Optimizer):
-    """Stochastic Gradient Descent (SGD) updates
-    Generates update expressions of the form:
-    * ``param := param - learning_rate * gradient``
+    """
+    Optimize model parameters using common stochastic gradient descent.
     """
 
     def update(self, params, grads):
@@ -54,22 +53,23 @@ class RMSProp(Optimizer):
     """RMSProp updates
     Scale learning rates by dividing with the moving average of the root mean
     squared (RMS) gradients. See [1]_ for further description.
-    Parameters
-    ----------
-    rho : float
-        Gradient moving average decay factor.
-    epsilon : float
-        Small value added for numerical stability.
-    Notes
-    -----
+
+    :param rho: Gradient moving average decay factor.
+    :type rho: float
+    :param epsilon: Small value added for numerical stability.
+    :type epsilon: float
+
     `rho` should be between 0 and 1. A value of `rho` close to 1 will decay the
     moving average slowly and a value close to 0 will decay the moving average
     fast.
     Using the step size :math:`\\eta` and a decay factor :math:`\\rho` the
     learning rate :math:`\\eta_t` is calculated as:
+
     .. math::
+
        r_t &= \\rho r_{t-1} + (1-\\rho)*g^2\\\\
        \\eta_t &= \\frac{\\eta}{\\sqrt{r_t + \\epsilon}}
+
     References
     ----------
     .. [1] Tieleman, T. and Hinton, G. (2012):

@@ -1,5 +1,5 @@
-Activation
-==========
+Activation Functions
+====================
 
 Neural networks rely on a nonlinear transformation to learn
 nonlinear relationships in data. These nonlinear transformations
