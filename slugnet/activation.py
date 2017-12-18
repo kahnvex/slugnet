@@ -98,7 +98,7 @@ class Tanh(Activation):
 
 class Sigmoid(Activation):
     """
-    The common sigmoid activation function.
+    Represent a probability distribution over two classes.
 
     The sigmoid function is given by :math:`\phi(z) = \\frac{1}{1 + e^{-z}}`.
 
@@ -135,7 +135,9 @@ class Sigmoid(Activation):
 
 class Softmax(Activation):
     """
-    Softmax activation function is given by
+    Represent a probability distribution over :math:`n` classes.
+
+    The softmax activation function is given by
 
     .. math::
 

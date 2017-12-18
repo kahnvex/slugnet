@@ -37,6 +37,7 @@ Table of Contents
    layers
    activation
    loss
+   optimizers
 
 ----------------
 Feedforward Mode

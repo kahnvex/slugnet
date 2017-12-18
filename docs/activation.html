@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Activation &#8212; Slugnet 0.0.1 documentation</title>
+    <title>Activation Functions &#8212; Slugnet 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/caption.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Loss Function" href="loss.html" />
+    <link rel="next" title="Loss Functions" href="loss.html" />
     <link rel="prev" title="Layers" href="layers.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -41,8 +41,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="activation">
-<h1>Activation<a class="headerlink" href="#activation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="activation-functions">
+<h1>Activation Functions<a class="headerlink" href="#activation-functions" title="Permalink to this headline">¶</a></h1>
 <p>Neural networks rely on a nonlinear transformation to learn
 nonlinear relationships in data. These nonlinear transformations
 are typically fixed functions that are applied after a linear transformation
@@ -82,7 +82,7 @@ equivalent to <img class="math" src="_images/math/6b60aa9c2ca5909999f91523493c21
 <dt id="slugnet.activation.Sigmoid">
 <em class="property">class </em><code class="descclassname">slugnet.activation.</code><code class="descname">Sigmoid</code><a class="reference internal" href="_modules/slugnet/activation.html#Sigmoid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.activation.Sigmoid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.activation.Activation</span></code></p>
-<p>The common sigmoid activation function.</p>
+<p>Represent a probability distribution over two classes.</p>
 <p>The sigmoid function is given by <img class="math" src="_images/math/1be2523352039f26ae354e99dd3e12a703091fd5.svg" alt="\phi(z) = \frac{1}{1 + e^{-z}}"/>.</p>
 <p>(<a class="reference external" href=".//activation-3.py">Source code</a>, <a class="reference external" href=".//activation-3.png">png</a>, <a class="reference external" href=".//activation-3.hires.png">hires.png</a>, <a class="reference external" href=".//activation-3.pdf">pdf</a>)</p>
 <div class="figure">
@@ -94,7 +94,8 @@ equivalent to <img class="math" src="_images/math/6b60aa9c2ca5909999f91523493c21
 <dt id="slugnet.activation.Softmax">
 <em class="property">class </em><code class="descclassname">slugnet.activation.</code><code class="descname">Softmax</code><a class="reference internal" href="_modules/slugnet/activation.html#Softmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.activation.Softmax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.activation.Activation</span></code></p>
-<p>Softmax activation function is given by</p>
+<p>Represent a probability distribution over <img class="math" src="_images/math/32f0a59be9113850c78c51bd8bbf03c53f3d4e10.svg" alt="n"/> classes.</p>
+<p>The softmax activation function is given by</p>
 <div class="math">
 <p><img src="_images/math/d3c0ebc78ad44c05bef6829f3a887da66603c510.svg" alt="\phi(z_i) = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}, \,
 \forall \, i \in \{1, \dots, K\}"/></p>
@@ -118,8 +119,8 @@ equivalent to <img class="math" src="_images/math/6b60aa9c2ca5909999f91523493c21
 </li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Activation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Function</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Activation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Functions</a></li>
 </ul>
 
 <div class="relations">
@@ -127,7 +128,7 @@ equivalent to <img class="math" src="_images/math/6b60aa9c2ca5909999f91523493c21
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="layers.html" title="previous chapter">Layers</a></li>
-      <li>Next: <a href="loss.html" title="next chapter">Loss Function</a></li>
+      <li>Next: <a href="loss.html" title="next chapter">Loss Functions</a></li>
   </ul></li>
 </ul>
 </div>

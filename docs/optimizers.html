@@ -1,0 +1,156 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Optimizers &#8212; Slugnet 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/caption.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Loss Functions" href="loss.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-slugnet.optimizers">
+<span id="optimizers"></span><h1>Optimizers<a class="headerlink" href="#module-slugnet.optimizers" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="slugnet.optimizers.SGD">
+<em class="property">class </em><code class="descclassname">slugnet.optimizers.</code><code class="descname">SGD</code><span class="sig-paren">(</span><em>lr=0.001</em>, <em>clip=-1</em>, <em>decay=0.0</em>, <em>lr_min=0.0</em>, <em>lr_max=inf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/optimizers.html#SGD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.optimizers.SGD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.optimizers.Optimizer</span></code></p>
+<p>Optimize model parameters using common stochastic gradient descent.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="slugnet.optimizers.RMSProp">
+<em class="property">class </em><code class="descclassname">slugnet.optimizers.</code><code class="descname">RMSProp</code><span class="sig-paren">(</span><em>rho=0.9</em>, <em>epsilon=1e-06</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/optimizers.html#RMSProp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.optimizers.RMSProp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.optimizers.Optimizer</span></code></p>
+<p>RMSProp updates
+Scale learning rates by dividing with the moving average of the root mean
+squared (RMS) gradients. See <a class="footnote-reference" href="#id2" id="id1">[1]</a> for further description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rho</strong> (<em>float</em>) – Gradient moving average decay factor.</li>
+<li><strong>epsilon</strong> (<em>float</em>) – Small value added for numerical stability.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><cite>rho</cite> should be between 0 and 1. A value of <cite>rho</cite> close to 1 will decay the
+moving average slowly and a value close to 0 will decay the moving average
+fast.
+Using the step size <img class="math" src="_images/math/641e79aff1c3a024bab3913657f36f2f2733593a.svg" alt="\eta"/> and a decay factor <img class="math" src="_images/math/e1a297426a3026fc47bcb2c0390e8c6a087dd8e7.svg" alt="\rho"/> the
+learning rate <img class="math" src="_images/math/008b5f03c914263be215b0f302ecdf6c2d51a1b4.svg" alt="\eta_t"/> is calculated as:</p>
+<div class="math">
+<p><img src="_images/math/0f68bf699de6d7a4babd0f9e0d8de6dca202f548.svg" alt="r_t &amp;= \rho r_{t-1} + (1-\rho)*g^2\\
+\eta_t &amp;= \frac{\eta}{\sqrt{r_t + \epsilon}}"/></p>
+</div><table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Tieleman, T. and Hinton, G. (2012):
+Neural Networks for Machine Learning, Lecture 6.5 - rmsprop.
+Coursera. <a class="reference external" href="http://www.youtube.com/watch?v=O3sxAc4hxZU">http://www.youtube.com/watch?v=O3sxAc4hxZU</a> (formula &#64;5:20)</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction to Neural Nets</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#feedforward-mode">Feedforward Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activation.html">Activation Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Optimizers</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="loss.html" title="previous chapter">Loss Functions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/optimizers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jarrod Kahn.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/optimizers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
