@@ -50,12 +50,12 @@
 <p>A common densely connected neural network layer.</p>
 <p>The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
 <div class="math">
-<p><img src="_images/math/1338ab40cf1b5715fc6b0b8e5f69a1ce72f000b1.svg" alt="\[
-    \mathbf{z} = g(\mathbf{W}_i^T \mathbf{x} + \mathbf{b})
+<p><img src="_images/math/7cafe553d169f705c18559a9e09fbfa481a015e5.svg" alt="\[
+    \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})
 \]"/></p>
-</div><p>where <img class="math" src="_images/math/504123562ca3c51520b9887dc1bf86c415e6fdd7.svg" alt="z"/> is output, <img class="math" src="_images/math/ea565314720bd78d2cf93592415a00f2628b0ec3.svg" alt="g"/> is the activation
-function, <img class="math" src="_images/math/ffd0c61381f3022987ac242c4b6622f5ab0ee75c.svg" alt="W"/> are weights, <img class="math" src="_images/math/a94fea56b9d65ba255b6d212a8581536ac8d07fe.svg" alt="b"/> is our
-bias, and <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/> is the index of the current layer.</p>
+</div><p>where <img class="math" src="_images/math/7781592845d244c06254fdaca3880786f02b3f80.svg" alt="\bm{a}"/> is activated output, <img class="math" src="_images/math/e3bf1ef0dd807d03fb49d7b38cc22fb494d4009d.svg" alt="\phi"/>
+is the activation function, <img class="math" src="_images/math/86872fb5bbd58bd98cd64a475fb814ea67d8c520.svg" alt="\bm{W}"/> are weights,
+<img class="math" src="_images/math/1d735dcd1d65f80245147548ce61a9d66202bb15.svg" alt="\bm{b}"/> is our bias.</p>
 <p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
 calculates two values as follows</p>
 <div class="math">

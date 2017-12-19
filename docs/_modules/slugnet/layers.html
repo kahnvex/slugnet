@@ -50,8 +50,8 @@
     <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="Dense"><a class="viewcode-back" href="../../optimizers.html#slugnet.layers.Dense">[docs]</a><span class="k">class</span> <span class="nc">Dense</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Dense"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Dense">[docs]</a><span class="k">class</span> <span class="nc">Dense</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A common densely connected neural network layer.</span>
 
 <span class="sd">    The :code:`Dense` layer implements the feed forward operation</span>
@@ -60,12 +60,12 @@
 <span class="sd">        :nowrap:</span>
 
 <span class="sd">        \[</span>
-<span class="sd">            \mathbf{z} = g(\mathbf{W}_i^T \mathbf{x} + \mathbf{b})</span>
+<span class="sd">            \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})</span>
 <span class="sd">        \]</span>
 
-<span class="sd">    where :math:`z` is output, :math:`g` is the activation</span>
-<span class="sd">    function, :math:`W` are weights, :math:`b` is our</span>
-<span class="sd">    bias, and :math:`i` is the index of the current layer.</span>
+<span class="sd">    where :math:`\bm{a}` is activated output, :math:`\phi`</span>
+<span class="sd">    is the activation function, :math:`\bm{W}` are weights,</span>
+<span class="sd">    :math:`\bm{b}` is our bias.</span>
 
 <span class="sd">    On feed backward, or backpropogation, the :code:`Dense` layer</span>
 <span class="sd">    calculates two values as follows</span>
@@ -73,18 +73,18 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        :nowrap:</span>
 
-<span class="sd">        \\begin{flalign}</span>
-<span class="sd">            \\frac{\partial \ell}{\partial \\bm{z}^{(i)}} &amp;=</span>
+<span class="sd">        \begin{flalign}</span>
+<span class="sd">            \frac{\partial \ell}{\partial \bm{z}^{(i)}} &amp;=</span>
 <span class="sd">                g&#39;(z^{(i)}) \circ</span>
-<span class="sd">                \Big[ \\bm{W}^{(i + 1)^T}</span>
-<span class="sd">                \\frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\\\</span>
-<span class="sd">            \\frac{\partial \ell}{\partial \\bm{W}^{(i)}} &amp;=</span>
-<span class="sd">                \\frac{\partial \ell}{\partial \\bm{z}^{(i)}} \\bm{x}^T</span>
-<span class="sd">        \\end{flalign}</span>
+<span class="sd">                \Big[ \bm{W}^{(i + 1)^T}</span>
+<span class="sd">                \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\</span>
+<span class="sd">            \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=</span>
+<span class="sd">                \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T</span>
+<span class="sd">        \end{flalign}</span>
 
 <span class="sd">    When looking at the source, there is a notable absence of</span>
-<span class="sd">    :math:`\\bm{W}^{(i + 1)^T}`</span>
-<span class="sd">    and :math:`\\frac{\partial \ell}{\partial z^{(i + 1)}}`.</span>
+<span class="sd">    :math:`\bm{W}^{(i + 1)^T}`</span>
+<span class="sd">    and :math:`\frac{\partial \ell}{\partial z^{(i + 1)}}`.</span>
 <span class="sd">    This is because their dot product is calculated in the previous layer.</span>
 <span class="sd">    The model propogates that gradient to this layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -102,7 +102,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Dense.backprop"><a class="viewcode-back" href="../../optimizers.html#slugnet.layers.Dense.backprop">[docs]</a>    <span class="k">def</span> <span class="nf">backprop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nxt_grad</span><span class="p">):</span>
+<div class="viewcode-block" id="Dense.backprop"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Dense.backprop">[docs]</a>    <span class="k">def</span> <span class="nf">backprop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nxt_grad</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the derivative for the next layer</span>
 <span class="sd">        and computes update for this layers weights</span>
