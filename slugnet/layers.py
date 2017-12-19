@@ -9,7 +9,7 @@ class Layer(object):
 
 
 class Dense(Layer):
-    """
+    r"""
     A common densely connected neural network layer.
 
     The :code:`Dense` layer implements the feed forward operation
@@ -18,12 +18,12 @@ class Dense(Layer):
         :nowrap:
 
         \[
-            \mathbf{z} = g(\mathbf{W}_i^T \mathbf{x} + \mathbf{b})
+            \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})
         \]
 
-    where :math:`z` is output, :math:`g` is the activation
-    function, :math:`W` are weights, :math:`b` is our
-    bias, and :math:`i` is the index of the current layer.
+    where :math:`\bm{a}` is activated output, :math:`\phi`
+    is the activation function, :math:`\bm{W}` are weights,
+    :math:`\bm{b}` is our bias.
 
     On feed backward, or backpropogation, the :code:`Dense` layer
     calculates two values as follows
@@ -31,18 +31,18 @@ class Dense(Layer):
     .. math::
         :nowrap:
 
-        \\begin{flalign}
-            \\frac{\partial \ell}{\partial \\bm{z}^{(i)}} &=
+        \begin{flalign}
+            \frac{\partial \ell}{\partial \bm{z}^{(i)}} &=
                 g'(z^{(i)}) \circ
-                \Big[ \\bm{W}^{(i + 1)^T}
-                \\frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\\\
-            \\frac{\partial \ell}{\partial \\bm{W}^{(i)}} &=
-                \\frac{\partial \ell}{\partial \\bm{z}^{(i)}} \\bm{x}^T
-        \\end{flalign}
+                \Big[ \bm{W}^{(i + 1)^T}
+                \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\
+            \frac{\partial \ell}{\partial \bm{W}^{(i)}} &=
+                \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T
+        \end{flalign}
 
     When looking at the source, there is a notable absence of
-    :math:`\\bm{W}^{(i + 1)^T}`
-    and :math:`\\frac{\partial \ell}{\partial z^{(i + 1)}}`.
+    :math:`\bm{W}^{(i + 1)^T}`
+    and :math:`\frac{\partial \ell}{\partial z^{(i + 1)}}`.
     This is because their dot product is calculated in the previous layer.
     The model propogates that gradient to this layer.
     """
