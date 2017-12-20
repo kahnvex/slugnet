@@ -74,17 +74,17 @@
 <span class="sd">        :nowrap:</span>
 
 <span class="sd">        \begin{flalign}</span>
-<span class="sd">            \frac{\partial \ell}{\partial \bm{z}^{(i)}} &amp;=</span>
-<span class="sd">                g&#39;(z^{(i)}) \circ</span>
+<span class="sd">            \frac{\partial \ell}{\partial \bm{a}^{(i)}} &amp;=</span>
 <span class="sd">                \Big[ \bm{W}^{(i + 1)^T}</span>
-<span class="sd">                \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\</span>
+<span class="sd">                \frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}\Big]</span>
+<span class="sd">                \circ \phi&#39;(\bm{a}^{(i)}) \\</span>
 <span class="sd">            \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=</span>
-<span class="sd">                \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T</span>
+<span class="sd">                \frac{\partial \ell}{\partial \bm{a}^{(i)}} \bm{x}^T</span>
 <span class="sd">        \end{flalign}</span>
 
 <span class="sd">    When looking at the source, there is a notable absence of</span>
 <span class="sd">    :math:`\bm{W}^{(i + 1)^T}`</span>
-<span class="sd">    and :math:`\frac{\partial \ell}{\partial z^{(i + 1)}}`.</span>
+<span class="sd">    and :math:`\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}`.</span>
 <span class="sd">    This is because their dot product is calculated in the previous layer.</span>
 <span class="sd">    The model propogates that gradient to this layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

@@ -59,17 +59,17 @@ is the activation function, <img class="math" src="_images/math/86872fb5bbd58bd9
 <p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
 calculates two values as follows</p>
 <div class="math">
-<p><img src="_images/math/bfcd4fc4b256688443e8b3104432f427381bab21.svg" alt="\begin{flalign}
-    \frac{\partial \ell}{\partial \bm{z}^{(i)}} &amp;=
-        g'(z^{(i)}) \circ
+<p><img src="_images/math/5c2680bc4b8caeb1698eaa50c3ca1dc90b6632e0.svg" alt="\begin{flalign}
+    \frac{\partial \ell}{\partial \bm{a}^{(i)}} &amp;=
         \Big[ \bm{W}^{(i + 1)^T}
-        \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\
+        \frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}\Big]
+        \circ \phi'(\bm{a}^{(i)}) \\
     \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=
-        \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T
+        \frac{\partial \ell}{\partial \bm{a}^{(i)}} \bm{x}^T
 \end{flalign}"/></p>
 </div><p>When looking at the source, there is a notable absence of
 <img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
-and <img class="math" src="_images/math/58227ac7addf2f9d608620babff5434bfac870ed.svg" alt="\frac{\partial \ell}{\partial z^{(i + 1)}}"/>.
+and <img class="math" src="_images/math/b52043529fabcd9ab1b5932757104cc9c2e58f87.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.</p>
 <dl class="method">
