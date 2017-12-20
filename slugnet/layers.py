@@ -32,17 +32,17 @@ class Dense(Layer):
         :nowrap:
 
         \begin{flalign}
-            \frac{\partial \ell}{\partial \bm{z}^{(i)}} &=
-                g'(z^{(i)}) \circ
+            \frac{\partial \ell}{\partial \bm{a}^{(i)}} &=
                 \Big[ \bm{W}^{(i + 1)^T}
-                \frac{\partial \ell}{\partial z^{(i + 1)}}\Big] \\
+                \frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}\Big]
+                \circ \phi'(\bm{a}^{(i)}) \\
             \frac{\partial \ell}{\partial \bm{W}^{(i)}} &=
-                \frac{\partial \ell}{\partial \bm{z}^{(i)}} \bm{x}^T
+                \frac{\partial \ell}{\partial \bm{a}^{(i)}} \bm{x}^T
         \end{flalign}
 
     When looking at the source, there is a notable absence of
     :math:`\bm{W}^{(i + 1)^T}`
-    and :math:`\frac{\partial \ell}{\partial z^{(i + 1)}}`.
+    and :math:`\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}`.
     This is because their dot product is calculated in the previous layer.
     The model propogates that gradient to this layer.
     """
