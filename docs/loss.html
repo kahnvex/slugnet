@@ -50,12 +50,6 @@
 <p>An objective function (or loss function, or optimization score
 function) is one of the two parameters required to compile a model.</p>
 <dl class="method">
-<dt id="slugnet.loss.Objective.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>outputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/loss.html#Objective.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.Objective.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Forward function.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="slugnet.loss.Objective.backward">
 <code class="descname">backward</code><span class="sig-paren">(</span><em>outputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/loss.html#Objective.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.Objective.backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Backward function.</p>
@@ -76,7 +70,11 @@ function) is one of the two parameters required to compile a model.</p>
 <em class="property">class </em><code class="descclassname">slugnet.loss.</code><code class="descname">BinaryCrossEntropy</code><span class="sig-paren">(</span><em>epsilon=1e-11</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/loss.html#BinaryCrossEntropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.loss.BinaryCrossEntropy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#slugnet.loss.Objective" title="slugnet.loss.Objective"><code class="xref py py-class docutils literal"><span class="pre">slugnet.loss.Objective</span></code></a></p>
 <p>Standard binary cross-entropy loss function.</p>
-</dd></dl>
+<p>Binary cross-entropy is given by</p>
+<div class="math">
+<p><img src="_images/math/90c1232a5e02bfeb9c8a2d6923c30966f4070ba5.svg" alt="\bm{\ell}(\bm{\hat{y}}, \bm{y}) = - \frac{1}{N} \sum_{i=1}^N
+    [\bm{y}_i \, \text{log}(\bm{\hat{y}}_i) + (1 - \bm{y}_i) \text{log}(1 - \bm{\hat{y}}_i)]"/></p>
+</div></dd></dl>
 
 </div>
 

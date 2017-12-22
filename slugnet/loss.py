@@ -7,8 +7,6 @@ class Objective(object):
 
     """
     def forward(self, outputs, targets):
-        """ Forward function.
-        """
         raise NotImplementedError()
 
     def backward(self, outputs, targets):
@@ -31,8 +29,16 @@ class Objective(object):
 
 
 class BinaryCrossEntropy(Objective):
-    """
+    r"""
     Standard binary cross-entropy loss function.
+
+    Binary cross-entropy is given by
+
+    .. math::
+
+        \bm{\ell}(\bm{\hat{y}}, \bm{y}) = - \frac{1}{N} \sum_{i=1}^N
+            [\bm{y}_i \, \text{log}(\bm{\hat{y}}_i) + (1 - \bm{y}_i) \text{log}(1 - \bm{\hat{y}}_i)]
+
     """
     def __init__(self, epsilon=1e-11):
         self.epsilon = epsilon
