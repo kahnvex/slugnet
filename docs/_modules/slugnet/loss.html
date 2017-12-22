@@ -48,10 +48,8 @@
 <span class="sd">    function) is one of the two parameters required to compile a model.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Objective.forward"><a class="viewcode-back" href="../../loss.html#slugnet.loss.Objective.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Forward function.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Objective.backward"><a class="viewcode-back" href="../../loss.html#slugnet.loss.Objective.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Backward function.</span>
@@ -73,8 +71,16 @@
 
 
 <div class="viewcode-block" id="BinaryCrossEntropy"><a class="viewcode-back" href="../../loss.html#slugnet.loss.BinaryCrossEntropy">[docs]</a><span class="k">class</span> <span class="nc">BinaryCrossEntropy</span><span class="p">(</span><span class="n">Objective</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Standard binary cross-entropy loss function.</span>
+
+<span class="sd">    Binary cross-entropy is given by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \bm{\ell}(\bm{\hat{y}}, \bm{y}) = - \frac{1}{N} \sum_{i=1}^N</span>
+<span class="sd">            [\bm{y}_i \, \text{log}(\bm{\hat{y}}_i) + (1 - \bm{y}_i) \text{log}(1 - \bm{\hat{y}}_i)]</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-11</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
