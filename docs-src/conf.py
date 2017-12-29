@@ -211,7 +211,10 @@ autodoc_member_order = 'bysource'
 def setup(app):
     app.add_stylesheet('caption.css')
 
-
 html_theme_options = {
-    'font_size': '19px'
+    'font_size': '19px',
+    'github_user': 'kahnvex',
+    'github_repo': 'slugnet',
+    'github_button': True,
+    'github_banner': True
 }
