@@ -137,12 +137,32 @@
 
 
 <div class="viewcode-block" id="Dropout"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Dropout">[docs]</a><span class="k">class</span> <span class="nc">Dropout</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Dropout is a method of regularization that trains subnetworks by turning</span>
 <span class="sd">    off non-output nodes with some probability :math:`p`.</span>
 
 <span class="sd">    This approximates bagging, which involves training an ensemble of models</span>
 <span class="sd">    to overcome weaknesses in any given model [1]_.</span>
+
+<span class="sd">    We can formalize dropout by representing the subnetworks created by dropout</span>
+<span class="sd">    with a mask vector :math:`\bm{\mu}`. Now, we note each subnetwork defines a</span>
+<span class="sd">    new probability distribution of :math:`y` as</span>
+<span class="sd">    :math:`\mathds{P}(y | \bm{x}, \bm{\mu})` [1]_. If we define</span>
+<span class="sd">    :math:`\mathds{P}(\bm{\mu})` as the probability distribution of mask vectors</span>
+<span class="sd">    :math:`\bm{\mu}`, we can write the mean of all subnetworks as</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        :nowrap:</span>
+
+<span class="sd">        \[</span>
+<span class="sd">            \sum_{\bm{\mu}} \mathds{P}(\bm{\mu}) \mathds{P}(y | \bm{x}, \bm{\mu}).</span>
+<span class="sd">        \]</span>
+
+<span class="sd">    The problem with evaluating this term is the exponential number of mask</span>
+<span class="sd">    vectors. In practice, we approximate this probability distribution by</span>
+<span class="sd">    including all nodes during inference, and multiplying each output by</span>
+<span class="sd">    :math:`1 - p`, the probability that any node is included in the network during</span>
+<span class="sd">    training. This rule is called the weight scaling inference rule [1]_.</span>
 
 <span class="sd">    :param p: The probability of a non-ouput node being removed from the network.</span>
 <span class="sd">    :type p: float</span>

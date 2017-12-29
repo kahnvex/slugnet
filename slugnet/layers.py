@@ -95,12 +95,32 @@ class Dense(Layer):
 
 
 class Dropout(Layer):
-    """
+    r"""
     Dropout is a method of regularization that trains subnetworks by turning
     off non-output nodes with some probability :math:`p`.
 
     This approximates bagging, which involves training an ensemble of models
     to overcome weaknesses in any given model [1]_.
+
+    We can formalize dropout by representing the subnetworks created by dropout
+    with a mask vector :math:`\bm{\mu}`. Now, we note each subnetwork defines a
+    new probability distribution of :math:`y` as
+    :math:`\mathds{P}(y | \bm{x}, \bm{\mu})` [1]_. If we define
+    :math:`\mathds{P}(\bm{\mu})` as the probability distribution of mask vectors
+    :math:`\bm{\mu}`, we can write the mean of all subnetworks as
+
+    .. math::
+        :nowrap:
+
+        \[
+            \sum_{\bm{\mu}} \mathds{P}(\bm{\mu}) \mathds{P}(y | \bm{x}, \bm{\mu}).
+        \]
+
+    The problem with evaluating this term is the exponential number of mask
+    vectors. In practice, we approximate this probability distribution by
+    including all nodes during inference, and multiplying each output by
+    :math:`1 - p`, the probability that any node is included in the network during
+    training. This rule is called the weight scaling inference rule [1]_.
 
     :param p: The probability of a non-ouput node being removed from the network.
     :type p: float
