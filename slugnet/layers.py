@@ -5,7 +5,11 @@ from slugnet.initializations import _zero, GlorotUniform
 
 
 class Layer(object):
-    pass
+    def get_params(self):
+        return []
+
+    def get_grads(self):
+        return []
 
 
 class Dense(Layer):
@@ -45,6 +49,18 @@ class Dense(Layer):
     and :math:`\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}`.
     This is because their dot product is calculated in the previous layer.
     The model propogates that gradient to this layer.
+
+    :param ind: The input dimension at this layer.
+    :type ind: int
+
+    :param outd: The output dimension at this layer.
+    :type outd: int
+
+    :param activation: The activation function to be used at the layer.
+    :type activation: slugnet.activation.Activation
+
+    :param init: The initialization function to be used
+    :type init: slugnet.initializations.Initializer
     """
 
     def __init__(self, ind, outd, activation=Noop(), init=GlorotUniform()):
@@ -55,7 +71,7 @@ class Dense(Layer):
         self.db = None
         self.activation = activation
 
-    def call(self, X):
+    def call(self, X, *args, **kwargs):
         self.last_X = X
 
         return self.activation.call(np.dot(X, self.w) + self.b)
@@ -76,3 +92,39 @@ class Dense(Layer):
 
     def get_grads(self):
         return self.dw, self.db
+
+
+class Dropout(Layer):
+    """
+    Dropout is a method of regularization that trains subnetworks by turning
+    off non-output nodes with some probability :math:`p`.
+
+    This approximates bagging, which involves training an ensemble of models
+    to overcome weaknesses in any given model [1]_.
+
+    :param p: The probability of a non-ouput node being removed from the network.
+    :type p: float
+
+    .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, http://www.deeplearningbook.org
+    """
+    def __init__(self, p=0.0, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p = p
+
+    def call(self, X, train=True, *args, **kwargs):
+        if 0. > self.p or self.p > 1.:
+            return X
+
+        if not train:
+            return X * (1 - self.p)
+
+        binomial = np.random.binomial(1, 1 - self.p, X.shape)
+        self.last_mask = binomial / (1 - self.p)
+
+        return X * self.last_mask
+
+    def backprop(self, pre_grad, *args, **kwargs):
+        if 0. < self.p < 1.:
+            return pre_grad * self.last_mask
+
+        return pre_grad

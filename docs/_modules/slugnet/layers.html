@@ -47,7 +47,11 @@
 
 
 <span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">get_grads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
 
 
 <div class="viewcode-block" id="Dense"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Dense">[docs]</a><span class="k">class</span> <span class="nc">Dense</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
@@ -87,6 +91,18 @@
 <span class="sd">    and :math:`\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}`.</span>
 <span class="sd">    This is because their dot product is calculated in the previous layer.</span>
 <span class="sd">    The model propogates that gradient to this layer.</span>
+
+<span class="sd">    :param ind: The input dimension at this layer.</span>
+<span class="sd">    :type ind: int</span>
+
+<span class="sd">    :param outd: The output dimension at this layer.</span>
+<span class="sd">    :type outd: int</span>
+
+<span class="sd">    :param activation: The activation function to be used at the layer.</span>
+<span class="sd">    :type activation: slugnet.activation.Activation</span>
+
+<span class="sd">    :param init: The initialization function to be used</span>
+<span class="sd">    :type init: slugnet.initializations.Initializer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">outd</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Noop</span><span class="p">(),</span> <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">()):</span>
@@ -97,7 +113,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
 
-    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_X</span> <span class="o">=</span> <span class="n">X</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
@@ -118,6 +134,42 @@
 
     <span class="k">def</span> <span class="nf">get_grads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span></div>
+
+
+<div class="viewcode-block" id="Dropout"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Dropout">[docs]</a><span class="k">class</span> <span class="nc">Dropout</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Dropout is a method of regularization that trains subnetworks by turning</span>
+<span class="sd">    off non-output nodes with some probability :math:`p`.</span>
+
+<span class="sd">    This approximates bagging, which involves training an ensemble of models</span>
+<span class="sd">    to overcome weaknesses in any given model [1]_.</span>
+
+<span class="sd">    :param p: The probability of a non-ouput node being removed from the network.</span>
+<span class="sd">    :type p: float</span>
+
+<span class="sd">    .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, http://www.deeplearningbook.org</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="mf">0.</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">&gt;</span> <span class="mf">1.</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">train</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="n">binomial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_mask</span> <span class="o">=</span> <span class="n">binomial</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_mask</span>
+
+    <span class="k">def</span> <span class="nf">backprop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre_grad</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="mf">0.</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">&lt;</span> <span class="mf">1.</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pre_grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_mask</span>
+
+        <span class="k">return</span> <span class="n">pre_grad</span></div>
 </pre></div>
 
           </div>

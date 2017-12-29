@@ -4,7 +4,7 @@ import unittest
 from sklearn.datasets import fetch_mldata
 
 from slugnet.activation import ReLU, Softmax
-from slugnet.layers import Dense
+from slugnet.layers import Dense, Dropout
 from slugnet.loss import SoftmaxCategoricalCrossEntropy as SCCE
 from slugnet.model import Model
 from slugnet.optimizers import RMSProp
@@ -38,3 +38,23 @@ class TestMNIST(unittest.TestCase):
 
     def test_validation_accuracy_above_ninety(self):
         self.assertGreater(self.fit_metrics['val']['accuracy'], 0.9)
+
+
+class TestMNISTWithDropout(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        self.X, self.y = get_mnist()
+        self.model = Model(lr=0.01, n_epoch=3, loss=SCCE(),
+                           metrics=['loss', 'accuracy'], optimizer=RMSProp())
+
+        self.model.add_layer(Dense(784, 200, activation=ReLU()))
+        self.model.add_layer(Dropout(0.5))
+        self.model.add_layer(Dense(200, 10, activation=Softmax()))
+
+        self.fit_metrics = self.model.fit(self.X, self.y)
+
+    def test_training_accuracy_above_ninety(self):
+        self.assertGreater(self.fit_metrics['train']['accuracy'], 0.8)
+
+    def test_validation_accuracy_above_ninety(self):
+        self.assertGreater(self.fit_metrics['val']['accuracy'], 0.8)
