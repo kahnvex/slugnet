@@ -134,6 +134,19 @@ training. This rule is called the weight scaling inference rule <a class="footno
 </table>
 </dd></dl>
 
+<dl class="class">
+<dt id="slugnet.layers.Convolution">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>ind</em>, <em>nb_filter</em>, <em>filter_size</em>, <em>stride=1</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=&lt;slugnet.activation.ReLU object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A layer that implements the convolution operation.</p>
+<p>In the general case, a discrete convolution operation implements
+the function:</p>
+<div class="math">
+<p><img src="_images/math/b785a0d6cfc7114705adac1dc8a868b188f7c75e.svg" alt="\[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]"/></p>
+</div><p>where <img class="math" src="_images/math/0642a80e44de7b43d141fa9d602bc25a316a12ba.svg" alt="x"/> is the input and <img class="math" src="_images/math/bf3580fe7b9c3cee41223cb47ebbe60dac20b359.svg" alt="w"/>
+is the kernel, or in some cases the weighting function.</p>
+</dd></dl>
+
 </div>
 
 
@@ -198,6 +211,10 @@ training. This rule is called the weight scaling inference rule <a class="footno
           rel="nofollow">Page source</a>
     </div>
 
+    
+    <a href="https://github.com/kahnvex/slugnet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
     
 
     

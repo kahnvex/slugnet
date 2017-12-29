@@ -42,7 +42,7 @@
   <h1>Source code for slugnet.layers</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="k">import</span> <span class="n">Noop</span>
+<span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="k">import</span> <span class="n">Noop</span><span class="p">,</span> <span class="n">ReLU</span>
 <span class="kn">from</span> <span class="nn">slugnet.initializations</span> <span class="k">import</span> <span class="n">_zero</span><span class="p">,</span> <span class="n">GlorotUniform</span>
 
 
@@ -190,6 +190,40 @@
             <span class="k">return</span> <span class="n">pre_grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_mask</span>
 
         <span class="k">return</span> <span class="n">pre_grad</span></div>
+
+
+<div class="viewcode-block" id="Convolution"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Convolution">[docs]</a><span class="k">class</span> <span class="nc">Convolution</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A layer that implements the convolution operation.</span>
+
+<span class="sd">    In the general case, a discrete convolution operation implements</span>
+<span class="sd">    the function:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        :nowrap:</span>
+
+<span class="sd">        \[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]</span>
+
+<span class="sd">    where :math:`x` is the input and :math:`w`</span>
+<span class="sd">    is the kernel, or in some cases the weighting function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">nb_filter</span><span class="p">,</span> <span class="n">filter_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">(),</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_filter</span> <span class="o">=</span> <span class="n">nb_filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_size</span> <span class="o">=</span> <span class="n">filter_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ind</span> <span class="o">=</span> <span class="n">ind</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">outd</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_output</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">init</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_filter</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
 </pre></div>
 
           </div>
@@ -238,6 +272,10 @@
       
     </div>
 
+    
+    <a href="https://github.com/kahnvex/slugnet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
     
 
     

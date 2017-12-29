@@ -1,6 +1,6 @@
 import numpy as np
 
-from slugnet.activation import Noop
+from slugnet.activation import Noop, ReLU
 from slugnet.initializations import _zero, GlorotUniform
 
 
@@ -148,3 +148,37 @@ class Dropout(Layer):
             return pre_grad * self.last_mask
 
         return pre_grad
+
+
+class Convolution(Layer):
+    """
+    A layer that implements the convolution operation.
+
+    In the general case, a discrete convolution operation implements
+    the function:
+
+    .. math::
+        :nowrap:
+
+        \[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]
+
+    where :math:`x` is the input and :math:`w`
+    is the kernel, or in some cases the weighting function.
+    """
+    def __init__(self, ind, nb_filter, filter_size, stride=1,
+            init=GlorotUniform(), activation=ReLU()):
+
+        self.nb_filter = nb_filter
+        self.filter_size = filter_size
+        self.ind = ind
+        self.stride = stride
+
+        self.w, self.b = None, None
+        self.dw, self.db = None, None
+
+        self.outd = None
+        self.last_output = None
+        self.last_input = None
+
+        self.activation = activation
+        self.w = init((self.nb_filter, self))
