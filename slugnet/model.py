@@ -13,6 +13,9 @@ class Model(object):
     A model implement functionality for fitting a neural network and
     making predictions.
 
+    Parameters
+    ----------
+
     :param lr: The learning rate to be used during training.
     :type lr: float
 
@@ -70,9 +73,9 @@ class Model(object):
 
         return outd
 
-    def feedforward(self, X):
+    def feedforward(self, X, train=True):
         for layer in self.layers:
-            X = layer.call(X)
+            X = layer.call(X, train=train)
 
         return X
 
@@ -185,4 +188,4 @@ class Model(object):
         """
         Predict the labels or values of some input matrix :code:`X`.
         """
-        return self.feedforward(X)[0]
+        return self.feedforward(X, train=False)[0]

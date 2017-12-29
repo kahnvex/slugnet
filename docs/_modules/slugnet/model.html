@@ -55,6 +55,9 @@
 <span class="sd">    A model implement functionality for fitting a neural network and</span>
 <span class="sd">    making predictions.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
 <span class="sd">    :param lr: The learning rate to be used during training.</span>
 <span class="sd">    :type lr: float</span>
 
@@ -112,9 +115,9 @@
 
         <span class="k">return</span> <span class="n">outd</span>
 
-    <span class="k">def</span> <span class="nf">feedforward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">feedforward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
-            <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="n">train</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">X</span>
 
@@ -227,7 +230,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict the labels or values of some input matrix :code:`X`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">feedforward</span><span class="p">(</span><span class="n">X</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">feedforward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div></div>
 </pre></div>
 
           </div>

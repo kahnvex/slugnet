@@ -72,6 +72,20 @@ calculates two values as follows</p>
 and <img class="math" src="_images/math/b52043529fabcd9ab1b5932757104cc9c2e58f87.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ind</strong> (<em>int</em>) – The input dimension at this layer.</li>
+<li><strong>outd</strong> (<em>int</em>) – The output dimension at this layer.</li>
+<li><strong>activation</strong> (<em>slugnet.activation.Activation</em>) – The activation function to be used at the layer.</li>
+<li><strong>init</strong> (<em>slugnet.initializations.Initializer</em>) – The initialization function to be used</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="slugnet.layers.Dense.backprop">
 <code class="descname">backprop</code><span class="sig-paren">(</span><em>nxt_grad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense.backprop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense.backprop" title="Permalink to this definition">¶</a></dt>
@@ -79,6 +93,30 @@ The model propogates that gradient to this layer.</p>
 and computes update for this layers weights</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="slugnet.layers.Dropout">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dropout</code><span class="sig-paren">(</span><em>p=0.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dropout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>Dropout is a method of regularization that trains subnetworks by turning
+off non-output nodes with some probability <img class="math" src="_images/math/70c2f41478031b532a625cb53a08693e6ea15602.svg" alt="p"/>.</p>
+<p>This approximates bagging, which involves training an ensemble of models
+to overcome weaknesses in any given model <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>p</strong> (<em>float</em>) – The probability of a non-ouput node being removed from the network.</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Goodfellow, Bengio, Courville (2016), Deep Learning, <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
