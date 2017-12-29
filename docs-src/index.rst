@@ -10,9 +10,9 @@ activation functions, loss functions, forward propogation, backward
 propogation, and more.
 
 The mathematical documentation assumes basic understanding of discriminative
-machine learning techniques, linear algebra, and calculus. This documentation
-will loosely follow the notation found in *Deep Learning* (Goodfellow, Bengio,
-& Courville, 2016).
+machine learning techniques, linear algebra, probability, and calculus. This
+documentation will loosely follow the notation found in *Deep Learning*
+(Goodfellow, Bengio, & Courville, 2016).
 
 Before looking at any code, the following sections will introduce the notation
 styles this library will follow as well as give a brief mathematical
