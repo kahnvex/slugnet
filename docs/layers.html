@@ -102,7 +102,22 @@ and computes update for this layers weights</p>
 <p>Dropout is a method of regularization that trains subnetworks by turning
 off non-output nodes with some probability <img class="math" src="_images/math/70c2f41478031b532a625cb53a08693e6ea15602.svg" alt="p"/>.</p>
 <p>This approximates bagging, which involves training an ensemble of models
-to overcome weaknesses in any given model <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+to overcome weaknesses in any given model <a class="footnote-reference" href="#id4" id="id1">[1]</a>.</p>
+<p>We can formalize dropout by representing the subnetworks created by dropout
+with a mask vector <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>. Now, we note each subnetwork defines a
+new probability distribution of <img class="math" src="_images/math/ddc4cefb70948005dd1900a3de93cefcc7b1b6b3.svg" alt="y"/> as
+<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a class="footnote-reference" href="#id4" id="id2">[1]</a>. If we define
+<img class="math" src="_images/math/9dbf7cd080c8a3c2bb81218bb66184ea28673e89.svg" alt="\mathds{P}(\bm{\mu})"/> as the probability distribution of mask vectors
+<img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>, we can write the mean of all subnetworks as</p>
+<div class="math">
+<p><img src="_images/math/f7d65edfc282dc4351e1169855a6ecedadf571b8.svg" alt="\[
+    \sum_{\bm{\mu}} \mathds{P}(\bm{\mu}) \mathds{P}(y | \bm{x}, \bm{\mu}).
+\]"/></p>
+</div><p>The problem with evaluating this term is the exponential number of mask
+vectors. In practice, we approximate this probability distribution by
+including all nodes during inference, and multiplying each output by
+<img class="math" src="_images/math/b31dbce22ac4f932167d1dab800282625ddb22b5.svg" alt="1 - p"/>, the probability that any node is included in the network during
+training. This rule is called the weight scaling inference rule <a class="footnote-reference" href="#id4" id="id3">[1]</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -111,10 +126,10 @@ to overcome weaknesses in any given model <a class="footnote-reference" href="#i
 </tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
+<table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Goodfellow, Bengio, Courville (2016), Deep Learning, <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>)</em> Goodfellow, Bengio, Courville (2016), Deep Learning, <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
 </tbody>
 </table>
 </dd></dl>
