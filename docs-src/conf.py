@@ -201,8 +201,6 @@ html_sidebars = {'**': [
     'searchbox.html'
 ], }
 
-
-
 sidebar_includehidden = False
 
 # Order autodoc docs by source order
@@ -213,5 +211,9 @@ def setup(app):
 
 
 html_theme_options = {
-    'font_size': '19px'
+    'font_size': '19px',
+    'github_user': 'kahnvex',
+    'github_repo': 'slugnet',
+    'github_button': True,
+    'github_banner': True
 }
