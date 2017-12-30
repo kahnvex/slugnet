@@ -173,7 +173,7 @@ This configuration allows us to learn the parameters of the
 kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> the same way we’d learn ordinary parameters
 in a densely connected neural network.</p>
 <div class="figure">
-<p><img src="_images/tikz-c88077e4f163128088cfeaf5472bf1c09ad70fa9.png" alt="\def\input {
+<p><img src="_images/tikz-b1861e6b4e73d48ae74df8c4a679eab7673c93bf.png" alt="\def\input {
     0/2.4/a,
     1.2/2.4/b,
     2.4/2.4/c,
@@ -214,11 +214,12 @@ in a densely connected neural network.</p>
     \draw (\x,\y) -- (\x,\y + 3) -- (\x + 3,\y + 3) -- (\x + 3, \y) -- (\x,\y)
     node[xshift=1.5cm, yshift=1.5cm]{\footnotesize $\l$};
 
-\draw (1.1,3.5) -- (3.5, 3.5) -- (3.5, 1.1) -- (1.1, 1.1) -- (1.1, 3.5);
-\draw (4.9,2.3) -- (7.3, 2.3) -- (7.3, -0.1) -- (4.9, -0.1) -- (4.9, 2.3);
+\draw [line width=0.4mm](1.1,3.5) -- (3.5, 3.5) -- (3.5, 1.1) -- (1.1, 1.1) -- (1.1, 3.5);
+\draw [line width=0.4mm](4.9,2.3) -- (7.3, 2.3) -- (7.3, -0.1) -- (4.9, -0.1) -- (4.9, 2.3);
+\draw [line width=0.4mm](3.3,-1.5) -- (6.5, -1.5) -- (6.5, -4.7) -- (3.3, -4.7) -- (3.3, -1.5);
 
-\draw [-|&gt;] (3.5, 2.3) -- (4.0, 2.3) -- (4.0, -1.5);
-\draw [-|&gt;] (6, -0.1) -- (6, -1.5);" /></p>
+\draw [line width=0.4mm, -|&gt;] (3.5, 2.3) -- (4.0, 2.3) -- (4.0, -1.4);
+\draw [line width=0.4mm, -|&gt;] (6, -0.1) -- (6, -1.4);" /></p>
 </div><p class="caption"><strong>Figure 1:</strong> An example of a two dimension convolution operation. The
 input is an image in <img class="math" src="_images/math/23072a119b7a7c7cf2d6c947df6281370e5517f8.svg" alt="\mathds{R}^{3 \times 3}"/>, and the kernel is
 in <img class="math" src="_images/math/a88cdf031b73d22f069872b57c8021b71537a760.svg" alt="\mathds{R}^{2 \times 2}"/>. As the kernel is slid over the input
