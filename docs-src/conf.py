@@ -61,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Slugnet'
-copyright = u'2017, Jarrod Kahn'
+copyright = u'2017, <a href="https://jarrodkahn.com">Jarrod Kahn</a>'
 author = u'Jarrod Kahn'
 
 # The version info for the project you're documenting, acts as replacement for

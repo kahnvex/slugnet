@@ -193,7 +193,7 @@
 
 
 <div class="viewcode-block" id="Convolution"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Convolution">[docs]</a><span class="k">class</span> <span class="nc">Convolution</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A layer that implements the convolution operation.</span>
 
 <span class="sd">    In the general case, a discrete convolution operation implements</span>
@@ -206,12 +206,134 @@
 
 <span class="sd">    where :math:`x` is the input and :math:`w`</span>
 <span class="sd">    is the kernel, or in some cases the weighting function.</span>
+
+<span class="sd">    In the case of convolutional neural networks, the input</span>
+<span class="sd">    is typically two dimensional image :math:`I`, and it</span>
+<span class="sd">    follows that we have a two dimensional kernel :math:`K`.</span>
+<span class="sd">    Now we can write out convolution function with both axes:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        :nowrap:</span>
+
+<span class="sd">        \[S(i, j) = \sum_m \sum_n I(m, n) K(i - m, j - n).\]</span>
+
+<span class="sd">    Note that we can write the infinite sum over the domains of</span>
+<span class="sd">    :math:`m` and :math:`n` as discrete sums because we assume</span>
+<span class="sd">    that the kernel :math:`K` is zero everywhere but the set of</span>
+<span class="sd">    points in which we store data [1]_.</span>
+
+<span class="sd">    The motivation for using the convolution operation in a</span>
+<span class="sd">    neural network is best described using an example of an</span>
+<span class="sd">    image. In a densely connected neural network, each node</span>
+<span class="sd">    at layer :math:`i` is connected to every node at layer</span>
+<span class="sd">    :math:`i + 1`. This does not lend itself to image processing,</span>
+<span class="sd">    where location of a shape relative to another shape is</span>
+<span class="sd">    important. For instance, finding a right angle involves</span>
+<span class="sd">    detecting two edges that are perpendicular, *and* whose</span>
+<span class="sd">    lines cross one another. If we make the kernel smaller</span>
+<span class="sd">    than the input image, we can process parts of the image</span>
+<span class="sd">    at a time, thereby ensuring locality of the input signals.</span>
+<span class="sd">    To process the entire image, we slide the kernel over the</span>
+<span class="sd">    input, along both axes. At each step, an output is produced</span>
+<span class="sd">    which will be used as input for the next layer.</span>
+<span class="sd">    This configuration allows us to learn the parameters of the</span>
+<span class="sd">    kernel :math:`K` the same way we&#39;d learn ordinary parameters</span>
+<span class="sd">    in a densely connected neural network.</span>
+
+<span class="sd">    .. tikz::</span>
+
+<span class="sd">        \def\input {</span>
+<span class="sd">            0/2.4/a,</span>
+<span class="sd">            1.2/2.4/b,</span>
+<span class="sd">            2.4/2.4/c,</span>
+<span class="sd">            0/1.2/d,</span>
+<span class="sd">            1.2/1.2/e,</span>
+<span class="sd">            2.4/1.2/f,</span>
+<span class="sd">            0/0/g,</span>
+<span class="sd">            1.2/0/h,</span>
+<span class="sd">            2.4/0/i</span>
+<span class="sd">        }</span>
+
+<span class="sd">        \def\kernel {</span>
+<span class="sd">            0/1.2/w,</span>
+<span class="sd">            1.2/1.2/x,</span>
+<span class="sd">            0/0/y,</span>
+<span class="sd">            1.2/0/z</span>
+<span class="sd">        }</span>
+
+<span class="sd">        \def\output {</span>
+<span class="sd">            0/-4.6/aw + bx + dy + ez,</span>
+<span class="sd">            3.4/-4.6/bw + cx + ey + fz,</span>
+<span class="sd">            0/-8/dw + ex + gy + hz,</span>
+<span class="sd">            3.4/-8/ew + fx + hy + iz</span>
+<span class="sd">        }</span>
+
+<span class="sd">        \draw (0.5,3.8) node {Input};</span>
+<span class="sd">        \foreach \x/\y/\l in \input</span>
+<span class="sd">            \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)</span>
+<span class="sd">            node[anchor=south west]{$\l$};</span>
+
+<span class="sd">        \draw (5.5,2.6) node {Kernel};</span>
+<span class="sd">        \foreach \x/\y/\l in \kernel</span>
+<span class="sd">            \draw (\x + 5,\y) -- (\x + 5, \y + 1) -- (\x + 6, \y + 1) -- (\x + 6, \y) -- (\x + 5, \y)</span>
+<span class="sd">            node[anchor=south west]{$\l$};</span>
+
+<span class="sd">        \draw (0.7,-1.3) node {Output};</span>
+<span class="sd">        \foreach \x/\y/\l in \output</span>
+<span class="sd">            \draw (\x,\y) -- (\x,\y + 3) -- (\x + 3,\y + 3) -- (\x + 3, \y) -- (\x,\y)</span>
+<span class="sd">            node[xshift=1.5cm, yshift=1.5cm]{\footnotesize $\l$};</span>
+
+<span class="sd">        \draw (1.1,3.5) -- (3.5, 3.5) -- (3.5, 1.1) -- (1.1, 1.1) -- (1.1, 3.5);</span>
+<span class="sd">        \draw (4.9,2.3) -- (7.3, 2.3) -- (7.3, -0.1) -- (4.9, -0.1) -- (4.9, 2.3);</span>
+
+<span class="sd">        \draw [-|&gt;] (3.5, 2.3) -- (4.0, 2.3) -- (4.0, -1.5);</span>
+<span class="sd">        \draw [-|&gt;] (6, -0.1) -- (6, -1.5);</span>
+
+<span class="sd">    .. rst-class:: caption</span>
+
+<span class="sd">        **Figure 1:** An example of a two dimension convolution operation. The</span>
+<span class="sd">        input is an image in :math:`\mathds{R}^{3 \times 3}`, and the kernel is</span>
+<span class="sd">        in :math:`\mathds{R}^{2 \times 2}`. As the kernel is slid over the input</span>
+<span class="sd">        with a stride width of one, an output in</span>
+<span class="sd">        :math:`\mathds{R}^{2 \times 2}` is produced. In the example, the arrows</span>
+<span class="sd">        and boxes demonstrate how the upper-right portion of the input image</span>
+<span class="sd">        are compbined with the kernel parameters to produce the upper right</span>
+<span class="sd">        unit of output.</span>
+
+<span class="sd">        --Source: Goodfellow, Bengio, Courville (Deep Learning, 2016, Figure 9.1).</span>
+
+<span class="sd">    The stride width determinse how far the kernel moves at each step. Of</span>
+<span class="sd">    course, to learn anything interesting, we require multiple kernels at</span>
+<span class="sd">    each layer. These are all configurable hyperparameters that can be set</span>
+<span class="sd">    upon network instantiation. When the network is operating in feedforward</span>
+<span class="sd">    mode, the output at each layer is a three dimensional tensor, rather than</span>
+<span class="sd">    a matrix. This is due to the fact that each kernel produces its own</span>
+<span class="sd">    two dimensional output, and there are multiple kernels at every layer.</span>
+
+<span class="sd">    :param nb_kernel: The number of kernels to use.</span>
+<span class="sd">    :type nb_kernel: int</span>
+
+<span class="sd">    :param kernel_size: The size of the kernel as a tuple, heigh by width</span>
+<span class="sd">    :type kernel_size: (int, int)</span>
+
+<span class="sd">    :param stride: The stide width to use</span>
+<span class="sd">    :type stride: int</span>
+
+<span class="sd">    :param init: The initializer to use</span>
+<span class="sd">    :type init: slugnet.initializations.Initializer</span>
+
+<span class="sd">    :param activation: The activation function to be used at the layer.</span>
+<span class="sd">    :type activation: slugnet.activation.Activation</span>
+
+
+<span class="sd">    .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,</span>
+<span class="sd">         http://www.deeplearningbook.org</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">nb_filter</span><span class="p">,</span> <span class="n">filter_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">nb_kernel</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">(),</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">nb_filter</span> <span class="o">=</span> <span class="n">nb_filter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filter_size</span> <span class="o">=</span> <span class="n">filter_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span> <span class="o">=</span> <span class="n">nb_kernel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span> <span class="o">=</span> <span class="n">kernel_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ind</span> <span class="o">=</span> <span class="n">ind</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span>
 
@@ -223,7 +345,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">init</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_filter</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">init</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
 </pre></div>
 
           </div>
@@ -264,7 +386,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jarrod Kahn.
+      &copy;2017, <a href="https://jarrodkahn.com">Jarrod Kahn</a>.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>

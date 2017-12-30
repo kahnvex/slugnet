@@ -102,11 +102,11 @@ and computes update for this layers weights</p>
 <p>Dropout is a method of regularization that trains subnetworks by turning
 off non-output nodes with some probability <img class="math" src="_images/math/70c2f41478031b532a625cb53a08693e6ea15602.svg" alt="p"/>.</p>
 <p>This approximates bagging, which involves training an ensemble of models
-to overcome weaknesses in any given model <a class="footnote-reference" href="#id4" id="id1">[1]</a>.</p>
+to overcome weaknesses in any given model <a href="#id7"><span class="problematic" id="id1">[1]_</span></a>.</p>
 <p>We can formalize dropout by representing the subnetworks created by dropout
 with a mask vector <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>. Now, we note each subnetwork defines a
 new probability distribution of <img class="math" src="_images/math/ddc4cefb70948005dd1900a3de93cefcc7b1b6b3.svg" alt="y"/> as
-<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a class="footnote-reference" href="#id4" id="id2">[1]</a>. If we define
+<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a href="#id8"><span class="problematic" id="id2">[1]_</span></a>. If we define
 <img class="math" src="_images/math/9dbf7cd080c8a3c2bb81218bb66184ea28673e89.svg" alt="\mathds{P}(\bm{\mu})"/> as the probability distribution of mask vectors
 <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>, we can write the mean of all subnetworks as</p>
 <div class="math">
@@ -117,7 +117,7 @@ new probability distribution of <img class="math" src="_images/math/ddc4cefb7094
 vectors. In practice, we approximate this probability distribution by
 including all nodes during inference, and multiplying each output by
 <img class="math" src="_images/math/b31dbce22ac4f932167d1dab800282625ddb22b5.svg" alt="1 - p"/>, the probability that any node is included in the network during
-training. This rule is called the weight scaling inference rule <a class="footnote-reference" href="#id4" id="id3">[1]</a>.</p>
+training. This rule is called the weight scaling inference rule <a href="#id9"><span class="problematic" id="id3">[1]_</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -129,14 +129,14 @@ training. This rule is called the weight scaling inference rule <a class="footno
 <table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>)</em> Goodfellow, Bengio, Courville (2016), Deep Learning, <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
+<tr><td class="label">[1]</td><td>Goodfellow, Bengio, Courville (2016), Deep Learning, <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="class">
 <dt id="slugnet.layers.Convolution">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>ind</em>, <em>nb_filter</em>, <em>filter_size</em>, <em>stride=1</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=&lt;slugnet.activation.ReLU object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>ind</em>, <em>nb_kernel</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=&lt;slugnet.activation.ReLU object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
 <p>A layer that implements the convolution operation.</p>
 <p>In the general case, a discrete convolution operation implements
@@ -145,6 +145,118 @@ the function:</p>
 <p><img src="_images/math/b785a0d6cfc7114705adac1dc8a868b188f7c75e.svg" alt="\[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]"/></p>
 </div><p>where <img class="math" src="_images/math/0642a80e44de7b43d141fa9d602bc25a316a12ba.svg" alt="x"/> is the input and <img class="math" src="_images/math/bf3580fe7b9c3cee41223cb47ebbe60dac20b359.svg" alt="w"/>
 is the kernel, or in some cases the weighting function.</p>
+<p>In the case of convolutional neural networks, the input
+is typically two dimensional image <img class="math" src="_images/math/82d557a1887f8018e73b98245468e9e76ac99dc5.svg" alt="I"/>, and it
+follows that we have a two dimensional kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/>.
+Now we can write out convolution function with both axes:</p>
+<div class="math">
+<p><img src="_images/math/5fe607911c726afc17d064f98616b2ad916850b6.svg" alt="\[S(i, j) = \sum_m \sum_n I(m, n) K(i - m, j - n).\]"/></p>
+</div><p>Note that we can write the infinite sum over the domains of
+<img class="math" src="_images/math/1e147e70e7d7a2b61cee9f9ee7e6f24faffb9b8a.svg" alt="m"/> and <img class="math" src="_images/math/32f0a59be9113850c78c51bd8bbf03c53f3d4e10.svg" alt="n"/> as discrete sums because we assume
+that the kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> is zero everywhere but the set of
+points in which we store data <a href="#id10"><span class="problematic" id="id5">[1]_</span></a>.</p>
+<p>The motivation for using the convolution operation in a
+neural network is best described using an example of an
+image. In a densely connected neural network, each node
+at layer <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/> is connected to every node at layer
+<img class="math" src="_images/math/b8c29d6a3b774d66617715a65662a284a79c345e.svg" alt="i + 1"/>. This does not lend itself to image processing,
+where location of a shape relative to another shape is
+important. For instance, finding a right angle involves
+detecting two edges that are perpendicular, <em>and</em> whose
+lines cross one another. If we make the kernel smaller
+than the input image, we can process parts of the image
+at a time, thereby ensuring locality of the input signals.
+To process the entire image, we slide the kernel over the
+input, along both axes. At each step, an output is produced
+which will be used as input for the next layer.
+This configuration allows us to learn the parameters of the
+kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> the same way we’d learn ordinary parameters
+in a densely connected neural network.</p>
+<div class="figure">
+<p><img src="_images/tikz-c88077e4f163128088cfeaf5472bf1c09ad70fa9.png" alt="\def\input {
+    0/2.4/a,
+    1.2/2.4/b,
+    2.4/2.4/c,
+    0/1.2/d,
+    1.2/1.2/e,
+    2.4/1.2/f,
+    0/0/g,
+    1.2/0/h,
+    2.4/0/i
+}
+
+\def\kernel {
+    0/1.2/w,
+    1.2/1.2/x,
+    0/0/y,
+    1.2/0/z
+}
+
+\def\output {
+    0/-4.6/aw + bx + dy + ez,
+    3.4/-4.6/bw + cx + ey + fz,
+    0/-8/dw + ex + gy + hz,
+    3.4/-8/ew + fx + hy + iz
+}
+
+\draw (0.5,3.8) node {Input};
+\foreach \x/\y/\l in \input
+    \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+    node[anchor=south west]{$\l$};
+
+\draw (5.5,2.6) node {Kernel};
+\foreach \x/\y/\l in \kernel
+    \draw (\x + 5,\y) -- (\x + 5, \y + 1) -- (\x + 6, \y + 1) -- (\x + 6, \y) -- (\x + 5, \y)
+    node[anchor=south west]{$\l$};
+
+\draw (0.7,-1.3) node {Output};
+\foreach \x/\y/\l in \output
+    \draw (\x,\y) -- (\x,\y + 3) -- (\x + 3,\y + 3) -- (\x + 3, \y) -- (\x,\y)
+    node[xshift=1.5cm, yshift=1.5cm]{\footnotesize $\l$};
+
+\draw (1.1,3.5) -- (3.5, 3.5) -- (3.5, 1.1) -- (1.1, 1.1) -- (1.1, 3.5);
+\draw (4.9,2.3) -- (7.3, 2.3) -- (7.3, -0.1) -- (4.9, -0.1) -- (4.9, 2.3);
+
+\draw [-|&gt;] (3.5, 2.3) -- (4.0, 2.3) -- (4.0, -1.5);
+\draw [-|&gt;] (6, -0.1) -- (6, -1.5);" /></p>
+</div><p class="caption"><strong>Figure 1:</strong> An example of a two dimension convolution operation. The
+input is an image in <img class="math" src="_images/math/23072a119b7a7c7cf2d6c947df6281370e5517f8.svg" alt="\mathds{R}^{3 \times 3}"/>, and the kernel is
+in <img class="math" src="_images/math/a88cdf031b73d22f069872b57c8021b71537a760.svg" alt="\mathds{R}^{2 \times 2}"/>. As the kernel is slid over the input
+with a stride width of one, an output in
+<img class="math" src="_images/math/a88cdf031b73d22f069872b57c8021b71537a760.svg" alt="\mathds{R}^{2 \times 2}"/> is produced. In the example, the arrows
+and boxes demonstrate how the upper-right portion of the input image
+are compbined with the kernel parameters to produce the upper right
+unit of output.</p>
+<p class="caption">–Source: Goodfellow, Bengio, Courville (Deep Learning, 2016, Figure 9.1).</p>
+<p>The stride width determinse how far the kernel moves at each step. Of
+course, to learn anything interesting, we require multiple kernels at
+each layer. These are all configurable hyperparameters that can be set
+upon network instantiation. When the network is operating in feedforward
+mode, the output at each layer is a three dimensional tensor, rather than
+a matrix. This is due to the fact that each kernel produces its own
+two dimensional output, and there are multiple kernels at every layer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>nb_kernel</strong> (<em>int</em>) – The number of kernels to use.</li>
+<li><strong>kernel_size</strong> (<em>(</em><em>int</em><em>, </em><em>int</em><em>)</em>) – The size of the kernel as a tuple, heigh by width</li>
+<li><strong>stride</strong> (<em>int</em>) – The stide width to use</li>
+<li><strong>init</strong> (<em>slugnet.initializations.Initializer</em>) – The initializer to use</li>
+<li><strong>activation</strong> (<em>slugnet.activation.Activation</em>) – The activation function to be used at the layer.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td>Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
+<a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -200,7 +312,7 @@ is the kernel, or in some cases the weighting function.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jarrod Kahn.
+      &copy;2017, <a href="https://jarrodkahn.com">Jarrod Kahn</a>.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
