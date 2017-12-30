@@ -258,9 +258,10 @@ class Convolution(Layer):
         are compbined with the kernel parameters to produce the upper right
         unit of output.
 
-        --Source: Goodfellow, Bengio, Courville (Deep Learning, 2016, Figure 9.1).
+        --Modified from source: Goodfellow, Bengio, Courville (Deep Learning,
+        2016, Figure 9.1).
 
-    The stride width determinse how far the kernel moves at each step. Of
+    The stride width determines how far the kernel moves at each step. Of
     course, to learn anything interesting, we require multiple kernels at
     each layer. These are all configurable hyperparameters that can be set
     upon network instantiation. When the network is operating in feedforward

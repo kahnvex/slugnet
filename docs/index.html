@@ -264,10 +264,10 @@ gradients <img class="math" src="_images/math/0cc078872ffad5b3dd9db5a3bbc44587be
 at every layer, as indicated by the pseudocode of backpropogation given in
 alorithm 1.</p>
 <div class="algo math">
-<p><img src="_images/math/2eb23f39329a919f9f1a0caa4de042fb03c18087.svg" alt="\begin{algorithm}
-   \caption{The backward propogation algorithm's pseudocode from
-      \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some notation
-      modifications to match to style presented in this documentation.}\label{backprop}
+<p><img src="_images/math/4baf9f56d8c220fb074a7d79e734ca7b11e03705.svg" alt="\begin{algorithm}
+   \caption{Backward Propogation \newline
+   --Modification of source: Goodfellow, Bengio, \&amp; Courville (Deep Learning, 2016)}
+   \label{backprop}
    \begin{algorithmic}[1]
       \Procedure{Backpropogation}{$\bm{\ell}, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
          \State $\bm{g} \gets \nabla_{\bm{\hat{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})$
@@ -293,11 +293,11 @@ gradients with backpropogation, and applying our update using the a learning
 rate parameter <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/>. In practice, we must gradually decrease
 <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/> over time.</p>
 <div class="algo math">
-<p><img src="_images/math/774c5c172e7175d45674fcbd099bd83cb34589a9.svg" alt="\setcounter{algorithm}{1}
+<p><img src="_images/math/4b4319fce2ba41a862a80f563e803b5fc8a17e00.svg" alt="\setcounter{algorithm}{1}
 \begin{algorithm}
-   \caption{Stochastic Gradient Descent pseudocode from
-      \textit{Deep Learning} (Goodfellow, Bengio, \&amp; Courville, 2016) with some
-      modifications to match the style presented in this documentation.}\label{backprop}
+   \caption{Stochastic Gradient Descent pseudocode \newline
+   --Modification of source: Goodfellow, Bengio, \&amp; Courville (Deep Learning, 2016)}
+   \label{backprop}
    \begin{algorithmic}[1]
       \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}$}
          \State $\bm{W} \gets \text{InitWeights}()$
