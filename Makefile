@@ -11,4 +11,4 @@ clean-docs-images:
 	rm -rf docs/_images
 
 docs: clean-docs-images
-	sphinx-build docs-src/ docs/
+	sphinx-build -a -E docs-src/ docs/
