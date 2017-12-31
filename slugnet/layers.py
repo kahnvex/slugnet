@@ -125,12 +125,13 @@ class Convolution(Layer):
         self.last_input = None
 
         kernel_h, kernel_w = self.kernel_size
+        prev_nb_kernel = ind[1]
 
         self.activation = activation
-        self.w = init((self.nb_kernel, ind, kernel_h, kernel_w))
+        self.w = init((self.nb_kernel, prev_nb_kernel, kernel_h, kernel_w))
         self.b = _zero((self.nb_kernel,))
 
-    def call(self, X):
+    def call(self, X, *args, **kwargs):
         self.last_input = X
         batch_size, depth, height, width = X.shape
         kernel_h, kernel_w = self.kernel_size
@@ -209,7 +210,7 @@ class MeanPooling(Layer):
 
         self.out_shape = ind[:-2] + (new_h, new_w)
 
-    def forward(self, X, *args, **kwargs):
+    def call(self, X, *args, **kwargs):
         self.input_shape = X.shape
         pool_h, pool_w = self.pool_size
         new_h, new_w = self.out_shape[-2:]
@@ -239,7 +240,7 @@ class MeanPooling(Layer):
 
         return outputs
 
-    def backward(self, pre_grad, *args, **kwargs):
+    def backprop(self, pre_grad, *args, **kwargs):
         new_h, new_w = self.out_shape[-2:]
         pool_h, pool_w = self.pool_size
         length = np.prod(self.pool_size)
@@ -271,3 +272,29 @@ class MeanPooling(Layer):
             raise ValueError()
 
         return layer_grads
+
+
+class Flatten(Layer):
+    def __init__(self, ind, outdim=2):
+        self.outdim = outdim
+        if outdim < 1:
+            raise ValueError('Dim must be >0, was %i', outdim)
+
+        self.last_input_shape = None
+        self.out_shape = None
+
+        to_flatten = np.prod(ind[self.outdim - 1:])
+        flattened_shape = ind[:self.outdim - 1] + (to_flatten,)
+
+        self.out_shape = flattened_shape
+
+    def call(self, X, *args, **kwargs):
+        self.last_input_shape = X.shape
+
+        # to_flatten = np.prod(self.last_input_shape[self.outdim-1:])
+        # flattened_shape = input.shape[:self.outdim-1] + (to_flatten, )
+        flattened_shape = X.shape[:self.outdim - 1] + (-1,)
+        return np.reshape(X, flattened_shape)
+
+    def backprop(self, pre_grad, *args, **kwargs):
+        return np.reshape(pre_grad, self.last_input_shape)
