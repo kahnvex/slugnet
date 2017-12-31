@@ -41,17 +41,18 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-slugnet.layers">
-<span id="layers"></span><h1>Layers<a class="headerlink" href="#module-slugnet.layers" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="slugnet.layers.Dense">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>ind</em>, <em>outd</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
-<p>A common densely connected neural network layer.</p>
-<p>The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
+  <div class="section" id="layers">
+<h1>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we will cover all relevant layers implemented
+by slugnet, and their specific use cases. This includes convolutional
+neural networks and layers  associated with them.</p>
+<div class="section" id="fully-connected-neural-networks">
+<h2>Fully Connected Neural Networks<a class="headerlink" href="#fully-connected-neural-networks" title="Permalink to this headline">¶</a></h2>
+<p>Slugnet implements fully connected neural networks via the <code class="code docutils literal"><span class="pre">Dense</span></code>
+layer. The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
 <div class="math">
-<p><img src="_images/math/7cafe553d169f705c18559a9e09fbfa481a015e5.svg" alt="\[
-    \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})
+<p><img src="_images/math/fd625308ce6c981502635ae2d2b1ba0e45e3e5ec.svg" alt="\[
+   \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})
 \]"/></p>
 </div><p>where <img class="math" src="_images/math/7781592845d244c06254fdaca3880786f02b3f80.svg" alt="\bm{a}"/> is activated output, <img class="math" src="_images/math/e3bf1ef0dd807d03fb49d7b38cc22fb494d4009d.svg" alt="\phi"/>
 is the activation function, <img class="math" src="_images/math/86872fb5bbd58bd98cd64a475fb814ea67d8c520.svg" alt="\bm{W}"/> are weights,
@@ -72,6 +73,11 @@ calculates two values as follows</p>
 and <img class="math" src="_images/math/b52043529fabcd9ab1b5932757104cc9c2e58f87.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.</p>
+<dl class="class">
+<dt id="slugnet.layers.Dense">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>ind</em>, <em>outd</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A common densely connected neural network layer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -95,18 +101,17 @@ and computes update for this layers weights</p>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="slugnet.layers.Dropout">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dropout</code><span class="sig-paren">(</span><em>p=0.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dropout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+</div>
+<div class="section" id="dropout">
+<h2>Dropout<a class="headerlink" href="#dropout" title="Permalink to this headline">¶</a></h2>
 <p>Dropout is a method of regularization that trains subnetworks by turning
 off non-output nodes with some probability <img class="math" src="_images/math/70c2f41478031b532a625cb53a08693e6ea15602.svg" alt="p"/>.</p>
 <p>This approximates bagging, which involves training an ensemble of models
-to overcome weaknesses in any given model <a href="#id7"><span class="problematic" id="id1">[1]_</span></a>.</p>
+to overcome weaknesses in any given model <a class="footnote-reference" href="#id6" id="id1">[1]</a>.</p>
 <p>We can formalize dropout by representing the subnetworks created by dropout
 with a mask vector <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>. Now, we note each subnetwork defines a
 new probability distribution of <img class="math" src="_images/math/ddc4cefb70948005dd1900a3de93cefcc7b1b6b3.svg" alt="y"/> as
-<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a href="#id8"><span class="problematic" id="id2">[1]_</span></a>. If we define
+<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a class="footnote-reference" href="#id6" id="id2">[1]</a>. If we define
 <img class="math" src="_images/math/9dbf7cd080c8a3c2bb81218bb66184ea28673e89.svg" alt="\mathds{P}(\bm{\mu})"/> as the probability distribution of mask vectors
 <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>, we can write the mean of all subnetworks as</p>
 <div class="math">
@@ -117,7 +122,12 @@ new probability distribution of <img class="math" src="_images/math/ddc4cefb7094
 vectors. In practice, we approximate this probability distribution by
 including all nodes during inference, and multiplying each output by
 <img class="math" src="_images/math/b31dbce22ac4f932167d1dab800282625ddb22b5.svg" alt="1 - p"/>, the probability that any node is included in the network during
-training. This rule is called the weight scaling inference rule <a href="#id9"><span class="problematic" id="id3">[1]_</span></a>.</p>
+training. This rule is called the weight scaling inference rule <a class="footnote-reference" href="#id6" id="id3">[1]</a>.</p>
+<dl class="class">
+<dt id="slugnet.layers.Dropout">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dropout</code><span class="sig-paren">(</span><em>p=0.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dropout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A layer that removes units from a network with probability <code class="code docutils literal"><span class="pre">p</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -126,19 +136,18 @@ training. This rule is called the weight scaling inference rule <a href="#id9"><
 </tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[1]</td><td>Goodfellow, Bengio, Courville (2016), Deep Learning, <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
-</tbody>
-</table>
 </dd></dl>
 
-<dl class="class">
-<dt id="slugnet.layers.Convolution">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>ind</em>, <em>nb_kernel</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=&lt;slugnet.activation.ReLU object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
-<p>A layer that implements the convolution operation.</p>
+</div>
+<div class="section" id="convolutional-neural-networks">
+<h2>Convolutional Neural Networks<a class="headerlink" href="#convolutional-neural-networks" title="Permalink to this headline">¶</a></h2>
+<p>Convolutional neural networks are most often used in image classification tasks.
+There are several specialized layers used in these networks. The most obvious is
+the convolution layer, less obvious are pooling layers, specifically max-pooling
+and mean-pooling. In this section we will mathematically review all these layers
+in depth.</p>
+<div class="section" id="convolution-layer">
+<h3>Convolution Layer<a class="headerlink" href="#convolution-layer" title="Permalink to this headline">¶</a></h3>
 <p>In the general case, a discrete convolution operation implements
 the function:</p>
 <div class="math">
@@ -154,7 +163,7 @@ Now we can write out convolution function with both axes:</p>
 </div><p>Note that we can write the infinite sum over the domains of
 <img class="math" src="_images/math/1e147e70e7d7a2b61cee9f9ee7e6f24faffb9b8a.svg" alt="m"/> and <img class="math" src="_images/math/32f0a59be9113850c78c51bd8bbf03c53f3d4e10.svg" alt="n"/> as discrete sums because we assume
 that the kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> is zero everywhere but the set of
-points in which we store data <a href="#id10"><span class="problematic" id="id5">[1]_</span></a>.</p>
+points in which we store data <a class="footnote-reference" href="#id6" id="id4">[1]</a>.</p>
 <p>The motivation for using the convolution operation in a
 neural network is best described using an example of an
 image. In a densely connected neural network, each node
@@ -237,6 +246,11 @@ upon network instantiation. When the network is operating in feedforward
 mode, the output at each layer is a three dimensional tensor, rather than
 a matrix. This is due to the fact that each kernel produces its own
 two dimensional output, and there are multiple kernels at every layer.</p>
+<dl class="class">
+<dt id="slugnet.layers.Convolution">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>ind</em>, <em>nb_kernel</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=&lt;slugnet.activation.ReLU object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A layer that implements the convolution operation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -252,15 +266,145 @@ two dimensional output, and there are multiple kernels at every layer.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+</div>
+<div class="section" id="pooling">
+<h3>Pooling<a class="headerlink" href="#pooling" title="Permalink to this headline">¶</a></h3>
+<p>Mean pooling is a method of downsampling typically used in convolutional
+neural networks. Pooling makes the representations at a subsequent layer
+approximately invariant to translations of the output from the previous
+layer <a class="footnote-reference" href="#id6" id="id5">[1]</a>. This is useful when we care about the presence of some feature
+but not necessarily the exact location of the feature within the input.</p>
+<p>The mean pooling operation implements the function</p>
+<div class="math">
+<p><img src="_images/math/b18dc2a9e31668752bce878bfaa813da9bf17e25.svg" alt="\[
+    \frac{1}{s_m s_n} \sum_{i \in m} \sum_{j \in n} I_{i,j}
+\]"/></p>
+</div><p>where <img class="math" src="_images/math/83420589284cb7a262c7f52d90542113b6e69570.svg" alt="m, n"/> are input ranges along both axes, and <img class="math" src="_images/math/fcce770d5c252adaae46a880daf881424142d9dd.svg" alt="s_n, s_m"/>
+define the size of both ranges. This operation is depicted in figure 2.</p>
+<div class="figure">
+<p><img src="_images/tikz-1e4b43047343f9830b6bd909b5aed4b23cfcfd63.png" alt="\def\input {
+   0/4/4,
+   1/4/7,
+   2/4/1,
+   3/4/2,
+   0/3/6,
+   1/3/3,
+   2/3/0,
+   3/3/8,
+   0/2/9,
+   1/2/1,
+   2/2/6,
+   3/2/0,
+   0/1/6,
+   1/1/4,
+   2/1/1,
+   3/1/7,
+}
+
+\def\output {
+   6/3/5,
+   7/3/2.75,
+   6/2/5,
+   7/2/3.5
+}
+
+\draw (0.5, 5.4) node {Input};
+
+\fill[blue!40!white] (0, 3) rectangle (2,5);
+\fill[red!40!white] (0, 1) rectangle (2,3);
+\fill[green!40!white] (2, 3) rectangle (4,5);
+\fill[orange!40!white] (2, 1) rectangle (4,3);
+
+\foreach \x/\y/\l in \input
+   \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+   node[anchor=south west]{$\l$};
+
+\draw (6.7, 4.4) node {Output};
+
+\fill[blue!40!white] (6, 3) rectangle (7,4);
+\fill[red!40!white] (6, 2) rectangle (7,3);
+\fill[green!40!white] (7,3) rectangle (8,4);
+\fill[orange!40!white] (7,2) rectangle (8,3);
+\foreach \x/\y/\l in \output
+   \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+   node[anchor=south west]{$\l$};
+
+\draw (4.9, 2.95) [align=center] node {Mean \\ pooling};
+\draw [line width=0.4mm, -|&gt;] (4, 3) -- (5.8, 3);" /></p>
+</div><p class="caption"><strong>Figure 2:</strong> A visual representation of the mean pooling
+operation. Color coded patches are combined via arithmetic
+average and included in an output matrix.</p>
+<p>The max-pooling operation implements the function</p>
+<div class="math">
+<p><img src="_images/math/8aa16f3b84dc278419eee4a388ea301934eca714.svg" alt="\[
+   \max_{i \in m, j \in n} I_{i,j}
+\]"/></p>
+</div><p>where <img class="math" src="_images/math/83420589284cb7a262c7f52d90542113b6e69570.svg" alt="m, n"/> are input ranges along both axes. This operation
+is depicted in figure 3.</p>
+<div class="figure">
+<p><img src="_images/tikz-0c3d1532b14fcbf6f04b76a96a0719d3e8e29e57.png" alt="\def\input {
+   0/4/4,
+   1/4/7,
+   2/4/1,
+   3/4/2,
+   0/3/6,
+   1/3/3,
+   2/3/0,
+   3/3/8,
+   0/2/9,
+   1/2/1,
+   2/2/6,
+   3/2/0,
+   0/1/6,
+   1/1/4,
+   2/1/1,
+   3/1/7,
+}
+
+\def\output {
+   6/3/7,
+   7/3/8,
+   6/2/9,
+   7/2/7
+}
+
+\draw (0.5, 5.4) node {Input};
+
+\fill[blue!40!white] (0, 3) rectangle (2,5);
+\fill[red!40!white] (0, 1) rectangle (2,3);
+\fill[green!40!white] (2, 3) rectangle (4,5);
+\fill[orange!40!white] (2, 1) rectangle (4,3);
+
+\foreach \x/\y/\l in \input
+   \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+   node[anchor=south west]{$\l$};
+
+\draw (6.7, 4.4) node {Output};
+
+\fill[blue!40!white] (6, 3) rectangle (7,4);
+\fill[red!40!white] (6, 2) rectangle (7,3);
+\fill[green!40!white] (7, 3) rectangle (8,4);
+\fill[orange!40!white] (7, 2) rectangle (8,3);
+\foreach \x/\y/\l in \output
+   \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+   node[anchor=south west]{$\l$};
+
+\draw (4.9, 2.95) [align=center] node {Max \\ pooling};
+\draw [line width=0.4mm, -|&gt;] (4, 3) -- (5.8, 3);" /></p>
+</div><p class="caption"><strong>Figure 3:</strong> A visual representation of the max pooling
+operation. Color coded patches are downsampled by taking
+the maximum value found in the patch.</p>
 <table class="docutils footnote" frame="void" id="id6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[1]</td><td>Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>, <a class="fn-backref" href="#id4">4</a>, <a class="fn-backref" href="#id5">5</a>)</em> Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
 <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
 </tbody>
 </table>
-</dd></dl>
-
+</div>
+</div>
 </div>
 
 
@@ -277,7 +421,12 @@ two dimensional output, and there are multiple kernels at every layer.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Layers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Layers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fully-connected-neural-networks">Fully Connected Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dropout">Dropout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#convolutional-neural-networks">Convolutional Neural Networks</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="activation.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
