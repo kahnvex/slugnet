@@ -58,40 +58,6 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A common densely connected neural network layer.</span>
 
-<span class="sd">    The :code:`Dense` layer implements the feed forward operation</span>
-
-<span class="sd">    .. math::</span>
-<span class="sd">        :nowrap:</span>
-
-<span class="sd">        \[</span>
-<span class="sd">            \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})</span>
-<span class="sd">        \]</span>
-
-<span class="sd">    where :math:`\bm{a}` is activated output, :math:`\phi`</span>
-<span class="sd">    is the activation function, :math:`\bm{W}` are weights,</span>
-<span class="sd">    :math:`\bm{b}` is our bias.</span>
-
-<span class="sd">    On feed backward, or backpropogation, the :code:`Dense` layer</span>
-<span class="sd">    calculates two values as follows</span>
-
-<span class="sd">    .. math::</span>
-<span class="sd">        :nowrap:</span>
-
-<span class="sd">        \begin{flalign}</span>
-<span class="sd">            \frac{\partial \ell}{\partial \bm{a}^{(i)}} &amp;=</span>
-<span class="sd">                \Big[ \bm{W}^{(i + 1)^T}</span>
-<span class="sd">                \frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}\Big]</span>
-<span class="sd">                \circ \phi&#39;(\bm{a}^{(i)}) \\</span>
-<span class="sd">            \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=</span>
-<span class="sd">                \frac{\partial \ell}{\partial \bm{a}^{(i)}} \bm{x}^T</span>
-<span class="sd">        \end{flalign}</span>
-
-<span class="sd">    When looking at the source, there is a notable absence of</span>
-<span class="sd">    :math:`\bm{W}^{(i + 1)^T}`</span>
-<span class="sd">    and :math:`\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}`.</span>
-<span class="sd">    This is because their dot product is calculated in the previous layer.</span>
-<span class="sd">    The model propogates that gradient to this layer.</span>
-
 <span class="sd">    :param ind: The input dimension at this layer.</span>
 <span class="sd">    :type ind: int</span>
 
@@ -138,36 +104,10 @@
 
 <div class="viewcode-block" id="Dropout"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Dropout">[docs]</a><span class="k">class</span> <span class="nc">Dropout</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Dropout is a method of regularization that trains subnetworks by turning</span>
-<span class="sd">    off non-output nodes with some probability :math:`p`.</span>
-
-<span class="sd">    This approximates bagging, which involves training an ensemble of models</span>
-<span class="sd">    to overcome weaknesses in any given model [1]_.</span>
-
-<span class="sd">    We can formalize dropout by representing the subnetworks created by dropout</span>
-<span class="sd">    with a mask vector :math:`\bm{\mu}`. Now, we note each subnetwork defines a</span>
-<span class="sd">    new probability distribution of :math:`y` as</span>
-<span class="sd">    :math:`\mathds{P}(y | \bm{x}, \bm{\mu})` [1]_. If we define</span>
-<span class="sd">    :math:`\mathds{P}(\bm{\mu})` as the probability distribution of mask vectors</span>
-<span class="sd">    :math:`\bm{\mu}`, we can write the mean of all subnetworks as</span>
-
-<span class="sd">    .. math::</span>
-<span class="sd">        :nowrap:</span>
-
-<span class="sd">        \[</span>
-<span class="sd">            \sum_{\bm{\mu}} \mathds{P}(\bm{\mu}) \mathds{P}(y | \bm{x}, \bm{\mu}).</span>
-<span class="sd">        \]</span>
-
-<span class="sd">    The problem with evaluating this term is the exponential number of mask</span>
-<span class="sd">    vectors. In practice, we approximate this probability distribution by</span>
-<span class="sd">    including all nodes during inference, and multiplying each output by</span>
-<span class="sd">    :math:`1 - p`, the probability that any node is included in the network during</span>
-<span class="sd">    training. This rule is called the weight scaling inference rule [1]_.</span>
+<span class="sd">    A layer that removes units from a network with probability :code:`p`.</span>
 
 <span class="sd">    :param p: The probability of a non-ouput node being removed from the network.</span>
 <span class="sd">    :type p: float</span>
-
-<span class="sd">    .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, http://www.deeplearningbook.org</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -196,122 +136,6 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A layer that implements the convolution operation.</span>
 
-<span class="sd">    In the general case, a discrete convolution operation implements</span>
-<span class="sd">    the function:</span>
-
-<span class="sd">    .. math::</span>
-<span class="sd">        :nowrap:</span>
-
-<span class="sd">        \[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]</span>
-
-<span class="sd">    where :math:`x` is the input and :math:`w`</span>
-<span class="sd">    is the kernel, or in some cases the weighting function.</span>
-
-<span class="sd">    In the case of convolutional neural networks, the input</span>
-<span class="sd">    is typically two dimensional image :math:`I`, and it</span>
-<span class="sd">    follows that we have a two dimensional kernel :math:`K`.</span>
-<span class="sd">    Now we can write out convolution function with both axes:</span>
-
-<span class="sd">    .. math::</span>
-<span class="sd">        :nowrap:</span>
-
-<span class="sd">        \[S(i, j) = \sum_m \sum_n I(m, n) K(i - m, j - n).\]</span>
-
-<span class="sd">    Note that we can write the infinite sum over the domains of</span>
-<span class="sd">    :math:`m` and :math:`n` as discrete sums because we assume</span>
-<span class="sd">    that the kernel :math:`K` is zero everywhere but the set of</span>
-<span class="sd">    points in which we store data [1]_.</span>
-
-<span class="sd">    The motivation for using the convolution operation in a</span>
-<span class="sd">    neural network is best described using an example of an</span>
-<span class="sd">    image. In a densely connected neural network, each node</span>
-<span class="sd">    at layer :math:`i` is connected to every node at layer</span>
-<span class="sd">    :math:`i + 1`. This does not lend itself to image processing,</span>
-<span class="sd">    where location of a shape relative to another shape is</span>
-<span class="sd">    important. For instance, finding a right angle involves</span>
-<span class="sd">    detecting two edges that are perpendicular, *and* whose</span>
-<span class="sd">    lines cross one another. If we make the kernel smaller</span>
-<span class="sd">    than the input image, we can process parts of the image</span>
-<span class="sd">    at a time, thereby ensuring locality of the input signals.</span>
-<span class="sd">    To process the entire image, we slide the kernel over the</span>
-<span class="sd">    input, along both axes. At each step, an output is produced</span>
-<span class="sd">    which will be used as input for the next layer.</span>
-<span class="sd">    This configuration allows us to learn the parameters of the</span>
-<span class="sd">    kernel :math:`K` the same way we&#39;d learn ordinary parameters</span>
-<span class="sd">    in a densely connected neural network.</span>
-
-<span class="sd">    .. tikz::</span>
-
-<span class="sd">        \def\input {</span>
-<span class="sd">            0/2.4/a,</span>
-<span class="sd">            1.2/2.4/b,</span>
-<span class="sd">            2.4/2.4/c,</span>
-<span class="sd">            0/1.2/d,</span>
-<span class="sd">            1.2/1.2/e,</span>
-<span class="sd">            2.4/1.2/f,</span>
-<span class="sd">            0/0/g,</span>
-<span class="sd">            1.2/0/h,</span>
-<span class="sd">            2.4/0/i</span>
-<span class="sd">        }</span>
-
-<span class="sd">        \def\kernel {</span>
-<span class="sd">            0/1.2/w,</span>
-<span class="sd">            1.2/1.2/x,</span>
-<span class="sd">            0/0/y,</span>
-<span class="sd">            1.2/0/z</span>
-<span class="sd">        }</span>
-
-<span class="sd">        \def\output {</span>
-<span class="sd">            0/-4.6/aw + bx + dy + ez,</span>
-<span class="sd">            3.4/-4.6/bw + cx + ey + fz,</span>
-<span class="sd">            0/-8/dw + ex + gy + hz,</span>
-<span class="sd">            3.4/-8/ew + fx + hy + iz</span>
-<span class="sd">        }</span>
-
-<span class="sd">        \draw (0.5,3.8) node {Input};</span>
-<span class="sd">        \foreach \x/\y/\l in \input</span>
-<span class="sd">            \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)</span>
-<span class="sd">            node[anchor=south west]{$\l$};</span>
-
-<span class="sd">        \draw (5.5,2.6) node {Kernel};</span>
-<span class="sd">        \foreach \x/\y/\l in \kernel</span>
-<span class="sd">            \draw (\x + 5,\y) -- (\x + 5, \y + 1) -- (\x + 6, \y + 1) -- (\x + 6, \y) -- (\x + 5, \y)</span>
-<span class="sd">            node[anchor=south west]{$\l$};</span>
-
-<span class="sd">        \draw (0.7,-1.3) node {Output};</span>
-<span class="sd">        \foreach \x/\y/\l in \output</span>
-<span class="sd">            \draw (\x,\y) -- (\x,\y + 3) -- (\x + 3,\y + 3) -- (\x + 3, \y) -- (\x,\y)</span>
-<span class="sd">            node[xshift=1.5cm, yshift=1.5cm]{\footnotesize $\l$};</span>
-
-<span class="sd">        \draw [line width=0.4mm](1.1,3.5) -- (3.5, 3.5) -- (3.5, 1.1) -- (1.1, 1.1) -- (1.1, 3.5);</span>
-<span class="sd">        \draw [line width=0.4mm](4.9,2.3) -- (7.3, 2.3) -- (7.3, -0.1) -- (4.9, -0.1) -- (4.9, 2.3);</span>
-<span class="sd">        \draw [line width=0.4mm](3.3,-1.5) -- (6.5, -1.5) -- (6.5, -4.7) -- (3.3, -4.7) -- (3.3, -1.5);</span>
-
-<span class="sd">        \draw [line width=0.4mm, -|&gt;] (3.5, 2.3) -- (4.0, 2.3) -- (4.0, -1.4);</span>
-<span class="sd">        \draw [line width=0.4mm, -|&gt;] (6, -0.1) -- (6, -1.4);</span>
-
-<span class="sd">    .. rst-class:: caption</span>
-
-<span class="sd">        **Figure 1:** An example of a two dimension convolution operation. The</span>
-<span class="sd">        input is an image in :math:`\mathds{R}^{3 \times 3}`, and the kernel is</span>
-<span class="sd">        in :math:`\mathds{R}^{2 \times 2}`. As the kernel is slid over the input</span>
-<span class="sd">        with a stride width of one, an output in</span>
-<span class="sd">        :math:`\mathds{R}^{2 \times 2}` is produced. In the example, the arrows</span>
-<span class="sd">        and boxes demonstrate how the upper-right portion of the input image</span>
-<span class="sd">        are compbined with the kernel parameters to produce the upper right</span>
-<span class="sd">        unit of output.</span>
-
-<span class="sd">        --Modified from source: Goodfellow, Bengio, Courville (Deep Learning,</span>
-<span class="sd">        2016, Figure 9.1).</span>
-
-<span class="sd">    The stride width determines how far the kernel moves at each step. Of</span>
-<span class="sd">    course, to learn anything interesting, we require multiple kernels at</span>
-<span class="sd">    each layer. These are all configurable hyperparameters that can be set</span>
-<span class="sd">    upon network instantiation. When the network is operating in feedforward</span>
-<span class="sd">    mode, the output at each layer is a three dimensional tensor, rather than</span>
-<span class="sd">    a matrix. This is due to the fact that each kernel produces its own</span>
-<span class="sd">    two dimensional output, and there are multiple kernels at every layer.</span>
-
 <span class="sd">    :param nb_kernel: The number of kernels to use.</span>
 <span class="sd">    :type nb_kernel: int</span>
 
@@ -326,10 +150,6 @@
 
 <span class="sd">    :param activation: The activation function to be used at the layer.</span>
 <span class="sd">    :type activation: slugnet.activation.Activation</span>
-
-
-<span class="sd">    .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,</span>
-<span class="sd">         http://www.deeplearningbook.org</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">nb_kernel</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">(),</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()):</span>
@@ -346,8 +166,153 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">last_output</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">init</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">init</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">,))</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span> <span class="o">=</span> <span class="n">X</span>
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span>
+        <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">,</span> <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">out_h</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">out_w</span><span class="p">):</span>
+                        <span class="n">h1</span><span class="p">,</span> <span class="n">w1</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
+                        <span class="n">h2</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">h1</span> <span class="o">+</span> <span class="n">kernel_h</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">kernel_w</span>
+                        <span class="n">patch</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="p">:,</span> <span class="n">h1</span><span class="p">:</span> <span class="n">h2</span><span class="p">,</span> <span class="n">w1</span><span class="p">:</span> <span class="n">w2</span><span class="p">]</span>
+                        <span class="n">conv_product</span> <span class="o">=</span> <span class="n">patch</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">y</span><span class="p">]</span>
+                        <span class="n">outputs</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">conv_product</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="n">y</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_output</span>
+
+    <span class="k">def</span> <span class="nf">backprop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">input_h</span><span class="p">,</span> <span class="n">input_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span>
+
+        <span class="c1"># gradients</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dw</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">derivative</span><span class="p">()</span>
+
+        <span class="c1"># dw</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">depth</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">kernel_h</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">kernel_w</span><span class="p">):</span>
+                        <span class="n">input_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span><span class="p">[:,</span> <span class="n">t</span><span class="p">,</span>
+                                       <span class="n">h</span><span class="p">:</span><span class="n">input_h</span> <span class="o">-</span> <span class="n">kernel_h</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span>
+                                       <span class="n">w</span><span class="p">:</span><span class="n">input_w</span> <span class="o">-</span> <span class="n">kernel_w</span> <span class="o">+</span> <span class="n">w</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">]</span>
+                        <span class="n">delta_window</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dw</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">input_window</span> <span class="o">*</span> <span class="n">delta_window</span><span class="p">)</span> <span class="o">/</span> <span class="n">nb_kernel</span>
+
+        <span class="c1"># db</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">r</span><span class="p">])</span> <span class="o">/</span> <span class="n">nb_kernel</span>
+
+        <span class="c1"># dX</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_layer</span><span class="p">:</span>
+            <span class="n">layer_grads</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb_kernel</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">depth</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">out_h</span><span class="p">):</span>
+                            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">out_w</span><span class="p">):</span>
+                                <span class="n">h1</span><span class="p">,</span> <span class="n">w1</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span>
+                                <span class="n">h2</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">h1</span> <span class="o">+</span> <span class="n">kernel_h</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">kernel_w</span>
+                                <span class="n">layer_grads</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">h1</span><span class="p">:</span><span class="n">h2</span><span class="p">,</span> <span class="n">w1</span><span class="p">:</span><span class="n">w2</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">layer_grads</span></div>
+
+
+<span class="k">class</span> <span class="nc">MeanPooling</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pool outputs using the arithmetic mean.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">pool_size</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span> <span class="o">=</span> <span class="n">pool_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_shape</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">old_h</span><span class="p">,</span> <span class="n">old_w</span> <span class="o">=</span> <span class="n">ind</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">pool_h</span><span class="p">,</span> <span class="n">pool_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span>
+        <span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span> <span class="o">=</span> <span class="n">old_h</span> <span class="o">//</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">old_w</span> <span class="o">//</span> <span class="n">pool_w</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span> <span class="o">=</span> <span class="n">ind</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_shape</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">pool_h</span><span class="p">,</span> <span class="n">pool_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span>
+        <span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+
+        <span class="c1"># forward</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">nb_batch</span><span class="p">,</span> <span class="n">nb_axis</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb_batch</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb_axis</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_h</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_w</span><span class="p">):</span>
+                            <span class="n">outputs</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span><span class="n">h</span> <span class="o">+</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span><span class="n">w</span> <span class="o">+</span> <span class="n">pool_w</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">nb_batch</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb_batch</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_h</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_w</span><span class="p">):</span>
+                        <span class="n">outputs</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span><span class="n">h</span> <span class="o">+</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span><span class="n">w</span> <span class="o">+</span> <span class="n">pool_w</span><span class="p">])</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">outputs</span>
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre_grad</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">pool_h</span><span class="p">,</span> <span class="n">pool_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">)</span>
+
+        <span class="n">layer_grads</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_shape</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">pre_grad</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">nb_batch</span><span class="p">,</span> <span class="n">nb_axis</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pre_grad</span><span class="o">.</span><span class="n">shape</span>
+
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb_batch</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb_axis</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_h</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_w</span><span class="p">):</span>
+                            <span class="n">h1</span><span class="p">,</span> <span class="n">w1</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">pool_w</span>
+                            <span class="n">h2</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">h1</span> <span class="o">+</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">pool_w</span>
+                            <span class="n">layer_grads</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">h1</span><span class="p">:</span><span class="n">h2</span><span class="p">,</span> <span class="n">w1</span><span class="p">:</span><span class="n">w2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pre_grad</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">/</span> <span class="n">length</span>
+
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">pre_grad</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">nb_batch</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pre_grad</span><span class="o">.</span><span class="n">shape</span>
+
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb_batch</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_h</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_w</span><span class="p">):</span>
+                        <span class="n">h_shift</span><span class="p">,</span> <span class="n">w_shift</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">pool_w</span>
+                        <span class="n">layer_grads</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">h_shift</span><span class="p">:</span> <span class="n">h_shift</span> <span class="o">+</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">w_shift</span><span class="p">:</span> <span class="n">w_shift</span> <span class="o">+</span> <span class="n">pool_w</span><span class="p">]</span> <span class="o">=</span> \
+                            <span class="n">pre_grad</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">/</span> <span class="n">length</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">layer_grads</span>
 </pre></div>
 
           </div>
