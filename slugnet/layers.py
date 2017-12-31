@@ -332,5 +332,40 @@ class Convolution(Layer):
 
         return self.last_output
 
-    def backprop(self):
-        pass
+    def backprop(self, grad, *args, **kwargs):
+        batch_size, depth, input_h, input_w = self.last_input.shape
+        out_h, out_w = self.out_shape[2:]
+        kernel_h, kernel_w = self.kernel_size
+
+        # gradients
+        self.dw = _zero(self.w.shape)
+        self.db = _zero(self.b.shape)
+        delta = grad * self.activation.derivative()
+
+        # dw
+        for r in np.arange(self.nb_kernel):
+            for t in np.arange(depth):
+                for h in np.arange(kernel_h):
+                    for w in np.arange(kernel_w):
+                        input_window = self.last_input[:, t,
+                                       h:input_h - kernel_h + h + 1:self.stride,
+                                       w:input_w - kernel_w + w + 1:self.stride]
+                        delta_window = delta[:, r]
+                        self.dw[r, t, h, w] = np.sum(input_window * delta_window) / nb_kernel
+
+        # db
+        for r in np.arange(self.nb_kernel):
+            self.db[r] = np.sum(delta[:, r]) / nb_kernel
+
+        # dX
+        if not self.first_layer:
+            layer_grads = _zero(self.last_input.shape)
+            for b in np.arange(nb_kernel):
+                for r in np.arange(self.nb_kernel):
+                    for t in np.arange(depth):
+                        for h in np.arange(out_h):
+                            for w in np.arange(out_w):
+                                h1, w1 = h * self.stride, w * self.stride
+                                h2, w2 = h1 + kernel_h, w1 + kernel_w
+                                layer_grads[b, t, h1:h2, w1:w2] += self.w[r, t] * delta[b, r, h, w]
+            return layer_grads
