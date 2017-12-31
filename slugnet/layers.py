@@ -304,5 +304,33 @@ class Convolution(Layer):
         self.last_output = None
         self.last_input = None
 
+        kernel_h, kernel_w = self.kernel_size
+
         self.activation = activation
-        self.w = init((self.nb_kernel, self))
+        self.w = init((self.nb_kernel, ind, kernel_h, kernel_w))
+        self.b = _zero((self.nb_kernel,))
+
+    def call(self, X):
+        self.last_input = X
+        batch_size, depth, height, width = X.shape
+        kernel_h, kernel_w = self.kernel_size
+        out_h, out_w = self.out_shape[2:]
+
+        outputs = _zero((batch_size, self.nb_kernel, out_h, out_w))
+
+        for x in np.arange(batch_size):
+            for y in np.arange(self.nb_kernel):
+                for h in np.arange(out_h):
+                    for w in np.arange(out_w):
+                        h1, w1 = h * self.stride, w * self.stride
+                        h2, w2 = h1 + kernel_h, w1 + kernel_w
+                        patch = X[x, :, h1: h2, w1: w2]
+                        conv_product = patch * self.w[y]
+                        outputs[x, y, h, w] = np.sum(conv_product) + self.b[y]
+
+        self.last_output = self.activation.call(outputs)
+
+        return self.last_output
+
+    def backprop(self):
+        pass
