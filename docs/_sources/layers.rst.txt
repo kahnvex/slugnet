@@ -194,10 +194,10 @@ in a densely connected neural network.
 .. rst-class:: caption
 
     **Figure 1:** An example of a two dimension convolution operation. The
-    input is an image in :math:`\mathds{R}^{3 \times 3}`, and the kernel is
+    input is an image in :math:`\mathds{R}^{3 \times 4}`, and the kernel is
     in :math:`\mathds{R}^{2 \times 2}`. As the kernel is slid over the input
     with a stride width of one, an output in
-    :math:`\mathds{R}^{2 \times 2}` is produced. In the example, the arrows
+    :math:`\mathds{R}^{2 \times 3}` is produced. In the example, the arrows
     and boxes demonstrate how the upper-right portion of the input image
     are compbined with the kernel parameters to produce the upper right
     unit of output.
