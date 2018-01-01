@@ -98,7 +98,7 @@ the function:
 .. math::
     :nowrap:
 
-    \[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]
+    \[s(i) = \sum_{a=-\infty}^\infty x(a) k(i - a)\]
 
 where :math:`x` is the input and :math:`w`
 is the kernel, or in some cases the weighting function.
