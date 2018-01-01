@@ -98,7 +98,7 @@ the function:
 .. math::
     :nowrap:
 
-    \[s(i) = \sum_{a=-\infty}^\infty x(a) k(i - a)\]
+    \[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]
 
 where :math:`x` is the input and :math:`w`
 is the kernel, or in some cases the weighting function.
@@ -142,15 +142,12 @@ in a densely connected neural network.
         0/2.4/a,
         1.2/2.4/b,
         2.4/2.4/c,
-        3.6/2.4/d,
-        0/1.2/e,
-        1.2/1.2/f,
-        2.4/1.2/g,
-        3.6/1.2/h,
-        0/0/i,
-        1.2/0/j,
-        2.4/0/k,
-        3.6/0/l
+        0/1.2/d,
+        1.2/1.2/e,
+        2.4/1.2/f,
+        0/0/g,
+        1.2/0/h,
+        2.4/0/i
     }
 
     \def\kernel {
@@ -161,12 +158,10 @@ in a densely connected neural network.
     }
 
     \def\output {
-        0/-4.6/aw + bx + ey + fz,
-        3.4/-4.6/bw + cx + fy + gz,
-        6.8/-4.6/cw + dx + gy + hz,
-        0/-8/ew + fx + iy + jz,
-        3.4/-8/fw + gx + jy + kz,
-        6.8/-8/gw + hx + ky + lz
+        0/-4.6/aw + bx + dy + ez,
+        3.4/-4.6/bw + cx + ey + fz,
+        0/-8/dw + ex + gy + hz,
+        3.4/-8/ew + fx + hy + iz
     }
 
     \draw (0.5,3.8) node {Input};
@@ -174,9 +169,9 @@ in a densely connected neural network.
         \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
         node[anchor=south west]{$\l$};
 
-    \draw (8.5,2.6) node {Kernel};
+    \draw (5.5,2.6) node {Kernel};
     \foreach \x/\y/\l in \kernel
-        \draw (\x + 8,\y) -- (\x + 8, \y + 1) -- (\x + 9, \y + 1) -- (\x + 9, \y) -- (\x + 8, \y)
+        \draw (\x + 5,\y) -- (\x + 5, \y + 1) -- (\x + 6, \y + 1) -- (\x + 6, \y) -- (\x + 5, \y)
         node[anchor=south west]{$\l$};
 
     \draw (0.7,-1.3) node {Output};
@@ -184,20 +179,20 @@ in a densely connected neural network.
         \draw (\x,\y) -- (\x,\y + 3) -- (\x + 3,\y + 3) -- (\x + 3, \y) -- (\x,\y)
         node[xshift=1.5cm, yshift=1.5cm]{\footnotesize $\l$};
 
-    \draw [line width=0.4mm](2.3,3.5) -- (4.7, 3.5) -- (4.7, 1.1) -- (2.3, 1.1) -- (2.3, 3.5);
-    \draw [line width=0.4mm](7.9,2.3) -- (10.3, 2.3) -- (10.3, -0.1) -- (7.9, -0.1) -- (7.9, 2.3);
-    \draw [line width=0.4mm](6.7,-1.5) -- (9.9, -1.5) -- (9.9, -4.7) -- (6.7, -4.7) -- (6.7, -1.5);
+    \draw [line width=0.4mm](1.1,3.5) -- (3.5, 3.5) -- (3.5, 1.1) -- (1.1, 1.1) -- (1.1, 3.5);
+    \draw [line width=0.4mm](4.9,2.3) -- (7.3, 2.3) -- (7.3, -0.1) -- (4.9, -0.1) -- (4.9, 2.3);
+    \draw [line width=0.4mm](3.3,-1.5) -- (6.5, -1.5) -- (6.5, -4.7) -- (3.3, -4.7) -- (3.3, -1.5);
 
-    \draw [line width=0.4mm, -|>] (4.7, 2.3) -- (7.2, 2.3) -- (7.2, -1.4);
-    \draw [line width=0.4mm, -|>] (9.1, -0.1) -- (9.1, -1.4);
+    \draw [line width=0.4mm, -|>] (3.5, 2.3) -- (4.0, 2.3) -- (4.0, -1.4);
+    \draw [line width=0.4mm, -|>] (6, -0.1) -- (6, -1.4);
 
 .. rst-class:: caption
 
     **Figure 1:** An example of a two dimension convolution operation. The
-    input is an image in :math:`\mathds{R}^{3 \times 4}`, and the kernel is
+    input is an image in :math:`\mathds{R}^{3 \times 3}`, and the kernel is
     in :math:`\mathds{R}^{2 \times 2}`. As the kernel is slid over the input
     with a stride width of one, an output in
-    :math:`\mathds{R}^{2 \times 3}` is produced. In the example, the arrows
+    :math:`\mathds{R}^{2 \times 2}` is produced. In the example, the arrows
     and boxes demonstrate how the upper-right portion of the input image
     are compbined with the kernel parameters to produce the upper right
     unit of output.
@@ -369,7 +364,7 @@ is depicted in figure 3.
 
 .. autoclass:: slugnet.layers.MeanPooling
    :show-inheritance:
-   :members:
+   members:
 
 .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
       http://www.deeplearningbook.org
