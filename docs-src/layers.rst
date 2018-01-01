@@ -161,11 +161,11 @@ in a densely connected neural network.
     }
 
     \def\output {
-        0/-4.6/aw + bx + dy + ez,
-        3.4/-4.6/bw + cx + ey + fz,
-        6.8/-4.6/cw + dx + gy + zh,
-        0/-8/dw + ex + gy + hz,
-        3.4/-8/ew + fx + hy + iz,
+        0/-4.6/aw + bx + ey + fz,
+        3.4/-4.6/bw + cx + fy + gz,
+        6.8/-4.6/cw + dx + gy + hz,
+        0/-8/ew + fx + iy + jz,
+        3.4/-8/fw + gx + jy + kz,
         6.8/-8/gw + hx + ky + lz
     }
 
