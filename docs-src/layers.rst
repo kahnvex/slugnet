@@ -362,5 +362,9 @@ is depicted in figure 3.
    the maximum value found in the patch.
 
 
+.. autoclass:: slugnet.layers.MeanPooling
+   :show-inheritance:
+   :members:
+
 .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
       http://www.deeplearningbook.org
