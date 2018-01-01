@@ -142,12 +142,15 @@ in a densely connected neural network.
         0/2.4/a,
         1.2/2.4/b,
         2.4/2.4/c,
-        0/1.2/d,
-        1.2/1.2/e,
-        2.4/1.2/f,
-        0/0/g,
-        1.2/0/h,
-        2.4/0/i
+        3.6/2.4/d,
+        0/1.2/e,
+        1.2/1.2/f,
+        2.4/1.2/g,
+        3.6/1.2/h,
+        0/0/i,
+        1.2/0/j,
+        2.4/0/k,
+        3.6/0/l
     }
 
     \def\kernel {
@@ -160,8 +163,10 @@ in a densely connected neural network.
     \def\output {
         0/-4.6/aw + bx + dy + ez,
         3.4/-4.6/bw + cx + ey + fz,
+        6.8/-4.6/cw + dx + gy + zh,
         0/-8/dw + ex + gy + hz,
-        3.4/-8/ew + fx + hy + iz
+        3.4/-8/ew + fx + hy + iz,
+        6.8/-8/gw + hx + ky + lz
     }
 
     \draw (0.5,3.8) node {Input};
@@ -169,9 +174,9 @@ in a densely connected neural network.
         \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
         node[anchor=south west]{$\l$};
 
-    \draw (5.5,2.6) node {Kernel};
+    \draw (8.1,2.6) node {Kernel};
     \foreach \x/\y/\l in \kernel
-        \draw (\x + 5,\y) -- (\x + 5, \y + 1) -- (\x + 6, \y + 1) -- (\x + 6, \y) -- (\x + 5, \y)
+        \draw (\x + 7.6,\y) -- (\x + 7.6, \y + 1) -- (\x + 8.6, \y + 1) -- (\x + 8.6, \y) -- (\x + 7.6, \y)
         node[anchor=south west]{$\l$};
 
     \draw (0.7,-1.3) node {Output};
@@ -179,12 +184,12 @@ in a densely connected neural network.
         \draw (\x,\y) -- (\x,\y + 3) -- (\x + 3,\y + 3) -- (\x + 3, \y) -- (\x,\y)
         node[xshift=1.5cm, yshift=1.5cm]{\footnotesize $\l$};
 
-    \draw [line width=0.4mm](1.1,3.5) -- (3.5, 3.5) -- (3.5, 1.1) -- (1.1, 1.1) -- (1.1, 3.5);
-    \draw [line width=0.4mm](4.9,2.3) -- (7.3, 2.3) -- (7.3, -0.1) -- (4.9, -0.1) -- (4.9, 2.3);
-    \draw [line width=0.4mm](3.3,-1.5) -- (6.5, -1.5) -- (6.5, -4.7) -- (3.3, -4.7) -- (3.3, -1.5);
+    \draw [line width=0.4mm](2.3,3.5) -- (4.7, 3.5) -- (4.7, 1.1) -- (2.3, 1.1) -- (2.3, 3.5);
+    \draw [line width=0.4mm](7.5,2.3) -- (9.9, 2.3) -- (9.9, -0.1) -- (7.5, -0.1) -- (7.5, 2.3);
+    \draw [line width=0.4mm](6.7,-1.5) -- (9.9, -1.5) -- (9.9, -4.7) -- (6.7, -4.7) -- (6.7, -1.5);
 
-    \draw [line width=0.4mm, -|>] (3.5, 2.3) -- (4.0, 2.3) -- (4.0, -1.4);
-    \draw [line width=0.4mm, -|>] (6, -0.1) -- (6, -1.4);
+    \draw [line width=0.4mm, -|>] (4.7, 2.3) -- (7.0, 2.3) -- (7.0, -1.4);
+    \draw [line width=0.4mm, -|>] (8.7, -0.1) -- (8.7, -1.4);
 
 .. rst-class:: caption
 
