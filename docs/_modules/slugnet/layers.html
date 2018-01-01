@@ -71,13 +71,24 @@
 <span class="sd">    :type init: slugnet.initializations.Initializer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">outd</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Noop</span><span class="p">(),</span> <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">()):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">ind</span><span class="p">,</span> <span class="n">outd</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">((</span><span class="n">outd</span><span class="p">,</span> <span class="p">))</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outshape</span><span class="p">,</span> <span class="n">inshape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Noop</span><span class="p">(),</span>
+                 <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span> <span class="o">=</span> <span class="n">outshape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">inshape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">prev_layer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">prev_layer</span><span class="o">.</span><span class="n">outshape</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;inshape must be given to first layer of network&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">outshape</span><span class="p">,</span> <span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dw</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
 
     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_X</span> <span class="o">=</span> <span class="n">X</span>
@@ -112,6 +123,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_layer</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span> <span class="o">=</span> <span class="n">prev_layer</span><span class="o">.</span><span class="n">outshape</span>
 
     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="mf">0.</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">&gt;</span> <span class="mf">1.</span><span class="p">:</span>
@@ -151,12 +165,12 @@
 <span class="sd">    :param activation: The activation function to be used at the layer.</span>
 <span class="sd">    :type activation: slugnet.activation.Activation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">nb_kernel</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">(),</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_kernel</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">inshape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">(),</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()):</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">inshape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span> <span class="o">=</span> <span class="n">nb_kernel</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span> <span class="o">=</span> <span class="n">kernel_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ind</span> <span class="o">=</span> <span class="n">ind</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
@@ -167,7 +181,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span>
-        <span class="n">prev_nb_kernel</span> <span class="o">=</span> <span class="n">ind</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_layer</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">prev_layer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">prev_layer</span><span class="o">.</span><span class="n">outshape</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;inshape must be given to first layer of network&#39;</span><span class="p">)</span>
+
+        <span class="n">prev_nb_kernel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">init</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">,</span> <span class="n">prev_nb_kernel</span><span class="p">,</span> <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span><span class="p">))</span>
@@ -234,7 +255,7 @@
             <span class="k">return</span> <span class="n">layer_grads</span></div>
 
 
-<div class="viewcode-block" id="MeanPooling"><a class="viewcode-back" href="../../layers.html#slugnet.layers.MeanPooling">[docs]</a><span class="k">class</span> <span class="nc">MeanPooling</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MeanPooling</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pool outputs using the arithmetic mean.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -313,7 +334,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">layer_grads</span></div>
+        <span class="k">return</span> <span class="n">layer_grads</span>
 
 
 <span class="k">class</span> <span class="nc">Flatten</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
