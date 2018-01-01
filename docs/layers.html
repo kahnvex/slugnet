@@ -75,7 +75,7 @@ This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.</p>
 <dl class="class">
 <dt id="slugnet.layers.Dense">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>ind</em>, <em>outd</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>outshape</em>, <em>inshape=None</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
 <p>A common densely connected neural network layer.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -248,7 +248,7 @@ a matrix. This is due to the fact that each kernel produces its own
 two dimensional output, and there are multiple kernels at every layer.</p>
 <dl class="class">
 <dt id="slugnet.layers.Convolution">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>ind</em>, <em>nb_kernel</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=&lt;slugnet.activation.ReLU object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>nb_kernel</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>inshape=None</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=&lt;slugnet.activation.ReLU object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
 <p>A layer that implements the convolution operation.</p>
 <table class="docutils field-list" frame="void" rules="none">
