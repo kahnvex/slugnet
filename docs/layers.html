@@ -44,7 +44,7 @@
   <div class="section" id="layers">
 <h1>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h1>
 <p>In this section, we will cover all relevant layers implemented
-by slugnet, and their specific use cases. This includes convolutional
+by Slugnet, and their specific use cases. This includes convolutional
 neural networks and layers  associated with them.</p>
 <div class="section" id="fully-connected-neural-networks">
 <h2>Fully Connected Neural Networks<a class="headerlink" href="#fully-connected-neural-networks" title="Permalink to this headline">¶</a></h2>
@@ -73,7 +73,7 @@ calculates two values as follows</p>
 of <img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
 and <img class="math" src="_images/math/b52043529fabcd9ab1b5932757104cc9c2e58f87.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
-The model propogates that gradient to this layer.</p>
+The model propagates that gradient to this layer.</p>
 <div class="figure">
 <p><img src="_images/tikz-be0593f4dad31d763e7f8371668007610e7907c1.png" alt="\tikzset{%
    brace/.style = { decorate, decoration={brace, amplitude=5pt} }
@@ -609,7 +609,7 @@ neural network. This makes training one to classify mnist data simple.</p>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Note that because slugnet is implemented using numpy, and thus
+<p>Note that because Slugnet is implemented using numpy, and thus
 runs on a single CPU core, training this model is very slow.</p>
 <table class="docutils footnote" frame="void" id="id7" rules="none">
 <colgroup><col class="label" /><col /></colgroup>

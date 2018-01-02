@@ -2,7 +2,7 @@ Layers
 ======
 
 In this section, we will cover all relevant layers implemented
-by slugnet, and their specific use cases. This includes convolutional
+by Slugnet, and their specific use cases. This includes convolutional
 neural networks and layers  associated with them.
 
 Fully Connected Neural Networks
@@ -42,7 +42,7 @@ When looking at the implementation of :code:`Dense`, there is a notable absence
 of :math:`\bm{W}^{(i + 1)^T}`
 and :math:`\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}`.
 This is because their dot product is calculated in the previous layer.
-The model propogates that gradient to this layer.
+The model propagates that gradient to this layer.
 
 .. tikz::
 
@@ -547,7 +547,7 @@ neural network. This makes training one to classify mnist data simple.
 .. literalinclude:: ../slugnet/examples/mnist_conv.py
    :language: python
 
-Note that because slugnet is implemented using numpy, and thus
+Note that because Slugnet is implemented using numpy, and thus
 runs on a single CPU core, training this model is very slow.
 
 .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,

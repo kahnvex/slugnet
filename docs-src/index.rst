@@ -1,13 +1,13 @@
 Introduction to Neural Nets
 ===========================
 
-Slugnet is a modest expiremental neural networks library intended to solidify
+Slugnet is a modest experimental neural networks library intended to solidify
 the author's understanding of deep learning.
 
 The goal of this library is to mathematically document all relevant components
 of a working neural networks library. This includes models, layers, optimizers,
-activation functions, loss functions, forward propogation, backward
-propogation, and more.
+activation functions, loss functions, forward propagation, backward
+propagation, and more.
 
 The mathematical documentation assumes basic understanding of discriminative
 machine learning techniques, linear algebra, probability, and calculus. This
@@ -155,7 +155,7 @@ activation functions, including but not limited to tanh, sigmoid, and the
 rectified linear unit, or ReLU for short.
 
 Upon completion of the feedforward operation, the prediction :math:`\hat{y}`
-is ouput from the final layer.
+is output from the final layer.
 
 Slugnet represents a neural network as a :code:`Model`. You can run a
 neural network in feedforward mode by calling :code:`model.transform(X)`
@@ -169,15 +169,15 @@ optimization.
 Loss, Backpropogation, and Optimization
 ---------------------------------------
 
-Training a neural network is similar to training traditional discrininative
-models such as logistic regression. For instamce, we need a loss function, we
+Training a neural network is similar to training traditional discriminative
+models such as logistic regression. For instance, we need a loss function, we
 must compute derivatives, and we must implement some numerical algorithm to
 optimize the model. On the other hand, neural networks are somewhat unique in
 that they require us to compute a gradient at each layer with which we may
-learn weights. To compute this graident, we use the backpropogation algorithm.
+learn weights. To compute this gradient, we use the backpropogation algorithm.
 
 Before we can run backpropogation, a version of the feedforward algorithm
-described earlier must be run, only instead of throwing away the intermedite
+described earlier must be run, only instead of throwing away the intermediate
 outputs at each layer, we store them, knowing that we'll need them later
 for backpropogation. Additionally, during training, we require the ground truth
 labels or values of each sample. That is, the dataset :math:`\mathcal{D}`
@@ -284,8 +284,8 @@ computing gradients from layer to layer.
 This is all we need to implement a full backpropogation algorithm. Repeated
 application of equations 3, 4, and 5 will give us the weight and bias
 gradients :math:`\nabla_{\bm{W}}\bm{\ell}` and :math:`\nabla_{\bm{b}}\bm{\ell}`
-at every layer, as indicated by the pseudocode of backpropogation given in
-alorithm 1.
+at every layer, as indicated backpropogation's pseudocode given in
+algorithm 1.
 
 .. rst-class:: algo
 .. math::
@@ -319,7 +319,7 @@ compute weight updates for each layer using a numerical optimization method.
 For this introduction, we'll focus on the stochastic gradient descent (SGD)
 optimization method. Stochastic gradient descent works by sampling data from
 the training set :math:`\{\bm{x}_i, \bm{y}_i\}_{i=1}^N`, computing the
-gradients with backpropogation, and applying our update using the a learning
+gradients with backpropogation, and applying our update using a learning
 rate parameter :math:`\epsilon`. In practice, we must gradually decrease
 :math:`\epsilon` over time.
 
