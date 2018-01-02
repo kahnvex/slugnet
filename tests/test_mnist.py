@@ -28,8 +28,8 @@ class TestMNIST(unittest.TestCase):
         self.model = Model(lr=0.01, n_epoch=3, loss=SCCE(),
                            metrics=['loss', 'accuracy'], optimizer=RMSProp())
 
-        self.model.add_layer(Dense(784, 200, activation=ReLU()))
-        self.model.add_layer(Dense(200, 10, activation=Softmax()))
+        self.model.add_layer(Dense(200, inshape=784, activation=ReLU()))
+        self.model.add_layer(Dense(10, activation=Softmax()))
 
         self.fit_metrics = self.model.fit(self.X, self.y)
 
@@ -47,9 +47,9 @@ class TestMNISTWithDropout(unittest.TestCase):
         self.model = Model(lr=0.01, n_epoch=3, loss=SCCE(),
                            metrics=['loss', 'accuracy'], optimizer=RMSProp())
 
-        self.model.add_layer(Dense(784, 200, activation=ReLU()))
+        self.model.add_layer(Dense(200, inshape=784, activation=ReLU()))
         self.model.add_layer(Dropout(0.5))
-        self.model.add_layer(Dense(200, 10, activation=Softmax()))
+        self.model.add_layer(Dense(10, activation=Softmax()))
 
         self.fit_metrics = self.model.fit(self.X, self.y)
 

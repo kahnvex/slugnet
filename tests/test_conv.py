@@ -7,7 +7,7 @@ from slugnet.activation import ReLU, Softmax
 from slugnet.layers import Convolution, Dense, MeanPooling, Flatten
 from slugnet.loss import SoftmaxCategoricalCrossEntropy as SCCE
 from slugnet.model import Model
-from slugnet.optimizers import RMSProp
+from slugnet.optimizers import SGD
 
 
 def get_mnist():
@@ -26,15 +26,20 @@ class TestMNISTWithConvnet(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.X, self.y = get_mnist()
-        self.model = Model(lr=0.01, n_epoch=3, loss=SCCE(),
-                           metrics=['loss', 'accuracy'], optimizer=RMSProp())
+        np.random.seed(100)
+        self.X = np.random.permutation(self.X)[:1000]
+        np.random.seed(100)
+        self.y = np.random.permutation(self.y)[:1000]
 
-        self.model.add_layer(Convolution((None, 1, 28, 28), 1, (3, 3)))
-        self.model.add_layer(MeanPooling((26, 26), (2, 2)))
-        self.model.add_layer(Convolution((None, 1, 13, 13), 2, (4, 4)))
-        self.model.add_layer(MeanPooling((10, 10), (2, 2)))
-        self.model.add_layer(Flatten((2, 5, 5)))
-        self.model.add_layer(Dense(50, 26, activation=Softmax()))
+        self.model = Model(lr=0.001, n_epoch=300, batch_size=3, loss=SCCE(),
+                           metrics=['loss', 'accuracy'], optimizer=SGD())
+
+        self.model.add_layer(Convolution(1, (3, 3), inshape=(None, 1, 28, 28)))
+        self.model.add_layer(MeanPooling((2, 2)))
+        self.model.add_layer(Convolution(2, (4, 4)))
+        self.model.add_layer(MeanPooling((2, 2)))
+        self.model.add_layer(Flatten())
+        self.model.add_layer(Dense(10, activation=Softmax()))
 
         self.fit_metrics = self.model.fit(self.X, self.y)
 

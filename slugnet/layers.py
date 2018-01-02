@@ -5,6 +5,11 @@ from slugnet.initializations import _zero, GlorotUniform
 
 
 class Layer(object):
+    first_layer = False
+
+    def set_first_layer(self):
+        self.first_layer = True
+
     def get_params(self):
         return []
 
@@ -16,11 +21,11 @@ class Dense(Layer):
     r"""
     A common densely connected neural network layer.
 
-    :param ind: The input dimension at this layer.
-    :type ind: int
+    :param outshape: The output shape at this layer.
+    :type outshape: int
 
-    :param outd: The output dimension at this layer.
-    :type outd: int
+    :param inshape: The input shape at this layer.
+    :type inshape: int
 
     :param activation: The activation function to be used at the layer.
     :type activation: slugnet.activation.Activation
@@ -29,13 +34,27 @@ class Dense(Layer):
     :type init: slugnet.initializations.Initializer
     """
 
-    def __init__(self, ind, outd, activation=Noop(), init=GlorotUniform()):
-        self.shape = ind, outd
-        self.w = init(self.shape)
-        self.b = _zero((outd, ))
+    def __init__(self, outshape, inshape=None, activation=Noop(),
+                 init=GlorotUniform()):
+        self.outshape = None, outshape
+        self.activation = activation
+        self.inshape = inshape
+        self.init = init
+
+    def connect(self, prev_layer=None):
+        if prev_layer:
+            if len(prev_layer.outshape) != 2:
+                raise ValueError('Previous layers outshape is incompatible')
+
+            self.inshape = prev_layer.outshape[-1]
+        elif not self.inshape:
+            raise ValueError('inshape must be given to first layer of network')
+
+        self.shape = self.inshape, self.outshape[-1]
+        self.w = self.init(self.shape)
+        self.b = _zero((self.outshape[-1], ))
         self.dw = None
         self.db = None
-        self.activation = activation
 
     def call(self, X, *args, **kwargs):
         self.last_X = X
@@ -70,6 +89,9 @@ class Dropout(Layer):
     def __init__(self, p=0.0, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.p = p
+
+    def connect(self, prev_layer=None):
+        self.outshape = prev_layer.outshape
 
     def call(self, X, train=True, *args, **kwargs):
         if 0. > self.p or self.p > 1.:
@@ -109,33 +131,48 @@ class Convolution(Layer):
     :param activation: The activation function to be used at the layer.
     :type activation: slugnet.activation.Activation
     """
-    def __init__(self, ind, nb_kernel, kernel_size, stride=1,
-            init=GlorotUniform(), activation=ReLU()):
+    def __init__(self, nb_kernel, kernel_size, stride=1,
+            inshape=None, init=GlorotUniform(), activation=None):
 
+        if activation is None:
+            activation = ReLU()
+        self.inshape = inshape
         self.nb_kernel = nb_kernel
         self.kernel_size = kernel_size
-        self.ind = ind
         self.stride = stride
 
         self.w, self.b = None, None
         self.dw, self.db = None, None
 
-        self.outd = None
+        self.outshape = None
         self.last_output = None
         self.last_input = None
 
-        kernel_h, kernel_w = self.kernel_size
-        prev_nb_kernel = ind[1]
-
+        self.init = init
         self.activation = activation
-        self.w = init((self.nb_kernel, prev_nb_kernel, kernel_h, kernel_w))
+
+    def connect(self, prev_layer=None):
+        if prev_layer:
+            self.inshape = prev_layer.outshape
+        elif not self.inshape:
+            raise ValueError('inshape must be given to first layer of network')
+
+        prev_nb_kernel = self.inshape[1]
+
+        kernel_h, kernel_w = self.kernel_size
+        self.w = self.init((self.nb_kernel, prev_nb_kernel, kernel_h, kernel_w))
         self.b = _zero((self.nb_kernel,))
+
+        prev_kh, prev_kw = self.inshape[2], self.inshape[3]
+        height = (prev_kh - kernel_h) // self.stride + 1
+        width = (prev_kw - kernel_w) // self.stride + 1
+        self.outshape = (self.inshape[0], self.nb_kernel, height, width)
 
     def call(self, X, *args, **kwargs):
         self.last_input = X
         batch_size, depth, height, width = X.shape
         kernel_h, kernel_w = self.kernel_size
-        out_h, out_w = self.out_shape[2:]
+        out_h, out_w = self.outshape[2:]
 
         outputs = _zero((batch_size, self.nb_kernel, out_h, out_w))
 
@@ -155,7 +192,7 @@ class Convolution(Layer):
 
     def backprop(self, grad, *args, **kwargs):
         batch_size, depth, input_h, input_w = self.last_input.shape
-        out_h, out_w = self.out_shape[2:]
+        out_h, out_w = self.outshape[2:]
         kernel_h, kernel_w = self.kernel_size
 
         # gradients
@@ -172,16 +209,16 @@ class Convolution(Layer):
                                        h:input_h - kernel_h + h + 1:self.stride,
                                        w:input_w - kernel_w + w + 1:self.stride]
                         delta_window = delta[:, r]
-                        self.dw[r, t, h, w] = np.sum(input_window * delta_window) / nb_kernel
+                        self.dw[r, t, h, w] = np.sum(input_window * delta_window) / batch_size
 
         # db
         for r in np.arange(self.nb_kernel):
-            self.db[r] = np.sum(delta[:, r]) / nb_kernel
+            self.db[r] = np.sum(delta[:, r]) / batch_size
 
         # dX
         if not self.first_layer:
             layer_grads = _zero(self.last_input.shape)
-            for b in np.arange(nb_kernel):
+            for b in np.arange(batch_size):
                 for r in np.arange(self.nb_kernel):
                     for t in np.arange(depth):
                         for h in np.arange(out_h):
@@ -197,26 +234,31 @@ class MeanPooling(Layer):
     Pool outputs using the arithmetic mean.
     """
 
-    def __init__(self, ind, pool_size):
+    def __init__(self, pool_size, inshape=None):
         self.pool_size = pool_size
 
-        self.out_shape = 0
-        self.out_shape = None
-        self.input_shape = None
+        self.outshape = None
+        self.inshape = inshape
 
-        old_h, old_w = ind[-2:]
+    def connect(self, prev_layer=None):
+        if prev_layer:
+            self.inshape = prev_layer.outshape
+        elif not self.inshape:
+            raise ValueError('inshape must be given to first layer of network')
+
+        old_h, old_w = self.inshape[-2:]
         pool_h, pool_w = self.pool_size
         new_h, new_w = old_h // pool_h, old_w // pool_w
 
-        self.out_shape = ind[:-2] + (new_h, new_w)
+        self.outshape = self.inshape[:-2] + (new_h, new_w)
 
     def call(self, X, *args, **kwargs):
-        self.input_shape = X.shape
+        self.inshape = X.shape
         pool_h, pool_w = self.pool_size
-        new_h, new_w = self.out_shape[-2:]
+        new_h, new_w = self.outshape[-2:]
 
         # forward
-        outputs = _zero(self.input_shape[:-2] + self.out_shape[-2:])
+        outputs = _zero(self.inshape[:-2] + self.outshape[-2:])
 
         if np.ndim(X) == 4:
             nb_batch, nb_axis, _, _ = X.shape
@@ -241,11 +283,11 @@ class MeanPooling(Layer):
         return outputs
 
     def backprop(self, pre_grad, *args, **kwargs):
-        new_h, new_w = self.out_shape[-2:]
+        new_h, new_w = self.outshape[-2:]
         pool_h, pool_w = self.pool_size
         length = np.prod(self.pool_size)
 
-        layer_grads = _zero(self.input_shape)
+        layer_grads = _zero(self.inshape)
 
         if np.ndim(pre_grad) == 4:
             nb_batch, nb_axis, _, _ = pre_grad.shape
@@ -275,18 +317,24 @@ class MeanPooling(Layer):
 
 
 class Flatten(Layer):
-    def __init__(self, ind, outdim=2):
+    def __init__(self, outdim=2, inshape=None):
         self.outdim = outdim
         if outdim < 1:
             raise ValueError('Dim must be >0, was %i', outdim)
 
         self.last_input_shape = None
-        self.out_shape = None
+        self.outshape = None
+        self.inshape = inshape
 
-        to_flatten = np.prod(ind[self.outdim - 1:])
-        flattened_shape = ind[:self.outdim - 1] + (to_flatten,)
+    def connect(self, prev_layer=None):
+        if prev_layer:
+            self.inshape = prev_layer.outshape
+        elif not self.inshape:
+            raise ValueError('inshape must be given to first layer of network')
 
-        self.out_shape = flattened_shape
+        to_flatten = np.prod(self.inshape[self.outdim - 1:])
+        flattened_shape = self.inshape[:self.outdim - 1] + (to_flatten,)
+        self.outshape = flattened_shape
 
     def call(self, X, *args, **kwargs):
         self.last_input_shape = X.shape

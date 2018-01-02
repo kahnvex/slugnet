@@ -78,20 +78,23 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outshape</span><span class="p">,</span> <span class="n">inshape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Noop</span><span class="p">(),</span>
                  <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">()):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span> <span class="o">=</span> <span class="n">outshape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">outshape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">inshape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">prev_layer</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">prev_layer</span><span class="o">.</span><span class="n">outshape</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prev_layer</span><span class="o">.</span><span class="n">outshape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Previous layers outshape is incompatible&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">prev_layer</span><span class="o">.</span><span class="n">outshape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;inshape must be given to first layer of network&#39;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">outshape</span><span class="p">,</span> <span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">outshape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dw</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -171,8 +174,10 @@
 <span class="sd">    :type activation: slugnet.activation.Activation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_kernel</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">inshape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">(),</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()):</span>
+            <span class="n">inshape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">(),</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
+        <span class="k">if</span> <span class="n">activation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">activation</span> <span class="o">=</span> <span class="n">ReLU</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">inshape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span> <span class="o">=</span> <span class="n">nb_kernel</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span> <span class="o">=</span> <span class="n">kernel_size</span>
@@ -209,7 +214,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span> <span class="o">=</span> <span class="n">X</span>
         <span class="n">batch_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span>
-        <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
 
         <span class="n">outputs</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">,</span> <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span><span class="p">))</span>
 
@@ -229,7 +234,7 @@
 
     <span class="k">def</span> <span class="nf">backprop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">batch_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">input_h</span><span class="p">,</span> <span class="n">input_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_input</span><span class="o">.</span><span class="n">shape</span>
-        <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
         <span class="n">kernel_h</span><span class="p">,</span> <span class="n">kernel_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_size</span>
 
         <span class="c1"># gradients</span>
@@ -246,16 +251,16 @@
                                        <span class="n">h</span><span class="p">:</span><span class="n">input_h</span> <span class="o">-</span> <span class="n">kernel_h</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span>
                                        <span class="n">w</span><span class="p">:</span><span class="n">input_w</span> <span class="o">-</span> <span class="n">kernel_w</span> <span class="o">+</span> <span class="n">w</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">]</span>
                         <span class="n">delta_window</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">dw</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">input_window</span> <span class="o">*</span> <span class="n">delta_window</span><span class="p">)</span> <span class="o">/</span> <span class="n">nb_kernel</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dw</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">input_window</span> <span class="o">*</span> <span class="n">delta_window</span><span class="p">)</span> <span class="o">/</span> <span class="n">batch_size</span>
 
         <span class="c1"># db</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">r</span><span class="p">])</span> <span class="o">/</span> <span class="n">nb_kernel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">r</span><span class="p">])</span> <span class="o">/</span> <span class="n">batch_size</span>
 
         <span class="c1"># dX</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_layer</span><span class="p">:</span>
             <span class="n">layer_grads</span> <span class="o">=</span> <span class="n">_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb_kernel</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_kernel</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">depth</span><span class="p">):</span>
                         <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">out_h</span><span class="p">):</span>
