@@ -31,7 +31,7 @@ class TestMNISTWithConvnet(unittest.TestCase):
         np.random.seed(100)
         self.y = np.random.permutation(self.y)[:1000]
 
-        self.model = Model(lr=0.001, n_epoch=300, batch_size=3, loss=SCCE(),
+        self.model = Model(lr=0.001, n_epoch=100, batch_size=3, loss=SCCE(),
                            metrics=['loss', 'accuracy'], optimizer=SGD())
 
         self.model.add_layer(Convolution(1, (3, 3), inshape=(None, 1, 28, 28)))

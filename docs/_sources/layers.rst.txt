@@ -302,7 +302,7 @@ size and kernel size. The equation is given by
    \[d_{\text{out}} = d_{\text{in}} - d_{\text{kernel}} + 1.\]
 
 Figure 3 features a one dimensional input and output. As we mentioned earlier,
-most convolutional neural networks feature two dimensional inputs and outputs
+most convolutional neural networks feature two dimensional inputs and outputs,
 such as images. In figure 4, we show how the convolution operation behaves
 when we are using two dimensional inputs, kernels, and outputs.
 
@@ -539,7 +539,16 @@ is depicted in figure 3.
 
 .. autoclass:: slugnet.layers.MeanPooling
    :show-inheritance:
-   members:
+   :members:
+
+We have now documented all the necessary parts of a convolutional
+neural network. This makes training one to classify mnist data simple.
+
+.. literalinclude:: ../slugnet/examples/mnist_conv.py
+   :language: python
+
+Note that because slugnet is implemented using numpy, and thus
+runs on a single CPU core, training this model is very slow.
 
 .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
       http://www.deeplearningbook.org

@@ -348,7 +348,7 @@ size and kernel size. The equation is given by</p>
 <div class="math">
 <p><img src="_images/math/120872b89304dc4eeb40cd046e6f6c361d8fb1c3.svg" alt="\[d_{\text{out}} = d_{\text{in}} - d_{\text{kernel}} + 1.\]"/></p>
 </div><p>Figure 3 features a one dimensional input and output. As we mentioned earlier,
-most convolutional neural networks feature two dimensional inputs and outputs
+most convolutional neural networks feature two dimensional inputs and outputs,
 such as images. In figure 4, we show how the convolution operation behaves
 when we are using two dimensional inputs, kernels, and outputs.</p>
 <div class="figure">
@@ -571,6 +571,46 @@ is depicted in figure 3.</p>
 </div><p class="caption"><strong>Figure 6:</strong> A visual representation of the max pooling
 operation. Color coded patches are downsampled by taking
 the maximum value found in the patch.</p>
+<dl class="class">
+<dt id="slugnet.layers.MeanPooling">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">MeanPooling</code><span class="sig-paren">(</span><em>pool_size</em>, <em>inshape=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#MeanPooling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.MeanPooling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>Pool outputs using the arithmetic mean.</p>
+</dd></dl>
+
+<p>We have now documented all the necessary parts of a convolutional
+neural network. This makes training one to classify mnist data simple.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
+<span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Convolution</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">MeanPooling</span><span class="p">,</span> <span class="n">Flatten</span>
+<span class="kn">from</span> <span class="nn">slugnet.loss</span> <span class="kn">import</span> <span class="n">SoftmaxCategoricalCrossEntropy</span> <span class="k">as</span> <span class="n">SCCE</span>
+<span class="kn">from</span> <span class="nn">slugnet.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">slugnet.optimizers</span> <span class="kn">import</span> <span class="n">SGD</span>
+<span class="kn">from</span> <span class="nn">slugnet.data.mnist</span> <span class="kn">import</span> <span class="n">get_mnist</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">get_mnist</span><span class="p">()</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">X</span><span class="p">)[:</span><span class="mi">1000</span><span class="p">]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">y</span><span class="p">)[:</span><span class="mi">1000</span><span class="p">]</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">SCCE</span><span class="p">(),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">SGD</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Convolution</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">inshape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">MeanPooling</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Convolution</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">MeanPooling</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Softmax</span><span class="p">()))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that because slugnet is implemented using numpy, and thus
+runs on a single CPU core, training this model is very slow.</p>
 <table class="docutils footnote" frame="void" id="id7" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
