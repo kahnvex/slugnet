@@ -8,6 +8,7 @@ docs-auto:
 
 clean-docs-images:
 	rm -rf docs/plot_directive
+	rm -rf docs/_images
 
-docs:
-	sphinx-build docs-src/ docs/
+docs: clean-docs-images
+	sphinx-build -a -E docs-src/ docs/

@@ -12,8 +12,9 @@ class TestSlugnetOnXOR(unittest.TestCase):
         cls.model = Model(progress=False, validation_split=0, batch_size=4,
                           metrics=['loss', 'accuracy'], log_interval=5000)
 
-        cls.model.add_layer(Dense(2, 3, Sigmoid()))
-        cls.model.add_layer(Dense(3, 1, Sigmoid()))
+        cls.model.add_layer(Dense(3, inshape=2, activation=Sigmoid()))
+        cls.model.add_layer(Dense(1, activation=Sigmoid()))
+        cls.model.compile()
 
         cls.X_train = np.array([
             [0, 0],

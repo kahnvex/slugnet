@@ -3,6 +3,19 @@
   padding: 0 1em;
 }
 
+.terminal {
+  font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+  color: #eee;
+  background: #555;
+  padding: 1em;
+  white-space: pre;
+}
+
+.figure img {
+  display: block;
+  margin: 0 auto;
+}
+
 .algo img {
   width:100%;
 }
