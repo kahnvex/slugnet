@@ -47,6 +47,23 @@ The model propogates that gradient to this layer.
   :show-inheritance:
   :members:
 
+An example of using two dense layers to train a multi-layer neural
+network to classify mnist data can be seen below.
+
+.. literalinclude:: ../slugnet/examples/mnist.py
+   :language: python
+
+
+If you have slugnet installed locally, this script can be
+run running the following command. It will output training
+and validation statistics to :code:`stdout` as the model
+is trained.
+
+.. code-block:: shell
+
+   $ python3 -m slugnet.examples.mnist
+
+
 Dropout
 -------
 
@@ -79,6 +96,24 @@ training. This rule is called the weight scaling inference rule [1]_.
 .. autoclass:: slugnet.layers.Dropout
    :show-inheritance:
    :members:
+
+An example of using a :code:`Dropout` layer with slugnet is presented below.
+
+.. literalinclude:: ../slugnet/examples/mnist_dropout.py
+   :language: python
+
+
+If you have slugnet installed locally, this script can be
+run running the following command. It will output training
+and validation statistics to :code:`stdout` as the model
+is trained. Note that this model is slower to train than
+the model without dropout. This is widely noted in the
+literature [2]_.
+
+.. code-block:: shell
+
+   $ python3 -m slugnet.examples.mnist_dropout
+
 
 Convolutional Neural Networks
 -----------------------------
@@ -373,3 +408,6 @@ is depicted in figure 3.
 
 .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
       http://www.deeplearningbook.org
+
+.. [2] S. Wang and C. D. Manning. Fast dropout training. In *Proceedings of the 30th International
+   Conference on Machine Learning*, pages 118–126. ACM, 2013.
