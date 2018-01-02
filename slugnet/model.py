@@ -63,9 +63,20 @@ class Model(object):
         self.metrics = metrics
         self.progress = progress
         self.log_interval = log_interval
+        self.compiled = False
 
     def add_layer(self, layer):
         self.layers.append(layer)
+
+    def compile(self):
+        for i, layer in enumerate(self.layers):
+            if i == 0:
+                layer.connect()
+            else:
+                layer.connect(self.layers[i - 1])
+
+        self.layers[0].set_first_layer()
+        self.compiled = True
 
     def get_n_output(self):
         out_layer = self.layers[-1]
@@ -141,6 +152,9 @@ class Model(object):
         """
         Train the model given samples :code:`X` and labels or values :code`y`.
         """
+
+        if not self.compiled:
+            self.compile()
 
         X_train, X_test, Y_train, Y_test = train_test_split(
             X, y, test_size=self.validation_split)

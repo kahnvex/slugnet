@@ -165,11 +165,13 @@ called the weight scaling inference rule [1]_.
 
 .. rst-class:: caption
 
-   **Figure 2:** A configuration of dropout between two hidden layers
+   **Figure 2:** A dropout layer between two hidden layers
    of a neural network. Note the nodes :math:`h_2^{(1)}` and :math:`h_5^{(1)}`
    are both excluded from the current subnetwork via dropout units
    :math:`d_2` and :math:`d_5`. On the next feedforward
-   operation, a new subnetwork will be generated.
+   operation, a new subnetwork will be randomly generated with each unit
+   in the first layer being exluded from the subnetwork with probability
+   :math:`p`.
 
 .. autoclass:: slugnet.layers.Dropout
    :show-inheritance:
@@ -182,7 +184,7 @@ An example of using a :code:`Dropout` layer with slugnet is presented below.
 
 
 If you have slugnet installed locally, this script can be
-run running the following command. It will output training
+run by executing the following command. It will output training
 and validation statistics to :code:`stdout` as the model
 is trained. Note that this model is slower to train than
 the model without dropout. This is widely noted in the
@@ -213,11 +215,11 @@ the function:
 
     \[s(i) = \sum_{a=-\infty}^\infty x(a) k(i - a)\]
 
-where :math:`x` is the input and :math:`w`
+where :math:`x` is the input and :math:`k`
 is the kernel, or in some cases the weighting function.
 
 In the case of convolutional neural networks, the input
-is typically two dimensional image :math:`I`, and it
+is typically a two dimensional image :math:`I`, and it
 follows that we have a two dimensional kernel :math:`K`.
 Now we can write out convolution function with both axes:
 
@@ -239,15 +241,70 @@ at layer :math:`i` is connected to every node at layer
 where location of a shape relative to another shape is
 important. For instance, finding a right angle involves
 detecting two edges that are perpendicular, *and* whose
-lines cross one another. If we make the kernel smaller
-than the input image, we can process parts of the image
-at a time, thereby ensuring locality of the input signals.
-To process the entire image, we slide the kernel over the
-input, along both axes. At each step, an output is produced
+lines cross one another. If we make the nonzero parts of the
+kernel smaller than the input image, we can process parts of
+the image at a time, thereby ensuring locality of the input
+signals. To process the entire image, we slide the kernel over
+the input, along both axes. At each step, an output is produced
 which will be used as input for the next layer.
 This configuration allows us to learn the parameters of the
 kernel :math:`K` the same way we'd learn ordinary parameters
 in a densely connected neural network.
+
+.. tikz::
+
+   \tikzset{%
+      brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+   }
+
+   %\draw [brace] (6.25,0.25)  -- (1.75,0.25) node[yshift=-0.5cm, xshift=2.25cm] {Input Layer};
+   %\draw [brace] (0,5)  -- (8,5) node[yshift=0.5cm, xshift=-4cm] {Dense Layer};
+
+   \foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+      \draw[fill=gray!30](\y, 3) circle(0.5cm)
+      node {$h_{\n}^{(2)}$};
+
+   \foreach \y/\n in {-2/1, 0/2, 2/3, 4/4, 6/5, 8/6, 10/7}
+      \draw[fill=gray!30](\y, 1) circle(0.5cm)
+      node {$h_{\n}^{(1)}$};
+
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](-2,1) -- (0,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](0,1) -- (0,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](0,1) -- (2,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](2,1) -- (0,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](2,1) -- (2,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](2,1) -- (4,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](4,1) -- (2,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](4,1) -- (4,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](4,1) -- (6,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](6,1) -- (6,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](6,1) -- (4,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](6,1) -- (8,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](8,1) -- (6,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](8,1) -- (8,3);
+   \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](10,1) -- (8,3);
+
+   :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta
+
+.. rst-class:: caption
+
+   **Figure 3:** Note how the convolution layer connects nodes that are close
+   to one another. This closeness is determined by the size of the kernel. In
+   this case we have an input in :math:`\mathds{R}^7`, a kernel in :math:`\mathds{R}^3`,
+   and an output in :math:`\mathds{R}^5`.
+
+From figure 3, we can see that the output size can be determined from the input
+size and kernel size. The equation is given by
+
+.. math::
+   :nowrap:
+
+   \[d_{\text{out}} = d_{\text{in}} - d_{\text{kernel}} + 1.\]
+
+Figure 3 features a one dimensional input and output. As we mentioned earlier,
+most convolutional neural networks feature two dimensional inputs and outputs
+such as images. In figure 4, we show how the convolution operation behaves
+when we are using two dimensional inputs, kernels, and outputs.
 
 .. tikz::
 
@@ -306,11 +363,11 @@ in a densely connected neural network.
 
 .. rst-class:: caption
 
-    **Figure 2:** An example of a two dimension convolution operation. The
-    input is an image in :math:`\mathds{R}^{3 \times 3}`, and the kernel is
+    **Figure 4:** An example of a two dimension convolution operation. The
+    input is an image in :math:`\mathds{R}^{3 \times 4}`, and the kernel is
     in :math:`\mathds{R}^{2 \times 2}`. As the kernel is slid over the input
     with a stride width of one, an output in
-    :math:`\mathds{R}^{2 \times 2}` is produced. In the example, the arrows
+    :math:`\mathds{R}^{2 \times 3}` is produced. In the example, the arrows
     and boxes demonstrate how the upper-right portion of the input image
     are compbined with the kernel parameters to produce the upper right
     unit of output.
@@ -405,7 +462,7 @@ define the size of both ranges. This operation is depicted in figure 2.
 
 .. rst-class:: caption
 
-   **Figure 3:** A visual representation of the mean pooling
+   **Figure 5:** A visual representation of the mean pooling
    operation. Color coded patches are combined via arithmetic
    average and included in an output matrix.
 
@@ -475,7 +532,7 @@ is depicted in figure 3.
 
 .. rst-class:: caption
 
-   **Figure 4:** A visual representation of the max pooling
+   **Figure 6:** A visual representation of the max pooling
    operation. Color coded patches are downsampled by taking
    the maximum value found in the patch.
 
