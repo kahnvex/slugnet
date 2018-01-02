@@ -41,22 +41,24 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-slugnet.layers">
-<span id="layers"></span><h1>Layers<a class="headerlink" href="#module-slugnet.layers" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="slugnet.layers.Dense">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>ind</em>, <em>outd</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
-<p>A common densely connected neural network layer.</p>
-<p>The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
+  <div class="section" id="layers">
+<h1>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we will cover all relevant layers implemented
+by slugnet, and their specific use cases. This includes convolutional
+neural networks and layers  associated with them.</p>
+<div class="section" id="fully-connected-neural-networks">
+<h2>Fully Connected Neural Networks<a class="headerlink" href="#fully-connected-neural-networks" title="Permalink to this headline">¶</a></h2>
+<p>Slugnet implements fully connected neural networks via the <code class="code docutils literal"><span class="pre">Dense</span></code>
+layer. When operating in feedforward mode, the dense layer computes the
+following term</p>
 <div class="math">
-<p><img src="_images/math/7cafe553d169f705c18559a9e09fbfa481a015e5.svg" alt="\[
-    \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})
+<p><img src="_images/math/fd625308ce6c981502635ae2d2b1ba0e45e3e5ec.svg" alt="\[
+   \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})
 \]"/></p>
 </div><p>where <img class="math" src="_images/math/7781592845d244c06254fdaca3880786f02b3f80.svg" alt="\bm{a}"/> is activated output, <img class="math" src="_images/math/e3bf1ef0dd807d03fb49d7b38cc22fb494d4009d.svg" alt="\phi"/>
 is the activation function, <img class="math" src="_images/math/86872fb5bbd58bd98cd64a475fb814ea67d8c520.svg" alt="\bm{W}"/> are weights,
-<img class="math" src="_images/math/1d735dcd1d65f80245147548ce61a9d66202bb15.svg" alt="\bm{b}"/> is our bias.</p>
-<p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
+<img class="math" src="_images/math/1d735dcd1d65f80245147548ce61a9d66202bb15.svg" alt="\bm{b}"/> is the bias term.</p>
+<p>On feed backward, or backpropogation, the dense layer
 calculates two values as follows</p>
 <div class="math">
 <p><img src="_images/math/5c2680bc4b8caeb1698eaa50c3ca1dc90b6632e0.svg" alt="\begin{flalign}
@@ -67,18 +69,49 @@ calculates two values as follows</p>
     \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=
         \frac{\partial \ell}{\partial \bm{a}^{(i)}} \bm{x}^T
 \end{flalign}"/></p>
-</div><p>When looking at the source, there is a notable absence of
-<img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
+</div><p>When looking at the implementation of <code class="code docutils literal"><span class="pre">Dense</span></code>, there is a notable absence
+of <img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
 and <img class="math" src="_images/math/b52043529fabcd9ab1b5932757104cc9c2e58f87.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.</p>
+<div class="figure">
+<p><img src="_images/tikz-be0593f4dad31d763e7f8371668007610e7907c1.png" alt="\tikzset{%
+   brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+}
+
+\draw [brace] (6.25,0.25)  -- (1.75,0.25) node[yshift=-0.5cm, xshift=2.25cm] {Input Layer};
+\draw [brace] (0,5)  -- (8,5) node[yshift=0.5cm, xshift=-4cm] {Dense Layer};
+
+\foreach \y/\n in {2/3, 4/2, 6/1}
+   \draw(\y,1) circle(0.5cm)
+   node {$x_{\n}$};
+
+\foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+   \draw[fill=gray!30](\y, 4) circle(0.5cm)
+   node {$h_{\n}$};
+
+\foreach \x in {2,4,6}
+   \foreach \y in {0, 2, 4, 6, 8}
+      \draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](\x,1) -- (\y,4);
+
+:libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta" /></p>
+</div><p class="caption"><strong>Figure 1:</strong> A depiction of a five unit dense layer. The dense layer is
+connected to a three unit input layer. The arrows going from the input layer
+to the dense layer represent weights that are multuplied by the
+values given by the input layer. The resulting values are represented by
+the gray nodes in the hidden dense layer.</p>
+<dl class="class">
+<dt id="slugnet.layers.Dense">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>outshape</em>, <em>inshape=None</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A common densely connected neural network layer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ind</strong> (<em>int</em>) – The input dimension at this layer.</li>
-<li><strong>outd</strong> (<em>int</em>) – The output dimension at this layer.</li>
+<li><strong>outshape</strong> (<em>int</em>) – The output shape at this layer.</li>
+<li><strong>inshape</strong> (<em>int</em>) – The input shape at this layer.</li>
 <li><strong>activation</strong> (<em>slugnet.activation.Activation</em>) – The activation function to be used at the layer.</li>
 <li><strong>init</strong> (<em>slugnet.initializations.Initializer</em>) – The initialization function to be used</li>
 </ul>
@@ -95,18 +128,49 @@ and computes update for this layers weights</p>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="slugnet.layers.Dropout">
-<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dropout</code><span class="sig-paren">(</span><em>p=0.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dropout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>An example of using two dense layers to train a multi-layer neural
+network to classify mnist data can be seen below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
+<span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">slugnet.loss</span> <span class="kn">import</span> <span class="n">SoftmaxCategoricalCrossEntropy</span> <span class="k">as</span> <span class="n">SCCE</span>
+<span class="kn">from</span> <span class="nn">slugnet.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">slugnet.optimizers</span> <span class="kn">import</span> <span class="n">RMSProp</span>
+<span class="kn">from</span> <span class="nn">slugnet.data.mnist</span> <span class="kn">import</span> <span class="n">get_mnist</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">get_mnist</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">SCCE</span><span class="p">(),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">],</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">RMSProp</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">inshape</span><span class="o">=</span><span class="mi">784</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Softmax</span><span class="p">()))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you have slugnet installed locally, this script can be
+executed by running the following command. It will output
+training and validation statistics to <code class="code docutils literal"><span class="pre">stdout</span></code> as the
+model is trained.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist
+</pre></div>
+</div>
+<p>Note this snippet makes use of several components that have not
+yet been reviewed, such as loss and optimization functions.
+There are corresponding documentation sections for these components, and
+jumping ahead to learn about them is encouraged.</p>
+</div>
+<div class="section" id="dropout">
+<h2>Dropout<a class="headerlink" href="#dropout" title="Permalink to this headline">¶</a></h2>
 <p>Dropout is a method of regularization that trains subnetworks by turning
 off non-output nodes with some probability <img class="math" src="_images/math/70c2f41478031b532a625cb53a08693e6ea15602.svg" alt="p"/>.</p>
 <p>This approximates bagging, which involves training an ensemble of models
-to overcome weaknesses in any given model <a class="footnote-reference" href="#id4" id="id1">[1]</a>.</p>
+to overcome weaknesses in any given model and prevent overfitting <a class="footnote-reference" href="#id7" id="id1">[1]</a>.</p>
 <p>We can formalize dropout by representing the subnetworks created by dropout
 with a mask vector <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>. Now, we note each subnetwork defines a
 new probability distribution of <img class="math" src="_images/math/ddc4cefb70948005dd1900a3de93cefcc7b1b6b3.svg" alt="y"/> as
-<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a class="footnote-reference" href="#id4" id="id2">[1]</a>. If we define
+<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a class="footnote-reference" href="#id7" id="id2">[1]</a>. If we define
 <img class="math" src="_images/math/9dbf7cd080c8a3c2bb81218bb66184ea28673e89.svg" alt="\mathds{P}(\bm{\mu})"/> as the probability distribution of mask vectors
 <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>, we can write the mean of all subnetworks as</p>
 <div class="math">
@@ -115,9 +179,50 @@ new probability distribution of <img class="math" src="_images/math/ddc4cefb7094
 \]"/></p>
 </div><p>The problem with evaluating this term is the exponential number of mask
 vectors. In practice, we approximate this probability distribution by
-including all nodes during inference, and multiplying each output by
+including all nodes during inference, multiplying each output by
 <img class="math" src="_images/math/b31dbce22ac4f932167d1dab800282625ddb22b5.svg" alt="1 - p"/>, the probability that any node is included in the network during
-training. This rule is called the weight scaling inference rule <a class="footnote-reference" href="#id4" id="id3">[1]</a>.</p>
+training, and running the feedforward operation just once. This rule is
+called the weight scaling inference rule <a class="footnote-reference" href="#id7" id="id3">[1]</a>.</p>
+<div class="figure">
+<p><img src="_images/tikz-81a8e80a5a66d907eb6de0012db694e4dd31d5ac.png" alt="\tikzset{%
+   brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+}
+
+%\draw [brace] (6.25,0.25)  -- (1.75,0.25) node[yshift=-0.5cm, xshift=2.25cm] {Input Layer};
+%\draw [brace] (0,5)  -- (8,5) node[yshift=0.5cm, xshift=-4cm] {Dense Layer};
+
+\foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+   \draw[fill=gray!30](\y, 6) circle(0.5cm)
+   node {$h_{\n}^{(2)}$};
+
+\foreach \y/\n/\c in {0/1/gray, 2/2/red, 4/3/gray, 6/4/gray, 8/5/red}
+   \draw[fill=\c!30](\y, 3) circle(0.5cm)
+   node {$d_{\n}$};
+
+\foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+   \draw[fill=gray!30](\y, 1) circle(0.5cm)
+   node {$h_{\n}^{(1)}$};
+
+\foreach \x in {0, 2, 4, 6, 8}
+   \draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](\x,1) -- (\x,3);
+
+\foreach \x in {0, 4, 6}
+   \foreach \y in {0, 2, 4, 6, 8}
+      \draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](\x,3) -- (\y,6);
+
+:libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta" /></p>
+</div><p class="caption"><strong>Figure 2:</strong> A dropout layer between two hidden layers
+of a neural network. Note the nodes <img class="math" src="_images/math/f4ebc7afd1984a21747e3077b0a827f462abb789.svg" alt="h_2^{(1)}"/> and <img class="math" src="_images/math/7384d3942d1294545431a1f3742bc40aa48c3b50.svg" alt="h_5^{(1)}"/>
+are both excluded from the current subnetwork via dropout units
+<img class="math" src="_images/math/e4c07ed370b993ed54b5f013020de9090d6341fe.svg" alt="d_2"/> and <img class="math" src="_images/math/6c14d0b8cdd37e0b1c812ef8b8063ae8e76e25db.svg" alt="d_5"/>. On the next feedforward
+operation, a new subnetwork will be randomly generated with each unit
+in the first layer being exluded from the subnetwork with probability
+<img class="math" src="_images/math/70c2f41478031b532a625cb53a08693e6ea15602.svg" alt="p"/>.</p>
+<dl class="class">
+<dt id="slugnet.layers.Dropout">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dropout</code><span class="sig-paren">(</span><em>p=0.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dropout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A layer that removes units from a network with probability <code class="code docutils literal"><span class="pre">p</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -126,14 +231,402 @@ training. This rule is called the weight scaling inference rule <a class="footno
 </tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
+</dd></dl>
+
+<p>An example of using a <code class="code docutils literal"><span class="pre">Dropout</span></code> layer with slugnet is presented below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
+<span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span>
+<span class="kn">from</span> <span class="nn">slugnet.loss</span> <span class="kn">import</span> <span class="n">SoftmaxCategoricalCrossEntropy</span> <span class="k">as</span> <span class="n">SCCE</span>
+<span class="kn">from</span> <span class="nn">slugnet.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">slugnet.optimizers</span> <span class="kn">import</span> <span class="n">RMSProp</span>
+<span class="kn">from</span> <span class="nn">slugnet.data.mnist</span> <span class="kn">import</span> <span class="n">get_mnist</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">get_mnist</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">SCCE</span><span class="p">(),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">],</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">RMSProp</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">inshape</span><span class="o">=</span><span class="mi">784</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Softmax</span><span class="p">()))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you have slugnet installed locally, this script can be
+run by executing the following command. It will output training
+and validation statistics to <code class="code docutils literal"><span class="pre">stdout</span></code> as the model
+is trained. Note that this model is slower to train than
+the model without dropout. This is widely noted in the
+literature <a class="footnote-reference" href="#id8" id="id4">[2]</a>.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist_dropout
+</pre></div>
+</div>
+</div>
+<div class="section" id="convolutional-neural-networks">
+<h2>Convolutional Neural Networks<a class="headerlink" href="#convolutional-neural-networks" title="Permalink to this headline">¶</a></h2>
+<p>Convolutional neural networks are most often used in image classification tasks.
+There are several specialized layers used in these networks. The most obvious is
+the convolution layer, less obvious are pooling layers, specifically max-pooling
+and mean-pooling. In this section we will mathematically review all these layers
+in depth.</p>
+<div class="section" id="convolution-layer">
+<h3>Convolution Layer<a class="headerlink" href="#convolution-layer" title="Permalink to this headline">¶</a></h3>
+<p>In the general case, a discrete convolution operation implements
+the function:</p>
+<div class="math">
+<p><img src="_images/math/37642e19f9abf67ae5453aaf621f8fb500ad0a18.svg" alt="\[s(i) = \sum_{a=-\infty}^\infty x(a) k(i - a)\]"/></p>
+</div><p>where <img class="math" src="_images/math/0642a80e44de7b43d141fa9d602bc25a316a12ba.svg" alt="x"/> is the input and <img class="math" src="_images/math/ee075027798dee91762b5ace22e31d158752d4c2.svg" alt="k"/>
+is the kernel, or in some cases the weighting function.</p>
+<p>In the case of convolutional neural networks, the input
+is typically a two dimensional image <img class="math" src="_images/math/82d557a1887f8018e73b98245468e9e76ac99dc5.svg" alt="I"/>, and it
+follows that we have a two dimensional kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/>.
+Now we can write out convolution function with both axes:</p>
+<div class="math">
+<p><img src="_images/math/5fe607911c726afc17d064f98616b2ad916850b6.svg" alt="\[S(i, j) = \sum_m \sum_n I(m, n) K(i - m, j - n).\]"/></p>
+</div><p>Note that we can write the infinite sum over the domains of
+<img class="math" src="_images/math/1e147e70e7d7a2b61cee9f9ee7e6f24faffb9b8a.svg" alt="m"/> and <img class="math" src="_images/math/32f0a59be9113850c78c51bd8bbf03c53f3d4e10.svg" alt="n"/> as discrete sums because we assume
+that the kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> is zero everywhere but the set of
+points in which we store data <a class="footnote-reference" href="#id7" id="id5">[1]</a>.</p>
+<p>The motivation for using the convolution operation in a
+neural network is best described using an example of an
+image. In a densely connected neural network, each node
+at layer <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/> is connected to every node at layer
+<img class="math" src="_images/math/b8c29d6a3b774d66617715a65662a284a79c345e.svg" alt="i + 1"/>. This does not lend itself to image processing,
+where location of a shape relative to another shape is
+important. For instance, finding a right angle involves
+detecting two edges that are perpendicular, <em>and</em> whose
+lines cross one another. If we make the nonzero parts of the
+kernel smaller than the input image, we can process parts of
+the image at a time, thereby ensuring locality of the input
+signals. To process the entire image, we slide the kernel over
+the input, along both axes. At each step, an output is produced
+which will be used as input for the next layer.
+This configuration allows us to learn the parameters of the
+kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> the same way we’d learn ordinary parameters
+in a densely connected neural network.</p>
+<div class="figure">
+<p><img src="_images/tikz-909783505bd92fc4edec9b5af1cc6acac5faa391.png" alt="\tikzset{%
+   brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+}
+
+%\draw [brace] (6.25,0.25)  -- (1.75,0.25) node[yshift=-0.5cm, xshift=2.25cm] {Input Layer};
+%\draw [brace] (0,5)  -- (8,5) node[yshift=0.5cm, xshift=-4cm] {Dense Layer};
+
+\foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+   \draw[fill=gray!30](\y, 3) circle(0.5cm)
+   node {$h_{\n}^{(2)}$};
+
+\foreach \y/\n in {-2/1, 0/2, 2/3, 4/4, 6/5, 8/6, 10/7}
+   \draw[fill=gray!30](\y, 1) circle(0.5cm)
+   node {$h_{\n}^{(1)}$};
+
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](-2,1) -- (0,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](0,1) -- (0,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](0,1) -- (2,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](2,1) -- (0,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](2,1) -- (2,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](2,1) -- (4,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](4,1) -- (2,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](4,1) -- (4,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](4,1) -- (6,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](6,1) -- (6,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](6,1) -- (4,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](6,1) -- (8,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](8,1) -- (6,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](8,1) -- (8,3);
+\draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](10,1) -- (8,3);
+
+:libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta" /></p>
+</div><p class="caption"><strong>Figure 3:</strong> Note how the convolution layer connects nodes that are close
+to one another. This closeness is determined by the size of the kernel. In
+this case we have an input in <img class="math" src="_images/math/2fc2ff6fff202b7b4ac1e1fb0ad5fccc0374ddc0.svg" alt="\mathds{R}^7"/>, a kernel in <img class="math" src="_images/math/49497020b835952c9e57b31fcdf5a48047e08d8f.svg" alt="\mathds{R}^3"/>,
+and an output in <img class="math" src="_images/math/cbabc0f54fc371d1ac8fe0d0c4e91236dffcf1f5.svg" alt="\mathds{R}^5"/>.</p>
+<p>From figure 3, we can see that the output size can be determined from the input
+size and kernel size. The equation is given by</p>
+<div class="math">
+<p><img src="_images/math/120872b89304dc4eeb40cd046e6f6c361d8fb1c3.svg" alt="\[d_{\text{out}} = d_{\text{in}} - d_{\text{kernel}} + 1.\]"/></p>
+</div><p>Figure 3 features a one dimensional input and output. As we mentioned earlier,
+most convolutional neural networks feature two dimensional inputs and outputs,
+such as images. In figure 4, we show how the convolution operation behaves
+when we are using two dimensional inputs, kernels, and outputs.</p>
+<div class="figure">
+<p><img src="_images/tikz-d0cd71e85f9b9c964fe52135ed4cf708f3a03ce7.png" alt="\def\input {
+    0/2.4/a,
+    1.2/2.4/b,
+    2.4/2.4/c,
+    3.6/2.4/d,
+    0/1.2/e,
+    1.2/1.2/f,
+    2.4/1.2/g,
+    3.6/1.2/h,
+    0/0/i,
+    1.2/0/j,
+    2.4/0/k,
+    3.6/0/l
+}
+
+\def\kernel {
+    0/1.2/w,
+    1.2/1.2/x,
+    0/0/y,
+    1.2/0/z
+}
+
+\def\output {
+    0/-4.6/aw + bx + ey + fz,
+    3.4/-4.6/bw + cx + fy + gz,
+    6.8/-4.6/cw + dx + gy + hz,
+    0/-8/ew + fx + iy + jz,
+    3.4/-8/fw + gx + jy + kz,
+    6.8/-8/gw + hx + ky + lz
+}
+
+\draw (0.5,3.8) node {Input};
+\foreach \x/\y/\l in \input
+    \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+    node[anchor=south west]{$\l$};
+
+\draw (8.1,2.6) node {Kernel};
+\foreach \x/\y/\l in \kernel
+    \draw (\x + 7.6,\y) -- (\x + 7.6, \y + 1) -- (\x + 8.6, \y + 1) -- (\x + 8.6, \y) -- (\x + 7.6, \y)
+    node[anchor=south west]{$\l$};
+
+\draw (0.7,-1.3) node {Output};
+\foreach \x/\y/\l in \output
+    \draw (\x,\y) -- (\x,\y + 3) -- (\x + 3,\y + 3) -- (\x + 3, \y) -- (\x,\y)
+    node[xshift=1.5cm, yshift=1.5cm]{\footnotesize $\l$};
+
+\draw [line width=0.4mm](2.3,3.5) -- (4.7, 3.5) -- (4.7, 1.1) -- (2.3, 1.1) -- (2.3, 3.5);
+\draw [line width=0.4mm](7.5,2.3) -- (9.9, 2.3) -- (9.9, -0.1) -- (7.5, -0.1) -- (7.5, 2.3);
+\draw [line width=0.4mm](6.7,-1.5) -- (9.9, -1.5) -- (9.9, -4.7) -- (6.7, -4.7) -- (6.7, -1.5);
+
+\draw [line width=0.4mm, -|&gt;] (4.7, 2.3) -- (7.0, 2.3) -- (7.0, -1.4);
+\draw [line width=0.4mm, -|&gt;] (8.7, -0.1) -- (8.7, -1.4);" /></p>
+</div><p class="caption"><strong>Figure 4:</strong> An example of a two dimension convolution operation. The
+input is an image in <img class="math" src="_images/math/b83597b0b944ff0036731bef528de42ec7bd64e0.svg" alt="\mathds{R}^{3 \times 4}"/>, and the kernel is
+in <img class="math" src="_images/math/a88cdf031b73d22f069872b57c8021b71537a760.svg" alt="\mathds{R}^{2 \times 2}"/>. As the kernel is slid over the input
+with a stride width of one, an output in
+<img class="math" src="_images/math/4bd71c2a3e1de24cfc7f9824130949d7d539e75b.svg" alt="\mathds{R}^{2 \times 3}"/> is produced. In the example, the arrows
+and boxes demonstrate how the upper-right portion of the input image
+are compbined with the kernel parameters to produce the upper right
+unit of output.</p>
+<p class="caption">–Modified from source: Goodfellow, Bengio, Courville (Deep Learning,
+2016, Figure 9.1).</p>
+<p>The stride width determines how far the kernel moves at each step. Of
+course, to learn anything interesting, we require multiple kernels at
+each layer. These are all configurable hyperparameters that can be set
+upon network instantiation. When the network is operating in feedforward
+mode, the output at each layer is a three dimensional tensor, rather than
+a matrix. This is due to the fact that each kernel produces its own
+two dimensional output, and there are multiple kernels at every layer.</p>
+<dl class="class">
+<dt id="slugnet.layers.Convolution">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>nb_kernel</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>inshape=None</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A layer that implements the convolution operation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>)</em> Goodfellow, Bengio, Courville (2016), Deep Learning, <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>nb_kernel</strong> (<em>int</em>) – The number of kernels to use.</li>
+<li><strong>kernel_size</strong> (<em>(</em><em>int</em><em>, </em><em>int</em><em>)</em>) – The size of the kernel as a tuple, heigh by width</li>
+<li><strong>stride</strong> (<em>int</em>) – The stide width to use</li>
+<li><strong>init</strong> (<em>slugnet.initializations.Initializer</em>) – The initializer to use</li>
+<li><strong>activation</strong> (<em>slugnet.activation.Activation</em>) – The activation function to be used at the layer.</li>
+</ul>
+</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
 
+</div>
+<div class="section" id="pooling">
+<h3>Pooling<a class="headerlink" href="#pooling" title="Permalink to this headline">¶</a></h3>
+<p>Mean pooling is a method of downsampling typically used in convolutional
+neural networks. Pooling makes the representations at a subsequent layer
+approximately invariant to translations of the output from the previous
+layer <a class="footnote-reference" href="#id7" id="id6">[1]</a>. This is useful when we care about the presence of some feature
+but not necessarily the exact location of the feature within the input.</p>
+<p>The mean pooling operation implements the function</p>
+<div class="math">
+<p><img src="_images/math/b18dc2a9e31668752bce878bfaa813da9bf17e25.svg" alt="\[
+    \frac{1}{s_m s_n} \sum_{i \in m} \sum_{j \in n} I_{i,j}
+\]"/></p>
+</div><p>where <img class="math" src="_images/math/83420589284cb7a262c7f52d90542113b6e69570.svg" alt="m, n"/> are input ranges along both axes, and <img class="math" src="_images/math/fcce770d5c252adaae46a880daf881424142d9dd.svg" alt="s_n, s_m"/>
+define the size of both ranges. This operation is depicted in figure 2.</p>
+<div class="figure">
+<p><img src="_images/tikz-1e4b43047343f9830b6bd909b5aed4b23cfcfd63.png" alt="\def\input {
+   0/4/4,
+   1/4/7,
+   2/4/1,
+   3/4/2,
+   0/3/6,
+   1/3/3,
+   2/3/0,
+   3/3/8,
+   0/2/9,
+   1/2/1,
+   2/2/6,
+   3/2/0,
+   0/1/6,
+   1/1/4,
+   2/1/1,
+   3/1/7,
+}
+
+\def\output {
+   6/3/5,
+   7/3/2.75,
+   6/2/5,
+   7/2/3.5
+}
+
+\draw (0.5, 5.4) node {Input};
+
+\fill[blue!40!white] (0, 3) rectangle (2,5);
+\fill[red!40!white] (0, 1) rectangle (2,3);
+\fill[green!40!white] (2, 3) rectangle (4,5);
+\fill[orange!40!white] (2, 1) rectangle (4,3);
+
+\foreach \x/\y/\l in \input
+   \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+   node[anchor=south west]{$\l$};
+
+\draw (6.7, 4.4) node {Output};
+
+\fill[blue!40!white] (6, 3) rectangle (7,4);
+\fill[red!40!white] (6, 2) rectangle (7,3);
+\fill[green!40!white] (7,3) rectangle (8,4);
+\fill[orange!40!white] (7,2) rectangle (8,3);
+\foreach \x/\y/\l in \output
+   \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+   node[anchor=south west]{$\l$};
+
+\draw (4.9, 2.95) [align=center] node {Mean \\ pooling};
+\draw [line width=0.4mm, -|&gt;] (4, 3) -- (5.8, 3);" /></p>
+</div><p class="caption"><strong>Figure 5:</strong> A visual representation of the mean pooling
+operation. Color coded patches are combined via arithmetic
+average and included in an output matrix.</p>
+<p>The max-pooling operation implements the function</p>
+<div class="math">
+<p><img src="_images/math/8aa16f3b84dc278419eee4a388ea301934eca714.svg" alt="\[
+   \max_{i \in m, j \in n} I_{i,j}
+\]"/></p>
+</div><p>where <img class="math" src="_images/math/83420589284cb7a262c7f52d90542113b6e69570.svg" alt="m, n"/> are input ranges along both axes. This operation
+is depicted in figure 3.</p>
+<div class="figure">
+<p><img src="_images/tikz-0c3d1532b14fcbf6f04b76a96a0719d3e8e29e57.png" alt="\def\input {
+   0/4/4,
+   1/4/7,
+   2/4/1,
+   3/4/2,
+   0/3/6,
+   1/3/3,
+   2/3/0,
+   3/3/8,
+   0/2/9,
+   1/2/1,
+   2/2/6,
+   3/2/0,
+   0/1/6,
+   1/1/4,
+   2/1/1,
+   3/1/7,
+}
+
+\def\output {
+   6/3/7,
+   7/3/8,
+   6/2/9,
+   7/2/7
+}
+
+\draw (0.5, 5.4) node {Input};
+
+\fill[blue!40!white] (0, 3) rectangle (2,5);
+\fill[red!40!white] (0, 1) rectangle (2,3);
+\fill[green!40!white] (2, 3) rectangle (4,5);
+\fill[orange!40!white] (2, 1) rectangle (4,3);
+
+\foreach \x/\y/\l in \input
+   \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+   node[anchor=south west]{$\l$};
+
+\draw (6.7, 4.4) node {Output};
+
+\fill[blue!40!white] (6, 3) rectangle (7,4);
+\fill[red!40!white] (6, 2) rectangle (7,3);
+\fill[green!40!white] (7, 3) rectangle (8,4);
+\fill[orange!40!white] (7, 2) rectangle (8,3);
+\foreach \x/\y/\l in \output
+   \draw (\x,\y) -- (\x,\y + 1) -- (\x + 1,\y + 1) -- (\x + 1,\y) -- (\x,\y)
+   node[anchor=south west]{$\l$};
+
+\draw (4.9, 2.95) [align=center] node {Max \\ pooling};
+\draw [line width=0.4mm, -|&gt;] (4, 3) -- (5.8, 3);" /></p>
+</div><p class="caption"><strong>Figure 6:</strong> A visual representation of the max pooling
+operation. Color coded patches are downsampled by taking
+the maximum value found in the patch.</p>
+<dl class="class">
+<dt id="slugnet.layers.MeanPooling">
+<em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">MeanPooling</code><span class="sig-paren">(</span><em>pool_size</em>, <em>inshape=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#MeanPooling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.MeanPooling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>Pool outputs using the arithmetic mean.</p>
+</dd></dl>
+
+<p>We have now documented all the necessary parts of a convolutional
+neural network. This makes training one to classify mnist data simple.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
+<span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Convolution</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">MeanPooling</span><span class="p">,</span> <span class="n">Flatten</span>
+<span class="kn">from</span> <span class="nn">slugnet.loss</span> <span class="kn">import</span> <span class="n">SoftmaxCategoricalCrossEntropy</span> <span class="k">as</span> <span class="n">SCCE</span>
+<span class="kn">from</span> <span class="nn">slugnet.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">slugnet.optimizers</span> <span class="kn">import</span> <span class="n">SGD</span>
+<span class="kn">from</span> <span class="nn">slugnet.data.mnist</span> <span class="kn">import</span> <span class="n">get_mnist</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">get_mnist</span><span class="p">()</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">X</span><span class="p">)[:</span><span class="mi">1000</span><span class="p">]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">y</span><span class="p">)[:</span><span class="mi">1000</span><span class="p">]</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">SCCE</span><span class="p">(),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">SGD</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Convolution</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">inshape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">MeanPooling</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Convolution</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">MeanPooling</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Softmax</span><span class="p">()))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that because slugnet is implemented using numpy, and thus
+runs on a single CPU core, training this model is very slow.</p>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>, <a class="fn-backref" href="#id5">4</a>, <a class="fn-backref" href="#id6">5</a>)</em> Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
+<a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[2]</a></td><td>S. Wang and C. D. Manning. Fast dropout training. In <em>Proceedings of the 30th International
+Conference on Machine Learning</em>, pages 118–126. ACM, 2013.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 
 
@@ -150,10 +643,15 @@ training. This rule is called the weight scaling inference rule <a class="footno
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Layers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Layers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fully-connected-neural-networks">Fully Connected Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dropout">Dropout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#convolutional-neural-networks">Convolutional Neural Networks</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="activation.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimization Functions</a></li>
 </ul>
 
 <div class="relations">
@@ -187,7 +685,7 @@ training. This rule is called the weight scaling inference rule <a class="footno
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jarrod Kahn.
+      &copy;2017, <a href="https://jarrodkahn.com">Jarrod Kahn</a>.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>

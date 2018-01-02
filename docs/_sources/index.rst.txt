@@ -292,9 +292,9 @@ alorithm 1.
    :nowrap:
 
    \begin{algorithm}
-      \caption{The backward propogation algorithm's pseudocode from
-         \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some notation
-         modifications to match to style presented in this documentation.}\label{backprop}
+      \caption{Backward Propogation \newline
+      --Modification of source: Goodfellow, Bengio, \& Courville (Deep Learning, 2016)}
+      \label{backprop}
       \begin{algorithmic}[1]
          \Procedure{Backpropogation}{$\bm{\ell}, \bm{\hat{y}}, \bm{y}, \bm{h}, \bm{W}$}
             \State $\bm{g} \gets \nabla_{\bm{\hat{y}}}\bm{\ell}(\bm{\hat{y}}, \bm{y})$
@@ -329,9 +329,9 @@ rate parameter :math:`\epsilon`. In practice, we must gradually decrease
 
    \setcounter{algorithm}{1}
    \begin{algorithm}
-      \caption{Stochastic Gradient Descent pseudocode from
-         \textit{Deep Learning} (Goodfellow, Bengio, \& Courville, 2016) with some
-         modifications to match the style presented in this documentation.}\label{backprop}
+      \caption{Stochastic Gradient Descent pseudocode \newline
+      --Modification of source: Goodfellow, Bengio, \& Courville (Deep Learning, 2016)}
+      \label{backprop}
       \begin{algorithmic}[1]
          \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}$}
             \State $\bm{W} \gets \text{InitWeights}()$
