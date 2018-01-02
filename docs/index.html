@@ -42,12 +42,12 @@
             
   <div class="section" id="introduction-to-neural-nets">
 <h1>Introduction to Neural Nets<a class="headerlink" href="#introduction-to-neural-nets" title="Permalink to this headline">¶</a></h1>
-<p>Slugnet is a modest expiremental neural networks library intended to solidify
+<p>Slugnet is a modest experimental neural networks library intended to solidify
 the author’s understanding of deep learning.</p>
 <p>The goal of this library is to mathematically document all relevant components
 of a working neural networks library. This includes models, layers, optimizers,
-activation functions, loss functions, forward propogation, backward
-propogation, and more.</p>
+activation functions, loss functions, forward propagation, backward
+propagation, and more.</p>
 <p>The mathematical documentation assumes basic understanding of discriminative
 machine learning techniques, linear algebra, probability, and calculus. This
 documentation will loosely follow the notation found in <em>Deep Learning</em>
@@ -176,7 +176,7 @@ nothing more than a linear model. There are several choices one can make for
 activation functions, including but not limited to tanh, sigmoid, and the
 rectified linear unit, or ReLU for short.</p>
 <p>Upon completion of the feedforward operation, the prediction <img class="math" src="_images/math/4c8a5de442e480d6d39b1aadbfc02c2e5c004ad7.svg" alt="\hat{y}"/>
-is ouput from the final layer.</p>
+is output from the final layer.</p>
 <p>Slugnet represents a neural network as a <code class="code docutils literal"><span class="pre">Model</span></code>. You can run a
 neural network in feedforward mode by calling <code class="code docutils literal"><span class="pre">model.transform(X)</span></code>
 on a model, where <code class="code docutils literal"><span class="pre">X</span></code> is a matrix of inputs. In this case <code class="code docutils literal"><span class="pre">X</span></code>
@@ -187,14 +187,14 @@ optimization.</p>
 </div>
 <div class="section" id="loss-backpropogation-and-optimization">
 <h2>Loss, Backpropogation, and Optimization<a class="headerlink" href="#loss-backpropogation-and-optimization" title="Permalink to this headline">¶</a></h2>
-<p>Training a neural network is similar to training traditional discrininative
-models such as logistic regression. For instamce, we need a loss function, we
+<p>Training a neural network is similar to training traditional discriminative
+models such as logistic regression. For instance, we need a loss function, we
 must compute derivatives, and we must implement some numerical algorithm to
 optimize the model. On the other hand, neural networks are somewhat unique in
 that they require us to compute a gradient at each layer with which we may
-learn weights. To compute this graident, we use the backpropogation algorithm.</p>
+learn weights. To compute this gradient, we use the backpropogation algorithm.</p>
 <p>Before we can run backpropogation, a version of the feedforward algorithm
-described earlier must be run, only instead of throwing away the intermedite
+described earlier must be run, only instead of throwing away the intermediate
 outputs at each layer, we store them, knowing that we’ll need them later
 for backpropogation. Additionally, during training, we require the ground truth
 labels or values of each sample. That is, the dataset <img class="math" src="_images/math/929dbdae83e4025ff6e7dc3edc92e9da2c1b11b6.svg" alt="\mathcal{D}"/>
@@ -266,8 +266,8 @@ computing gradients from layer to layer.</p>
 <p>This is all we need to implement a full backpropogation algorithm. Repeated
 application of equations 3, 4, and 5 will give us the weight and bias
 gradients <img class="math" src="_images/math/0cc078872ffad5b3dd9db5a3bbc44587be41d3dc.svg" alt="\nabla_{\bm{W}}\bm{\ell}"/> and <img class="math" src="_images/math/db6a69d3f9154ff72086d4e19aad57bccf10dcce.svg" alt="\nabla_{\bm{b}}\bm{\ell}"/>
-at every layer, as indicated by the pseudocode of backpropogation given in
-alorithm 1.</p>
+at every layer, as indicated backpropogation’s pseudocode given in
+algorithm 1.</p>
 <div class="algo math">
 <p><img src="_images/math/4baf9f56d8c220fb074a7d79e734ca7b11e03705.svg" alt="\begin{algorithm}
    \caption{Backward Propogation \newline
@@ -294,7 +294,7 @@ compute weight updates for each layer using a numerical optimization method.</p>
 <p>For this introduction, we’ll focus on the stochastic gradient descent (SGD)
 optimization method. Stochastic gradient descent works by sampling data from
 the training set <img class="math" src="_images/math/aef473bfad645dcce87e3b1272e714ba16169da7.svg" alt="\{\bm{x}_i, \bm{y}_i\}_{i=1}^N"/>, computing the
-gradients with backpropogation, and applying our update using the a learning
+gradients with backpropogation, and applying our update using a learning
 rate parameter <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/>. In practice, we must gradually decrease
 <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/> over time.</p>
 <div class="algo math">
