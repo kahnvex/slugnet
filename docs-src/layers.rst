@@ -9,7 +9,8 @@ Fully Connected Neural Networks
 -------------------------------
 
 Slugnet implements fully connected neural networks via the :code:`Dense`
-layer. The :code:`Dense` layer implements the feed forward operation
+layer. When operating in feedforward mode, the dense layer computes the
+following term
 
 .. math::
    :nowrap:
@@ -20,9 +21,9 @@ layer. The :code:`Dense` layer implements the feed forward operation
 
 where :math:`\bm{a}` is activated output, :math:`\phi`
 is the activation function, :math:`\bm{W}` are weights,
-:math:`\bm{b}` is our bias.
+:math:`\bm{b}` is the bias term.
 
-On feed backward, or backpropogation, the :code:`Dense` layer
+On feed backward, or backpropogation, the dense layer
 calculates two values as follows
 
 .. math::
@@ -37,11 +38,44 @@ calculates two values as follows
             \frac{\partial \ell}{\partial \bm{a}^{(i)}} \bm{x}^T
     \end{flalign}
 
-When looking at the source, there is a notable absence of
-:math:`\bm{W}^{(i + 1)^T}`
+When looking at the implementation of :code:`Dense`, there is a notable absence
+of :math:`\bm{W}^{(i + 1)^T}`
 and :math:`\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}`.
 This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.
+
+.. tikz::
+
+   \tikzset{%
+      brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+   }
+
+   \draw [brace] (6.25,0.25)  -- (1.75,0.25) node[yshift=-0.5cm, xshift=2.25cm] {Input Layer};
+   \draw [brace] (0,5)  -- (8,5) node[yshift=0.5cm, xshift=-4cm] {Dense Layer};
+
+   \foreach \y/\n in {2/3, 4/2, 6/1}
+      \draw(\y,1) circle(0.5cm)
+      node {$x_{\n}$};
+
+   \foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+      \draw[fill=gray!30](\y, 4) circle(0.5cm)
+      node {$h_{\n}$};
+
+   \foreach \x in {2,4,6}
+      \foreach \y in {0, 2, 4, 6, 8}
+         \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](\x,1) -- (\y,4);
+
+   :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta
+
+
+.. rst-class:: caption
+
+   **Figure 1:** A depiction of a five unit dense layer. The dense layer is
+   connected to a three unit input layer. The arrows going from the input layer
+   to the dense layer represent weights that are multuplied by the
+   values given by the input layer. The resulting values are represented by
+   the gray nodes in the hidden dense layer.
+
 
 .. autoclass:: slugnet.layers.Dense
   :show-inheritance:
@@ -55,14 +89,19 @@ network to classify mnist data can be seen below.
 
 
 If you have slugnet installed locally, this script can be
-run running the following command. It will output training
-and validation statistics to :code:`stdout` as the model
-is trained.
+executed by running the following command. It will output
+training and validation statistics to :code:`stdout` as the
+model is trained.
 
 .. code-block:: shell
 
    $ python3 -m slugnet.examples.mnist
 
+
+Note this snippet makes use of several components that have not
+yet been reviewed, such as loss and optimization functions.
+There are corresponding documentation sections for these components, and
+jumping ahead to learn about them is encouraged.
 
 Dropout
 -------
@@ -71,7 +110,7 @@ Dropout is a method of regularization that trains subnetworks by turning
 off non-output nodes with some probability :math:`p`.
 
 This approximates bagging, which involves training an ensemble of models
-to overcome weaknesses in any given model [1]_.
+to overcome weaknesses in any given model and prevent overfitting [1]_.
 
 We can formalize dropout by representing the subnetworks created by dropout
 with a mask vector :math:`\bm{\mu}`. Now, we note each subnetwork defines a
@@ -89,9 +128,48 @@ new probability distribution of :math:`y` as
 
 The problem with evaluating this term is the exponential number of mask
 vectors. In practice, we approximate this probability distribution by
-including all nodes during inference, and multiplying each output by
+including all nodes during inference, multiplying each output by
 :math:`1 - p`, the probability that any node is included in the network during
-training. This rule is called the weight scaling inference rule [1]_.
+training, and running the feedforward operation just once. This rule is
+called the weight scaling inference rule [1]_.
+
+.. tikz::
+
+   \tikzset{%
+      brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+   }
+
+   %\draw [brace] (6.25,0.25)  -- (1.75,0.25) node[yshift=-0.5cm, xshift=2.25cm] {Input Layer};
+   %\draw [brace] (0,5)  -- (8,5) node[yshift=0.5cm, xshift=-4cm] {Dense Layer};
+
+   \foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+      \draw[fill=gray!30](\y, 6) circle(0.5cm)
+      node {$h_{\n}^{(2)}$};
+
+   \foreach \y/\n/\c in {0/1/gray, 2/2/red, 4/3/gray, 6/4/gray, 8/5/red}
+      \draw[fill=\c!30](\y, 3) circle(0.5cm)
+      node {$d_{\n}$};
+
+   \foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+      \draw[fill=gray!30](\y, 1) circle(0.5cm)
+      node {$h_{\n}^{(1)}$};
+
+   \foreach \x in {0, 2, 4, 6, 8}
+      \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](\x,1) -- (\x,3);
+
+   \foreach \x in {0, 4, 6}
+      \foreach \y in {0, 2, 4, 6, 8}
+         \draw[-{>[scale=4]}, shorten >= 0.55cm, shorten <= 0.5cm](\x,3) -- (\y,6);
+
+   :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta
+
+.. rst-class:: caption
+
+   **Figure 2:** A configuration of dropout between two hidden layers
+   of a neural network. Note the nodes :math:`h_2^{(1)}` and :math:`h_5^{(1)}`
+   are both excluded from the current subnetwork via dropout units
+   :math:`d_2` and :math:`d_5`. On the next feedforward
+   operation, a new subnetwork will be generated.
 
 .. autoclass:: slugnet.layers.Dropout
    :show-inheritance:
@@ -133,7 +211,7 @@ the function:
 .. math::
     :nowrap:
 
-    \[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]
+    \[s(i) = \sum_{a=-\infty}^\infty x(a) k(i - a)\]
 
 where :math:`x` is the input and :math:`w`
 is the kernel, or in some cases the weighting function.
@@ -228,7 +306,7 @@ in a densely connected neural network.
 
 .. rst-class:: caption
 
-    **Figure 1:** An example of a two dimension convolution operation. The
+    **Figure 2:** An example of a two dimension convolution operation. The
     input is an image in :math:`\mathds{R}^{3 \times 3}`, and the kernel is
     in :math:`\mathds{R}^{2 \times 2}`. As the kernel is slid over the input
     with a stride width of one, an output in
@@ -327,7 +405,7 @@ define the size of both ranges. This operation is depicted in figure 2.
 
 .. rst-class:: caption
 
-   **Figure 2:** A visual representation of the mean pooling
+   **Figure 3:** A visual representation of the mean pooling
    operation. Color coded patches are combined via arithmetic
    average and included in an output matrix.
 
@@ -397,7 +475,7 @@ is depicted in figure 3.
 
 .. rst-class:: caption
 
-   **Figure 3:** A visual representation of the max pooling
+   **Figure 4:** A visual representation of the max pooling
    operation. Color coded patches are downsampled by taking
    the maximum value found in the patch.
 
