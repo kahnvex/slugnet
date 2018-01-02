@@ -101,17 +101,45 @@ and computes update for this layers weights</p>
 
 </dd></dl>
 
+<p>An example of using two dense layers to train a multi-layer neural
+network to classify mnist data can be seen below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
+<span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">slugnet.loss</span> <span class="kn">import</span> <span class="n">SoftmaxCategoricalCrossEntropy</span> <span class="k">as</span> <span class="n">SCCE</span>
+<span class="kn">from</span> <span class="nn">slugnet.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">slugnet.optimizers</span> <span class="kn">import</span> <span class="n">RMSProp</span>
+<span class="kn">from</span> <span class="nn">slugnet.data.mnist</span> <span class="kn">import</span> <span class="n">get_mnist</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">get_mnist</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">SCCE</span><span class="p">(),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">],</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">RMSProp</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">inshape</span><span class="o">=</span><span class="mi">784</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Softmax</span><span class="p">()))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you have slugnet installed locally, this script can be
+run running the following command. It will output training
+and validation statistics to <code class="code docutils literal"><span class="pre">stdout</span></code> as the model
+is trained.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist
+</pre></div>
+</div>
 </div>
 <div class="section" id="dropout">
 <h2>Dropout<a class="headerlink" href="#dropout" title="Permalink to this headline">¶</a></h2>
 <p>Dropout is a method of regularization that trains subnetworks by turning
 off non-output nodes with some probability <img class="math" src="_images/math/70c2f41478031b532a625cb53a08693e6ea15602.svg" alt="p"/>.</p>
 <p>This approximates bagging, which involves training an ensemble of models
-to overcome weaknesses in any given model <a class="footnote-reference" href="#id6" id="id1">[1]</a>.</p>
+to overcome weaknesses in any given model <a class="footnote-reference" href="#id7" id="id1">[1]</a>.</p>
 <p>We can formalize dropout by representing the subnetworks created by dropout
 with a mask vector <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>. Now, we note each subnetwork defines a
 new probability distribution of <img class="math" src="_images/math/ddc4cefb70948005dd1900a3de93cefcc7b1b6b3.svg" alt="y"/> as
-<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a class="footnote-reference" href="#id6" id="id2">[1]</a>. If we define
+<img class="math" src="_images/math/35467d5760c0b5bc94e558d3dad144b818775027.svg" alt="\mathds{P}(y | \bm{x}, \bm{\mu})"/> <a class="footnote-reference" href="#id7" id="id2">[1]</a>. If we define
 <img class="math" src="_images/math/9dbf7cd080c8a3c2bb81218bb66184ea28673e89.svg" alt="\mathds{P}(\bm{\mu})"/> as the probability distribution of mask vectors
 <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>, we can write the mean of all subnetworks as</p>
 <div class="math">
@@ -122,7 +150,7 @@ new probability distribution of <img class="math" src="_images/math/ddc4cefb7094
 vectors. In practice, we approximate this probability distribution by
 including all nodes during inference, and multiplying each output by
 <img class="math" src="_images/math/b31dbce22ac4f932167d1dab800282625ddb22b5.svg" alt="1 - p"/>, the probability that any node is included in the network during
-training. This rule is called the weight scaling inference rule <a class="footnote-reference" href="#id6" id="id3">[1]</a>.</p>
+training. This rule is called the weight scaling inference rule <a class="footnote-reference" href="#id7" id="id3">[1]</a>.</p>
 <dl class="class">
 <dt id="slugnet.layers.Dropout">
 <em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dropout</code><span class="sig-paren">(</span><em>p=0.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dropout" title="Permalink to this definition">¶</a></dt>
@@ -138,6 +166,36 @@ training. This rule is called the weight scaling inference rule <a class="footno
 </table>
 </dd></dl>
 
+<p>An example of using a <code class="code docutils literal"><span class="pre">Dropout</span></code> layer with slugnet is presented below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
+<span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span>
+<span class="kn">from</span> <span class="nn">slugnet.loss</span> <span class="kn">import</span> <span class="n">SoftmaxCategoricalCrossEntropy</span> <span class="k">as</span> <span class="n">SCCE</span>
+<span class="kn">from</span> <span class="nn">slugnet.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">slugnet.optimizers</span> <span class="kn">import</span> <span class="n">RMSProp</span>
+<span class="kn">from</span> <span class="nn">slugnet.data.mnist</span> <span class="kn">import</span> <span class="n">get_mnist</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">get_mnist</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_epoch</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">SCCE</span><span class="p">(),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">],</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">RMSProp</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">inshape</span><span class="o">=</span><span class="mi">784</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">ReLU</span><span class="p">()))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Softmax</span><span class="p">()))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you have slugnet installed locally, this script can be
+run running the following command. It will output training
+and validation statistics to <code class="code docutils literal"><span class="pre">stdout</span></code> as the model
+is trained. Note that this model is slower to train than
+the model without dropout. This is widely noted in the
+literature <a class="footnote-reference" href="#id8" id="id4">[2]</a>.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist_dropout
+</pre></div>
+</div>
 </div>
 <div class="section" id="convolutional-neural-networks">
 <h2>Convolutional Neural Networks<a class="headerlink" href="#convolutional-neural-networks" title="Permalink to this headline">¶</a></h2>
@@ -163,7 +221,7 @@ Now we can write out convolution function with both axes:</p>
 </div><p>Note that we can write the infinite sum over the domains of
 <img class="math" src="_images/math/1e147e70e7d7a2b61cee9f9ee7e6f24faffb9b8a.svg" alt="m"/> and <img class="math" src="_images/math/32f0a59be9113850c78c51bd8bbf03c53f3d4e10.svg" alt="n"/> as discrete sums because we assume
 that the kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> is zero everywhere but the set of
-points in which we store data <a class="footnote-reference" href="#id6" id="id4">[1]</a>.</p>
+points in which we store data <a class="footnote-reference" href="#id7" id="id5">[1]</a>.</p>
 <p>The motivation for using the convolution operation in a
 neural network is best described using an example of an
 image. In a densely connected neural network, each node
@@ -279,7 +337,7 @@ two dimensional output, and there are multiple kernels at every layer.</p>
 <p>Mean pooling is a method of downsampling typically used in convolutional
 neural networks. Pooling makes the representations at a subsequent layer
 approximately invariant to translations of the output from the previous
-layer <a class="footnote-reference" href="#id6" id="id5">[1]</a>. This is useful when we care about the presence of some feature
+layer <a class="footnote-reference" href="#id7" id="id6">[1]</a>. This is useful when we care about the presence of some feature
 but not necessarily the exact location of the feature within the input.</p>
 <p>The mean pooling operation implements the function</p>
 <div class="math">
@@ -401,11 +459,18 @@ is depicted in figure 3.</p>
 </div><p class="caption"><strong>Figure 3:</strong> A visual representation of the max pooling
 operation. Color coded patches are downsampled by taking
 the maximum value found in the patch.</p>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
+<table class="docutils footnote" frame="void" id="id7" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>, <a class="fn-backref" href="#id4">4</a>, <a class="fn-backref" href="#id5">5</a>)</em> Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>, <a class="fn-backref" href="#id5">4</a>, <a class="fn-backref" href="#id6">5</a>)</em> Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
 <a class="reference external" href="http://www.deeplearningbook.org">http://www.deeplearningbook.org</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[2]</a></td><td>S. Wang and C. D. Manning. Fast dropout training. In <em>Proceedings of the 30th International
+Conference on Machine Learning</em>, pages 118–126. ACM, 2013.</td></tr>
 </tbody>
 </table>
 </div>
