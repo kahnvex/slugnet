@@ -49,15 +49,16 @@ neural networks and layers  associated with them.</p>
 <div class="section" id="fully-connected-neural-networks">
 <h2>Fully Connected Neural Networks<a class="headerlink" href="#fully-connected-neural-networks" title="Permalink to this headline">¶</a></h2>
 <p>Slugnet implements fully connected neural networks via the <code class="code docutils literal"><span class="pre">Dense</span></code>
-layer. The <code class="code docutils literal"><span class="pre">Dense</span></code> layer implements the feed forward operation</p>
+layer. When operating in feedforward mode, the dense layer computes the
+following term</p>
 <div class="math">
 <p><img src="_images/math/fd625308ce6c981502635ae2d2b1ba0e45e3e5ec.svg" alt="\[
    \bm{a} = \phi(\bm{W}^T \bm{x} + \bm{b})
 \]"/></p>
 </div><p>where <img class="math" src="_images/math/7781592845d244c06254fdaca3880786f02b3f80.svg" alt="\bm{a}"/> is activated output, <img class="math" src="_images/math/e3bf1ef0dd807d03fb49d7b38cc22fb494d4009d.svg" alt="\phi"/>
 is the activation function, <img class="math" src="_images/math/86872fb5bbd58bd98cd64a475fb814ea67d8c520.svg" alt="\bm{W}"/> are weights,
-<img class="math" src="_images/math/1d735dcd1d65f80245147548ce61a9d66202bb15.svg" alt="\bm{b}"/> is our bias.</p>
-<p>On feed backward, or backpropogation, the <code class="code docutils literal"><span class="pre">Dense</span></code> layer
+<img class="math" src="_images/math/1d735dcd1d65f80245147548ce61a9d66202bb15.svg" alt="\bm{b}"/> is the bias term.</p>
+<p>On feed backward, or backpropogation, the dense layer
 calculates two values as follows</p>
 <div class="math">
 <p><img src="_images/math/5c2680bc4b8caeb1698eaa50c3ca1dc90b6632e0.svg" alt="\begin{flalign}
@@ -68,11 +69,37 @@ calculates two values as follows</p>
     \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=
         \frac{\partial \ell}{\partial \bm{a}^{(i)}} \bm{x}^T
 \end{flalign}"/></p>
-</div><p>When looking at the source, there is a notable absence of
-<img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
+</div><p>When looking at the implementation of <code class="code docutils literal"><span class="pre">Dense</span></code>, there is a notable absence
+of <img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
 and <img class="math" src="_images/math/b52043529fabcd9ab1b5932757104cc9c2e58f87.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
 The model propogates that gradient to this layer.</p>
+<div class="figure">
+<p><img src="_images/tikz-be0593f4dad31d763e7f8371668007610e7907c1.png" alt="\tikzset{%
+   brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+}
+
+\draw [brace] (6.25,0.25)  -- (1.75,0.25) node[yshift=-0.5cm, xshift=2.25cm] {Input Layer};
+\draw [brace] (0,5)  -- (8,5) node[yshift=0.5cm, xshift=-4cm] {Dense Layer};
+
+\foreach \y/\n in {2/3, 4/2, 6/1}
+   \draw(\y,1) circle(0.5cm)
+   node {$x_{\n}$};
+
+\foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+   \draw[fill=gray!30](\y, 4) circle(0.5cm)
+   node {$h_{\n}$};
+
+\foreach \x in {2,4,6}
+   \foreach \y in {0, 2, 4, 6, 8}
+      \draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](\x,1) -- (\y,4);
+
+:libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta" /></p>
+</div><p class="caption"><strong>Figure 1:</strong> A depiction of a five unit dense layer. The dense layer is
+connected to a three unit input layer. The arrows going from the input layer
+to the dense layer represent weights that are multuplied by the
+values given by the input layer. The resulting values are represented by
+the gray nodes in the hidden dense layer.</p>
 <dl class="class">
 <dt id="slugnet.layers.Dense">
 <em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>outshape</em>, <em>inshape=None</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
@@ -83,8 +110,8 @@ The model propogates that gradient to this layer.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ind</strong> (<em>int</em>) – The input dimension at this layer.</li>
-<li><strong>outd</strong> (<em>int</em>) – The output dimension at this layer.</li>
+<li><strong>outshape</strong> (<em>int</em>) – The output shape at this layer.</li>
+<li><strong>inshape</strong> (<em>int</em>) – The input shape at this layer.</li>
 <li><strong>activation</strong> (<em>slugnet.activation.Activation</em>) – The activation function to be used at the layer.</li>
 <li><strong>init</strong> (<em>slugnet.initializations.Initializer</em>) – The initialization function to be used</li>
 </ul>
@@ -123,19 +150,23 @@ network to classify mnist data can be seen below.</p>
 </pre></div>
 </div>
 <p>If you have slugnet installed locally, this script can be
-run running the following command. It will output training
-and validation statistics to <code class="code docutils literal"><span class="pre">stdout</span></code> as the model
-is trained.</p>
+executed by running the following command. It will output
+training and validation statistics to <code class="code docutils literal"><span class="pre">stdout</span></code> as the
+model is trained.</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist
 </pre></div>
 </div>
+<p>Note this snippet makes use of several components that have not
+yet been reviewed, such as loss and optimization functions.
+There are corresponding documentation sections for these components, and
+jumping ahead to learn about them is encouraged.</p>
 </div>
 <div class="section" id="dropout">
 <h2>Dropout<a class="headerlink" href="#dropout" title="Permalink to this headline">¶</a></h2>
 <p>Dropout is a method of regularization that trains subnetworks by turning
 off non-output nodes with some probability <img class="math" src="_images/math/70c2f41478031b532a625cb53a08693e6ea15602.svg" alt="p"/>.</p>
 <p>This approximates bagging, which involves training an ensemble of models
-to overcome weaknesses in any given model <a class="footnote-reference" href="#id7" id="id1">[1]</a>.</p>
+to overcome weaknesses in any given model and prevent overfitting <a class="footnote-reference" href="#id7" id="id1">[1]</a>.</p>
 <p>We can formalize dropout by representing the subnetworks created by dropout
 with a mask vector <img class="math" src="_images/math/b5b3102a9e7573467f8dc78c71a3f2371ddc4ef0.svg" alt="\bm{\mu}"/>. Now, we note each subnetwork defines a
 new probability distribution of <img class="math" src="_images/math/ddc4cefb70948005dd1900a3de93cefcc7b1b6b3.svg" alt="y"/> as
@@ -148,9 +179,43 @@ new probability distribution of <img class="math" src="_images/math/ddc4cefb7094
 \]"/></p>
 </div><p>The problem with evaluating this term is the exponential number of mask
 vectors. In practice, we approximate this probability distribution by
-including all nodes during inference, and multiplying each output by
+including all nodes during inference, multiplying each output by
 <img class="math" src="_images/math/b31dbce22ac4f932167d1dab800282625ddb22b5.svg" alt="1 - p"/>, the probability that any node is included in the network during
-training. This rule is called the weight scaling inference rule <a class="footnote-reference" href="#id7" id="id3">[1]</a>.</p>
+training, and running the feedforward operation just once. This rule is
+called the weight scaling inference rule <a class="footnote-reference" href="#id7" id="id3">[1]</a>.</p>
+<div class="figure">
+<p><img src="_images/tikz-81a8e80a5a66d907eb6de0012db694e4dd31d5ac.png" alt="\tikzset{%
+   brace/.style = { decorate, decoration={brace, amplitude=5pt} }
+}
+
+%\draw [brace] (6.25,0.25)  -- (1.75,0.25) node[yshift=-0.5cm, xshift=2.25cm] {Input Layer};
+%\draw [brace] (0,5)  -- (8,5) node[yshift=0.5cm, xshift=-4cm] {Dense Layer};
+
+\foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+   \draw[fill=gray!30](\y, 6) circle(0.5cm)
+   node {$h_{\n}^{(2)}$};
+
+\foreach \y/\n/\c in {0/1/gray, 2/2/red, 4/3/gray, 6/4/gray, 8/5/red}
+   \draw[fill=\c!30](\y, 3) circle(0.5cm)
+   node {$d_{\n}$};
+
+\foreach \y/\n in {0/1, 2/2, 4/3, 6/4, 8/5}
+   \draw[fill=gray!30](\y, 1) circle(0.5cm)
+   node {$h_{\n}^{(1)}$};
+
+\foreach \x in {0, 2, 4, 6, 8}
+   \draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](\x,1) -- (\x,3);
+
+\foreach \x in {0, 4, 6}
+   \foreach \y in {0, 2, 4, 6, 8}
+      \draw[-{&gt;[scale=4]}, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](\x,3) -- (\y,6);
+
+:libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta" /></p>
+</div><p class="caption"><strong>Figure 2:</strong> A configuration of dropout between two hidden layers
+of a neural network. Note the nodes <img class="math" src="_images/math/f4ebc7afd1984a21747e3077b0a827f462abb789.svg" alt="h_2^{(1)}"/> and <img class="math" src="_images/math/7384d3942d1294545431a1f3742bc40aa48c3b50.svg" alt="h_5^{(1)}"/>
+are both excluded from the current subnetwork via dropout units
+<img class="math" src="_images/math/e4c07ed370b993ed54b5f013020de9090d6341fe.svg" alt="d_2"/> and <img class="math" src="_images/math/6c14d0b8cdd37e0b1c812ef8b8063ae8e76e25db.svg" alt="d_5"/>. On the next feedforward
+operation, a new subnetwork will be generated.</p>
 <dl class="class">
 <dt id="slugnet.layers.Dropout">
 <em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dropout</code><span class="sig-paren">(</span><em>p=0.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dropout" title="Permalink to this definition">¶</a></dt>
@@ -209,7 +274,7 @@ in depth.</p>
 <p>In the general case, a discrete convolution operation implements
 the function:</p>
 <div class="math">
-<p><img src="_images/math/b785a0d6cfc7114705adac1dc8a868b188f7c75e.svg" alt="\[s(i) = \sum_{a=-\infty}^\infty x(a) w(i - a)\]"/></p>
+<p><img src="_images/math/37642e19f9abf67ae5453aaf621f8fb500ad0a18.svg" alt="\[s(i) = \sum_{a=-\infty}^\infty x(a) k(i - a)\]"/></p>
 </div><p>where <img class="math" src="_images/math/0642a80e44de7b43d141fa9d602bc25a316a12ba.svg" alt="x"/> is the input and <img class="math" src="_images/math/bf3580fe7b9c3cee41223cb47ebbe60dac20b359.svg" alt="w"/>
 is the kernel, or in some cases the weighting function.</p>
 <p>In the case of convolutional neural networks, the input
@@ -292,7 +357,7 @@ in a densely connected neural network.</p>
 
 \draw [line width=0.4mm, -|&gt;] (4.7, 2.3) -- (7.0, 2.3) -- (7.0, -1.4);
 \draw [line width=0.4mm, -|&gt;] (8.7, -0.1) -- (8.7, -1.4);" /></p>
-</div><p class="caption"><strong>Figure 1:</strong> An example of a two dimension convolution operation. The
+</div><p class="caption"><strong>Figure 2:</strong> An example of a two dimension convolution operation. The
 input is an image in <img class="math" src="_images/math/23072a119b7a7c7cf2d6c947df6281370e5517f8.svg" alt="\mathds{R}^{3 \times 3}"/>, and the kernel is
 in <img class="math" src="_images/math/a88cdf031b73d22f069872b57c8021b71537a760.svg" alt="\mathds{R}^{2 \times 2}"/>. As the kernel is slid over the input
 with a stride width of one, an output in
@@ -396,7 +461,7 @@ define the size of both ranges. This operation is depicted in figure 2.</p>
 
 \draw (4.9, 2.95) [align=center] node {Mean \\ pooling};
 \draw [line width=0.4mm, -|&gt;] (4, 3) -- (5.8, 3);" /></p>
-</div><p class="caption"><strong>Figure 2:</strong> A visual representation of the mean pooling
+</div><p class="caption"><strong>Figure 3:</strong> A visual representation of the mean pooling
 operation. Color coded patches are combined via arithmetic
 average and included in an output matrix.</p>
 <p>The max-pooling operation implements the function</p>
@@ -456,7 +521,7 @@ is depicted in figure 3.</p>
 
 \draw (4.9, 2.95) [align=center] node {Max \\ pooling};
 \draw [line width=0.4mm, -|&gt;] (4, 3) -- (5.8, 3);" /></p>
-</div><p class="caption"><strong>Figure 3:</strong> A visual representation of the max pooling
+</div><p class="caption"><strong>Figure 4:</strong> A visual representation of the max pooling
 operation. Color coded patches are downsampled by taking
 the maximum value found in the patch.</p>
 <table class="docutils footnote" frame="void" id="id7" rules="none">
@@ -499,7 +564,7 @@ Conference on Machine Learning</em>, pages 118–126. ACM, 2013.</td></tr>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="activation.html">Activation Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loss.html">Loss Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimization Functions</a></li>
 </ul>
 
 <div class="relations">
