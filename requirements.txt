@@ -9,3 +9,4 @@ tabulate==0.8.2
 ipython==6.2.1
 ipython-genutils==0.2.0
 matplotlib==2.1.1
+sphinxcontrib-googleanalytics==0.1
