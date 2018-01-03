@@ -287,6 +287,8 @@ gradients :math:`\nabla_{\bm{W}}\bm{\ell}` and :math:`\nabla_{\bm{b}}\bm{\ell}`
 at every layer, as indicated backpropogation's pseudocode given in
 algorithm 1.
 
+.. _backprop:
+
 .. rst-class:: algo
 .. math::
    :nowrap:

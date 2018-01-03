@@ -9,6 +9,7 @@ from slugnet.data.mnist import get_mnist
 
 
 X, y = get_mnist()
+X = X.reshape((-1, 1, 28, 28)) / 255.0
 np.random.seed(100)
 X = np.random.permutation(X)[:1000]
 np.random.seed(100)

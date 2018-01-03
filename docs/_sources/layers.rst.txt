@@ -21,10 +21,24 @@ following term
 
 where :math:`\bm{a}` is activated output, :math:`\phi`
 is the activation function, :math:`\bm{W}` are weights,
-:math:`\bm{b}` is the bias term.
+:math:`\bm{b}` is the bias term. The dense layer does not
+implement any activation function, instead it is injected
+at runtime via the :code:`activation` parameter. This mean
+that on feedforward, the dense layer is incredibly simple,
+it performs matrix multiplication between an input matrix
+and a matrix of weights, then adds a bias vector, and
+that's it.
 
-On feed backward, or backpropogation, the dense layer
-calculates two values as follows
+On feed backward, or backpropagation, the dense layer is
+responsible for calculating two values. The value defined
+:math:`\frac{\partial \ell}{\partial \bm{a}^{(i)}}` will
+be used to calculate the weight and bias gradient at this
+layer. The value
+:math:`\frac{\partial \ell}{\partial \bm{W}^{(i)}}`
+will be used to calculate gradients at all previous layers.
+This process is easy to follow in the
+:ref:`backpropagation <backprop>` algorithm
+given in the introduction section of this documentation.
 
 .. math::
     :nowrap:
@@ -42,7 +56,7 @@ When looking at the implementation of :code:`Dense`, there is a notable absence
 of :math:`\bm{W}^{(i + 1)^T}`
 and :math:`\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}`.
 This is because their dot product is calculated in the previous layer.
-The model propagates that gradient to this layer.
+The model propagates that gradient to the current layer.
 
 .. tikz::
 
