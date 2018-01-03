@@ -57,9 +57,23 @@ following term</p>
 \]"/></p>
 </div><p>where <img class="math" src="_images/math/7781592845d244c06254fdaca3880786f02b3f80.svg" alt="\bm{a}"/> is activated output, <img class="math" src="_images/math/e3bf1ef0dd807d03fb49d7b38cc22fb494d4009d.svg" alt="\phi"/>
 is the activation function, <img class="math" src="_images/math/86872fb5bbd58bd98cd64a475fb814ea67d8c520.svg" alt="\bm{W}"/> are weights,
-<img class="math" src="_images/math/1d735dcd1d65f80245147548ce61a9d66202bb15.svg" alt="\bm{b}"/> is the bias term.</p>
-<p>On feed backward, or backpropogation, the dense layer
-calculates two values as follows</p>
+<img class="math" src="_images/math/1d735dcd1d65f80245147548ce61a9d66202bb15.svg" alt="\bm{b}"/> is the bias term. The dense layer does not
+implement any activation function, instead it is injected
+at runtime via the <code class="code docutils literal"><span class="pre">activation</span></code> parameter. This mean
+that on feedforward, the dense layer is incredibly simple,
+it performs matrix multiplication between an input matrix
+and a matrix of weights, then adds a bias vector, and
+that’s it.</p>
+<p>On feed backward, or backpropagation, the dense layer is
+responsible for calculating two values. The value defined
+<img class="math" src="_images/math/9a80667c0023e3065075abc50ea4ba3f24ca5032.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i)}}"/> will
+be used to calculate the weight and bias gradient at this
+layer. The value
+<img class="math" src="_images/math/25442597efde15709729e89e4314fd5586d3fb4e.svg" alt="\frac{\partial \ell}{\partial \bm{W}^{(i)}}"/>
+will be used to calculate gradients at all previous layers.
+This process is easy to follow in the
+<a class="reference internal" href="index.html#backprop"><span class="std std-ref">backpropagation</span></a> algorithm
+given in the introduction section of this documentation.</p>
 <div class="math">
 <p><img src="_images/math/5c2680bc4b8caeb1698eaa50c3ca1dc90b6632e0.svg" alt="\begin{flalign}
     \frac{\partial \ell}{\partial \bm{a}^{(i)}} &amp;=
@@ -73,7 +87,7 @@ calculates two values as follows</p>
 of <img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
 and <img class="math" src="_images/math/b52043529fabcd9ab1b5932757104cc9c2e58f87.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
-The model propagates that gradient to this layer.</p>
+The model propagates that gradient to the current layer.</p>
 <div class="figure">
 <p><img src="_images/tikz-be0593f4dad31d763e7f8371668007610e7907c1.png" alt="\tikzset{%
    brace/.style = { decorate, decoration={brace, amplitude=5pt} }
@@ -591,6 +605,7 @@ neural network. This makes training one to classify mnist data simple.</p>
 
 
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">get_mnist</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span> <span class="o">/</span> <span class="mf">255.0</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">X</span><span class="p">)[:</span><span class="mi">1000</span><span class="p">]</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
