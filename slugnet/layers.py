@@ -35,11 +35,12 @@ class Dense(Layer):
     """
 
     def __init__(self, outshape, inshape=None, activation=Noop(),
-                 init=GlorotUniform()):
+                 init=GlorotUniform(), regularization=None):
         self.outshape = None, outshape
         self.activation = activation
         self.inshape = inshape
         self.init = init
+        self.regularization = regularization
 
     def connect(self, prev_layer=None):
         if prev_layer:
@@ -59,7 +60,12 @@ class Dense(Layer):
     def call(self, X, *args, **kwargs):
         self.last_X = X
 
-        return self.activation.call(np.dot(X, self.w) + self.b)
+        output = self.activation.call(np.dot(X, self.w) + self.b)
+
+        if self.regularization is not None:
+            output += self.regularization.call(self.w)
+
+        return output
 
     def backprop(self, nxt_grad):
         """
@@ -68,6 +74,10 @@ class Dense(Layer):
         """
         act_grad = nxt_grad * self.activation.derivative()
         self.dw = np.dot(self.last_X.T, act_grad)
+
+        if self.regularization is not None:
+            self.dw += self.regularization.grad(self.w)
+
         self.db = np.mean(act_grad, axis=0)
 
         return np.dot(act_grad, self.w.T)

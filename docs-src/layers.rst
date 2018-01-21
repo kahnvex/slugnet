@@ -562,7 +562,12 @@ neural network. This makes training one to classify mnist data simple.
    :language: python
 
 Note that because Slugnet is implemented using numpy, and thus
-runs on a single CPU core, training this model is very slow.
+runs on a single CPU core, training this model is very slow. To
+run this script locally, issue the following command.
+
+.. code-block:: shell
+
+   $ python -m slugnet.examples.mnist_conv
 
 .. [1] Goodfellow, Bengio, Courville (2016), Deep Learning, Chapter 9,
       http://www.deeplearningbook.org

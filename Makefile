@@ -1,7 +1,7 @@
-.PHONY: docs
+.PHONY: docs, integration
 
-test:
-	nosetests --nocapture
+integration:
+	nosetests --nocapture -w integration/
 
 docs-auto:
 	sphinx-autobuild -z slugnet/ docs-src/ docs/
