@@ -16,6 +16,9 @@ class Layer(object):
     def get_grads(self):
         return []
 
+    def regularization(self):
+        return 0.
+
 
 class Dense(Layer):
     r"""
@@ -60,12 +63,13 @@ class Dense(Layer):
     def call(self, X, *args, **kwargs):
         self.last_X = X
 
-        output = self.activation.call(np.dot(X, self.w) + self.b)
+        return self.activation.call(np.dot(X, self.w) + self.b)
 
-        if self.regularization is not None:
-            output += self.regularization.call(self.w)
+    def get_regularization(self):
+        if self.regularization is None:
+            return 0.
 
-        return output
+        return self.regularization.call(self.w)
 
     def backprop(self, nxt_grad):
         """

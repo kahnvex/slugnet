@@ -94,11 +94,15 @@ class Model(object):
         for layer in self.layers[::-1]:
             grad = layer.backprop(grad)
 
+    def get_regularization(self):
+        return np.sum([l.get_regularization() for l in self.layers])
+
     def get_metrics(self, yh, y):
         metrics = {}
+        regularization = self.get_regularization()
 
         if 'loss' in self.metrics:
-            metrics['loss'] = self.loss.forward(yh, y)
+            metrics['loss'] = self.loss.forward(yh, y) + regularization
 
         if 'accuracy' in self.metrics:
             metrics['accuracy'] = self.accuracy(yh, y)

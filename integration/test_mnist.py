@@ -69,12 +69,12 @@ class TestMNISTWithL2Regularization(unittest.TestCase):
                            metrics=['loss', 'accuracy'], optimizer=RMSProp())
 
         self.model.add_layer(Dense(200, inshape=784, activation=ReLU(),
-            regularization=L2Regularization(0.01)))
+            regularization=L2Regularization(0.1)))
         self.model.add_layer(Dense(10, activation=Softmax()))
 
         self.fit_metrics = self.model.fit(self.X, self.y)
 
-    def test_training_accuracy_above_ninetys(self):
+    def test_training_accuracy_above_ninety(self):
         self.assertGreater(self.fit_metrics['train']['accuracy'], 0.8)
 
     def test_validation_accuracy_above_ninety(self):
