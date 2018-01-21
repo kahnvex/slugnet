@@ -1,5 +1,5 @@
-Introduction to Neural Nets
-===========================
+Slugnet
+=======
 
 Slugnet is a modest experimental neural networks library intended to solidify
 the author's understanding of deep learning.
@@ -113,10 +113,10 @@ represent the network with the shorthand diagram below.
    \draw [brace] (3.5,2)  -- (7.5,2) node[yshift=0.5cm, xshift=-1.9cm] {Hidden Layers};
    \draw [brace] (9.5,2)  -- (10.5,2) node[yshift=0.5cm, xshift=-0.5cm] {Output};
 
-   \draw(1,1) circle(0.5cm) node {$\boldmath{x}$};
-   \draw(4,1)[fill=gray!30]circle(0.5cm) node {$\boldmath{h}^{(1)}$};
-   \draw(7,1)[fill=gray!30] circle(0.5cm) node {$\boldmath{h}^{(2)}$};
-   \draw(10,1) circle(0.5cm) node {$\hat{y}$};
+   \draw(1,1) circle(0.5cm) node {$\boldmath{x}_{1:3}$};
+   \draw(4,1)[fill=gray!30]circle(0.5cm) node {$\boldmath{h}^{(1)}_{1:5}$};
+   \draw(7,1)[fill=gray!30] circle(0.5cm) node {$\boldmath{h}^{(2)}_{1:4}$};
+   \draw(10,1) circle(0.5cm) node {$\hat{y}_{1:2}$};
 
    \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](1,1) -- (4,1);
    \draw[->, shorten >= 0.55cm, shorten <= 0.5cm](4,1) -- (7,1);
@@ -210,6 +210,8 @@ we are learning labels with multiple classes, we might use categorical cross
 entropy. The resulting loss value will inform us about how our network
 performed on the batch it just predicted. We can use this value along with
 validation to determine if our model is overfitting or underfitting the data.
+In the next section, we'll see that the derivative of our loss function is
+used to perform backpropogation.
 
 Backpropogation
 ~~~~~~~~~~~~~~~

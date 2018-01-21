@@ -77,11 +77,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outshape</span><span class="p">,</span> <span class="n">inshape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Noop</span><span class="p">(),</span>
-                 <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">()):</span>
+                 <span class="n">init</span><span class="o">=</span><span class="n">GlorotUniform</span><span class="p">(),</span> <span class="n">regularlization</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outshape</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">outshape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inshape</span> <span class="o">=</span> <span class="n">inshape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regularization</span> <span class="o">=</span> <span class="n">regularization</span>
 
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">prev_layer</span><span class="p">:</span>
@@ -101,7 +102,12 @@
     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_X</span> <span class="o">=</span> <span class="n">X</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">regularization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regularization</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output</span>
 
 <div class="viewcode-block" id="Dense.backprop"><a class="viewcode-back" href="../../layers.html#slugnet.layers.Dense.backprop">[docs]</a>    <span class="k">def</span> <span class="nf">backprop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nxt_grad</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -112,7 +118,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">act_grad</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">act_grad</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">act_grad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">act_grad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">regularization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">grad</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regularization</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">grad</span></div>
 
     <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
@@ -396,7 +407,7 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">Introduction to Neural Nets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Slugnet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../model.html">Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../activation.html">Activation Functions</a></li>
