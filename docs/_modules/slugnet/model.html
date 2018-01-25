@@ -136,11 +136,15 @@
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">grad</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">backprop</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">get_regularization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">l</span><span class="o">.</span><span class="n">get_regularization</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">])</span>
+
     <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yh</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">regularization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regularization</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="s1">&#39;loss&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
-            <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">yh</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">yh</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">regularization</span>
 
         <span class="k">if</span> <span class="s1">&#39;accuracy&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
             <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">yh</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>

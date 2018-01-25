@@ -190,8 +190,7 @@ Loss Functions
 
 Upon completion of the forward pass on a batch of inputs, we can compute the
 loss for the batch using the predicted outputs, :math:`\hat{\bm{y}}`, and
-the ground truth labels or values :math:`\bm{y}`. Loss functions are
-occasionally referred to as objective functions.
+the ground truth labels or values :math:`\bm{y}`.
 
 .. math::
 
@@ -320,12 +319,13 @@ Optimization
 Next, we can use the gradients computed in backpropogation (algorithm 1) to
 compute weight updates for each layer using a numerical optimization method.
 
-For this introduction, we'll focus on the stochastic gradient descent (SGD)
-optimization method. Stochastic gradient descent works by sampling data from
-the training set :math:`\{\bm{x}_i, \bm{y}_i\}_{i=1}^N`, computing the
-gradients with backpropogation, and applying our update using a learning
-rate parameter :math:`\epsilon`. In practice, we must gradually decrease
-:math:`\epsilon` over time.
+In this section, we will focus on a version of the stochastic gradient descent (SGD)
+optimization method called mini-batch gradiant descent. This methods works by
+taking a sample of size :math:`m` from the training set
+:math:`\{\bm{x}_i, \bm{y}_i\}_{i=1}^N`, computing the gradients with
+backpropogation, and applying our update using a learning rate parameter
+:math:`\epsilon`. In practice, we must gradually decrease :math:`\epsilon` over
+time.
 
 .. rst-class:: algo
 .. math::
@@ -333,27 +333,26 @@ rate parameter :math:`\epsilon`. In practice, we must gradually decrease
 
    \setcounter{algorithm}{1}
    \begin{algorithm}
-      \caption{Stochastic Gradient Descent pseudocode \newline
-      --Modification of source: Goodfellow, Bengio, \& Courville (Deep Learning, 2016)}
+      \caption{Mini-Batch Gradient Descent pseudocode}
       \label{backprop}
       \begin{algorithmic}[1]
-         \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}$}
+         \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}, m$}
             \State $\bm{W} \gets \text{InitWeights}()$
             \State $\bm{b} \gets \text{InitBias}()$
             \While{not converged}
-               \State $\epsilon \gets \text{NextEpsilon}(\epsilon)$
-               \State Sample a minibatch of size $m$ from
-               $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
-               \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
-                  \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
-               \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
-                  \frac{1}{m} \sum_{x, y \in \bm{x}_s, \bm{y}_s}
-                  \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
-               \For{$k = 1, 2, \dots, l$}
-                  \State $\bm{W}^{(k)} \gets \bm{W}^{(k)} -
-                     \epsilon \nabla_{\bm{W}^{(k)}}\bm{\ell}$
-                  \State $\bm{b}^{(k)} \gets \bm{b}^{(k)} -
-                     \epsilon \nabla_{\bm{b}^{(k)}}\bm{\ell}$
+               \For{i = 0, m, 2m, 3m, \dots, N}
+                  \State $\epsilon \gets \text{NextEpsilon}(\epsilon)$
+                  \State $\langle \bm{\hat{y}}_{i:m}, \bm{h} \rangle \gets
+                     \text{FeedForward}(\bm{x}_{i:m}, \bm{y}_{i:m}, \bm{W}, \bm{b})$
+                  \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
+                     \frac{1}{m} \sum\limits_{j=i}^{i+m}
+                     \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_j, \bm{y}_j, \bm{h}, \bm{W})$
+                  \For{$k = 1, 2, \dots, l$}
+                     \State $\bm{W}^{(k)} \gets \bm{W}^{(k)} -
+                        \epsilon \nabla_{\bm{W}^{(k)}}\bm{\ell}$
+                     \State $\bm{b}^{(k)} \gets \bm{b}^{(k)} -
+                        \epsilon \nabla_{\bm{b}^{(k)}}\bm{\ell}$
+                  \EndFor
                \EndFor
             \EndWhile
             \Return $\langle \bm{W}, \bm{b} \rangle$

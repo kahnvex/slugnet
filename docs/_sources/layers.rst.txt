@@ -95,6 +95,21 @@ The model propagates that gradient to the current layer.
   :show-inheritance:
   :members:
 
+The dense layer allows the user to add a parameter norm penalty. These
+penalties are added via a term that is added to the loss function and the
+parameter gradient. When using :math:`L^2` regularization our objective
+function becomes
+
+.. math::
+
+    \frac{1}{N} \sum_{i=1}^N \bm{\ell}(\bm{\hat{y}}, \bm{y}) +
+      \frac{\alpha}{2} \bm{w}^T \bm{w}
+
+.. autoclass:: slugnet.regularizers.L2Regularization
+   :show-inheritance:
+   :members:
+
+
 An example of using two dense layers to train a multi-layer neural
 network to classify mnist data can be seen below.
 

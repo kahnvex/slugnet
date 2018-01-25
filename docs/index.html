@@ -205,8 +205,7 @@ value for sample <img class="math" src="_images/math/ccae632eea818ad996b519b1c3f
 <h3>Loss Functions<a class="headerlink" href="#loss-functions" title="Permalink to this headline">¶</a></h3>
 <p>Upon completion of the forward pass on a batch of inputs, we can compute the
 loss for the batch using the predicted outputs, <img class="math" src="_images/math/e6b0e9d48c73483fb0ff5f5234c1297f39db1fc4.svg" alt="\hat{\bm{y}}"/>, and
-the ground truth labels or values <img class="math" src="_images/math/e48fce69feb80abe87163055adefde52d2b85471.svg" alt="\bm{y}"/>. Loss functions are
-occasionally referred to as objective functions.</p>
+the ground truth labels or values <img class="math" src="_images/math/e48fce69feb80abe87163055adefde52d2b85471.svg" alt="\bm{y}"/>.</p>
 <div class="math">
 <p><img src="_images/math/4a70f6a45257578f3ae4489ed362a3431654ed42.svg" alt="\bm{\ell}(\bm{\hat{y}}, \bm{y}) = -\frac{1}{N}
    \sum_{i=1}^N \big[
@@ -293,36 +292,36 @@ algorithm 1.</p>
 <h3>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">¶</a></h3>
 <p>Next, we can use the gradients computed in backpropogation (algorithm 1) to
 compute weight updates for each layer using a numerical optimization method.</p>
-<p>For this introduction, we’ll focus on the stochastic gradient descent (SGD)
-optimization method. Stochastic gradient descent works by sampling data from
-the training set <img class="math" src="_images/math/aef473bfad645dcce87e3b1272e714ba16169da7.svg" alt="\{\bm{x}_i, \bm{y}_i\}_{i=1}^N"/>, computing the
-gradients with backpropogation, and applying our update using a learning
-rate parameter <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/>. In practice, we must gradually decrease
-<img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/> over time.</p>
+<p>In this section, we will focus on a version of the stochastic gradient descent (SGD)
+optimization method called mini-batch gradiant descent. This methods works by
+taking a sample of size <img class="math" src="_images/math/1e147e70e7d7a2b61cee9f9ee7e6f24faffb9b8a.svg" alt="m"/> from the training set
+<img class="math" src="_images/math/aef473bfad645dcce87e3b1272e714ba16169da7.svg" alt="\{\bm{x}_i, \bm{y}_i\}_{i=1}^N"/>, computing the gradients with
+backpropogation, and applying our update using a learning rate parameter
+<img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/>. In practice, we must gradually decrease <img class="math" src="_images/math/cb406b4f1c3f1ffa150df83418c901318c2d5296.svg" alt="\epsilon"/> over
+time.</p>
 <div class="algo math">
-<p><img src="_images/math/4b4319fce2ba41a862a80f563e803b5fc8a17e00.svg" alt="\setcounter{algorithm}{1}
+<p><img src="_images/math/7c9452bc1b25845b4ad79c06bf0d4180a40a9d6c.svg" alt="\setcounter{algorithm}{1}
 \begin{algorithm}
-   \caption{Stochastic Gradient Descent pseudocode \newline
-   --Modification of source: Goodfellow, Bengio, \&amp; Courville (Deep Learning, 2016)}
+   \caption{Mini-Batch Gradient Descent pseudocode}
    \label{backprop}
    \begin{algorithmic}[1]
-      \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}$}
+      \Procedure{SGD}{$\bm{\ell}, \bm{x}, \bm{y}, m$}
          \State $\bm{W} \gets \text{InitWeights}()$
          \State $\bm{b} \gets \text{InitBias}()$
          \While{not converged}
-            \State $\epsilon \gets \text{NextEpsilon}(\epsilon)$
-            \State Sample a minibatch of size $m$ from
-            $\{\bm{x}_i, \bm{y}_i\}_{i=1}^N$ as $\bm{x}_s, \bm{y}_s$
-            \State $\langle \bm{\hat{y}}_s, \bm{h} \rangle \gets
-               \text{FeedForward}(\bm{x}_s, \bm{y}_s, \bm{W}, \bm{b})$
-            \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
-               \frac{1}{m} \sum_{x, y \in \bm{x}_s, \bm{y}_s}
-               \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_s, \bm{y}_s, \bm{h}, \bm{W})$
-            \For{$k = 1, 2, \dots, l$}
-               \State $\bm{W}^{(k)} \gets \bm{W}^{(k)} -
-                  \epsilon \nabla_{\bm{W}^{(k)}}\bm{\ell}$
-               \State $\bm{b}^{(k)} \gets \bm{b}^{(k)} -
-                  \epsilon \nabla_{\bm{b}^{(k)}}\bm{\ell}$
+            \For{i = 0, m, 2m, 3m, \dots, N}
+               \State $\epsilon \gets \text{NextEpsilon}(\epsilon)$
+               \State $\langle \bm{\hat{y}}_{i:m}, \bm{h} \rangle \gets
+                  \text{FeedForward}(\bm{x}_{i:m}, \bm{y}_{i:m}, \bm{W}, \bm{b})$
+               \State $\langle \nabla_{\bm{W}}\bm{\ell}, \nabla_{\bm{b}}\bm{\ell} \rangle \gets
+                  \frac{1}{m} \sum\limits_{j=i}^{i+m}
+                  \text{Backpropogation}(\bm{\ell}, \bm{\hat{y}}_j, \bm{y}_j, \bm{h}, \bm{W})$
+               \For{$k = 1, 2, \dots, l$}
+                  \State $\bm{W}^{(k)} \gets \bm{W}^{(k)} -
+                     \epsilon \nabla_{\bm{W}^{(k)}}\bm{\ell}$
+                  \State $\bm{b}^{(k)} \gets \bm{b}^{(k)} -
+                     \epsilon \nabla_{\bm{b}^{(k)}}\bm{\ell}$
+               \EndFor
             \EndFor
          \EndWhile
          \Return $\langle \bm{W}, \bm{b} \rangle$
