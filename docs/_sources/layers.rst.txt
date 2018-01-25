@@ -102,8 +102,7 @@ function becomes
 
 .. math::
 
-    \frac{1}{N} \sum_{i=1}^N \bm{\ell}(\bm{\hat{y}}, \bm{y}) +
-      \frac{\alpha}{2} \bm{w}^T \bm{w}
+    \bm{\ell}(\bm{\hat{y}}, \bm{y}) + \frac{\alpha}{2} \bm{w}^T \bm{w}
 
 .. autoclass:: slugnet.regularizers.L2Regularization
    :show-inheritance:
