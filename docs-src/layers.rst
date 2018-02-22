@@ -416,11 +416,11 @@ The mean pooling operation implements the function
     :nowrap:
 
     \[
-        \frac{1}{s_m s_n} \sum_{i \in m} \sum_{j \in n} I_{i,j}
+        \frac{1}{|\bm{u}| |\bm{v}|} \sum_{i \in \bm{u}} \sum_{j \in \bm{v}} I(i,j)
     \]
 
-where :math:`m, n` are input ranges along both axes, and :math:`s_n, s_m`
-define the size of both ranges. This operation is depicted in figure 2.
+where :math:`\bm{u}, \bm{v}` are vectors of kernel indices over the image. This
+operation is depicted in figure 2.
 
 .. tikz::
 
@@ -486,11 +486,11 @@ The max-pooling operation implements the function
    :nowrap:
 
    \[
-      \max_{i \in m, j \in n} I_{i,j}
+      \max_{i \in \bm{u}, j \in \bm{v}} I(i, j)
    \]
 
-where :math:`m, n` are input ranges along both axes. This operation
-is depicted in figure 3.
+where :math:`\bm{u}, \bm{v}` are vectors of kernel indices over the image.
+This operation is depicted in figure 3.
 
 .. tikz::
 
