@@ -3,12 +3,12 @@ Layers
 
 In this section, we will cover all relevant layers implemented
 by Slugnet, and their specific use cases. This includes convolutional
-neural networks and layers  associated with them.
+deep networks and layers  associated with them.
 
-Fully Connected Neural Networks
+Fully Connected Deep Networks
 -------------------------------
 
-Slugnet implements fully connected neural networks via the :code:`Dense`
+Slugnet implements fully connected deep networks via the :code:`Dense`
 layer. When operating in feedforward mode, the dense layer computes the
 following term
 
@@ -95,7 +95,7 @@ The model propagates that gradient to the current layer.
   :show-inheritance:
   :members:
 
-An example of using two dense layers to train a multi-layer neural
+An example of using two dense layers to train a multi-layer deep
 network to classify mnist data can be seen below.
 
 .. literalinclude:: ../slugnet/examples/mnist.py
@@ -180,7 +180,7 @@ called the weight scaling inference rule [1]_.
 .. rst-class:: caption
 
    **Figure 2:** A dropout layer between two hidden layers
-   of a neural network. Note the nodes :math:`h_2^{(1)}` and :math:`h_5^{(1)}`
+   of a deep network. Note the nodes :math:`h_2^{(1)}` and :math:`h_5^{(1)}`
    are both excluded from the current subnetwork via dropout units
    :math:`d_2` and :math:`d_5`. On the next feedforward
    operation, a new subnetwork will be randomly generated with each unit
@@ -209,10 +209,10 @@ literature [2]_.
    $ python3 -m slugnet.examples.mnist_dropout
 
 
-Convolutional Neural Networks
+Convolutional Deep Networks
 -----------------------------
 
-Convolutional neural networks are most often used in image classification tasks.
+Convolutional deep networks are most often used in image classification tasks.
 There are several specialized layers used in these networks. The most obvious is
 the convolution layer, less obvious are pooling layers, specifically max-pooling
 and mean-pooling. In this section we will mathematically review all these layers
@@ -232,7 +232,7 @@ the function:
 where :math:`x` is the input and :math:`k`
 is the kernel, or in some cases the weighting function.
 
-In the case of convolutional neural networks, the input
+In the case of convolutional deep networks, the input
 is typically a two dimensional image :math:`I`, and it
 follows that we have a two dimensional kernel :math:`K`.
 Now we can write out convolution function with both axes:
@@ -248,8 +248,8 @@ that the kernel :math:`K` is zero everywhere but the set of
 points in which we store data [1]_.
 
 The motivation for using the convolution operation in a
-neural network is best described using an example of an
-image. In a densely connected neural network, each node
+deep network is best described using an example of an
+image. In a densely connected deep network, each node
 at layer :math:`i` is connected to every node at layer
 :math:`i + 1`. This does not lend itself to image processing,
 where location of a shape relative to another shape is
@@ -263,7 +263,7 @@ the input, along both axes. At each step, an output is produced
 which will be used as input for the next layer.
 This configuration allows us to learn the parameters of the
 kernel :math:`K` the same way we'd learn ordinary parameters
-in a densely connected neural network.
+in a densely connected deep network.
 
 .. tikz::
 
@@ -316,7 +316,7 @@ size and kernel size. The equation is given by
    \[d_{\text{out}} = d_{\text{in}} - d_{\text{kernel}} + 1.\]
 
 Figure 3 features a one dimensional input and output. As we mentioned earlier,
-most convolutional neural networks feature two dimensional inputs and outputs,
+most convolutional deep networks feature two dimensional inputs and outputs,
 such as images. In figure 4, we show how the convolution operation behaves
 when we are using two dimensional inputs, kernels, and outputs.
 
@@ -405,7 +405,7 @@ Pooling
 ~~~~~~~
 
 Mean pooling is a method of downsampling typically used in convolutional
-neural networks. Pooling makes the representations at a subsequent layer
+deep networks. Pooling makes the representations at a subsequent layer
 approximately invariant to translations of the output from the previous
 layer [1]_. This is useful when we care about the presence of some feature
 but not necessarily the exact location of the feature within the input.
@@ -556,7 +556,7 @@ This operation is depicted in figure 3.
    :members:
 
 We have now documented all the necessary parts of a convolutional
-neural network. This makes training one to classify mnist data simple.
+deep network. This makes training one to classify mnist data simple.
 
 .. literalinclude:: ../slugnet/examples/mnist_conv.py
    :language: python

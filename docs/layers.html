@@ -38,10 +38,10 @@
 <h1>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h1>
 <p>In this section, we will cover all relevant layers implemented
 by Slugnet, and their specific use cases. This includes convolutional
-neural networks and layers  associated with them.</p>
-<div class="section" id="fully-connected-neural-networks">
-<h2>Fully Connected Neural Networks<a class="headerlink" href="#fully-connected-neural-networks" title="Permalink to this headline">¶</a></h2>
-<p>Slugnet implements fully connected neural networks via the <code class="code docutils literal notranslate"><span class="pre">Dense</span></code>
+deep networks and layers  associated with them.</p>
+<div class="section" id="fully-connected-deep-networks">
+<h2>Fully Connected Deep Networks<a class="headerlink" href="#fully-connected-deep-networks" title="Permalink to this headline">¶</a></h2>
+<p>Slugnet implements fully connected deep networks via the <code class="code docutils literal notranslate"><span class="pre">Dense</span></code>
 layer. When operating in feedforward mode, the dense layer computes the
 following term</p>
 <div class="math">
@@ -135,7 +135,7 @@ and computes update for this layers weights</p>
 
 </dd></dl>
 
-<p>An example of using two dense layers to train a multi-layer neural
+<p>An example of using two dense layers to train a multi-layer deep
 network to classify mnist data can be seen below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
 <span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
@@ -219,7 +219,7 @@ called the weight scaling inference rule <a class="footnote-reference" href="#id
 
 :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta" /></p>
 </div><p class="caption"><strong>Figure 2:</strong> A dropout layer between two hidden layers
-of a neural network. Note the nodes <img class="math" src="_images/math/f4ebc7afd1984a21747e3077b0a827f462abb789.svg" alt="h_2^{(1)}"/> and <img class="math" src="_images/math/7384d3942d1294545431a1f3742bc40aa48c3b50.svg" alt="h_5^{(1)}"/>
+of a deep network. Note the nodes <img class="math" src="_images/math/f4ebc7afd1984a21747e3077b0a827f462abb789.svg" alt="h_2^{(1)}"/> and <img class="math" src="_images/math/7384d3942d1294545431a1f3742bc40aa48c3b50.svg" alt="h_5^{(1)}"/>
 are both excluded from the current subnetwork via dropout units
 <img class="math" src="_images/math/e4c07ed370b993ed54b5f013020de9090d6341fe.svg" alt="d_2"/> and <img class="math" src="_images/math/6c14d0b8cdd37e0b1c812ef8b8063ae8e76e25db.svg" alt="d_5"/>. On the next feedforward
 operation, a new subnetwork will be randomly generated with each unit
@@ -271,9 +271,9 @@ literature <a class="footnote-reference" href="#id8" id="id4">[2]</a>.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="convolutional-neural-networks">
-<h2>Convolutional Neural Networks<a class="headerlink" href="#convolutional-neural-networks" title="Permalink to this headline">¶</a></h2>
-<p>Convolutional neural networks are most often used in image classification tasks.
+<div class="section" id="convolutional-deep-networks">
+<h2>Convolutional Deep Networks<a class="headerlink" href="#convolutional-deep-networks" title="Permalink to this headline">¶</a></h2>
+<p>Convolutional deep networks are most often used in image classification tasks.
 There are several specialized layers used in these networks. The most obvious is
 the convolution layer, less obvious are pooling layers, specifically max-pooling
 and mean-pooling. In this section we will mathematically review all these layers
@@ -286,7 +286,7 @@ the function:</p>
 <p><img src="_images/math/37642e19f9abf67ae5453aaf621f8fb500ad0a18.svg" alt="\[s(i) = \sum_{a=-\infty}^\infty x(a) k(i - a)\]"/></p>
 </div><p>where <img class="math" src="_images/math/0642a80e44de7b43d141fa9d602bc25a316a12ba.svg" alt="x"/> is the input and <img class="math" src="_images/math/ee075027798dee91762b5ace22e31d158752d4c2.svg" alt="k"/>
 is the kernel, or in some cases the weighting function.</p>
-<p>In the case of convolutional neural networks, the input
+<p>In the case of convolutional deep networks, the input
 is typically a two dimensional image <img class="math" src="_images/math/82d557a1887f8018e73b98245468e9e76ac99dc5.svg" alt="I"/>, and it
 follows that we have a two dimensional kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/>.
 Now we can write out convolution function with both axes:</p>
@@ -297,8 +297,8 @@ Now we can write out convolution function with both axes:</p>
 that the kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> is zero everywhere but the set of
 points in which we store data <a class="footnote-reference" href="#id7" id="id5">[1]</a>.</p>
 <p>The motivation for using the convolution operation in a
-neural network is best described using an example of an
-image. In a densely connected neural network, each node
+deep network is best described using an example of an
+image. In a densely connected deep network, each node
 at layer <img class="math" src="_images/math/6b271c0920f320c51b2c7112c10eb00471a3673d.svg" alt="i"/> is connected to every node at layer
 <img class="math" src="_images/math/b8c29d6a3b774d66617715a65662a284a79c345e.svg" alt="i + 1"/>. This does not lend itself to image processing,
 where location of a shape relative to another shape is
@@ -312,7 +312,7 @@ the input, along both axes. At each step, an output is produced
 which will be used as input for the next layer.
 This configuration allows us to learn the parameters of the
 kernel <img class="math" src="_images/math/1f70281bd593efa5ac027bdd28aa795c90b8f501.svg" alt="K"/> the same way we’d learn ordinary parameters
-in a densely connected neural network.</p>
+in a densely connected deep network.</p>
 <div class="figure">
 <p><img src="_images/tikz-909783505bd92fc4edec9b5af1cc6acac5faa391.png" alt="\tikzset{%
    brace/.style = { decorate, decoration={brace, amplitude=5pt} }
@@ -355,7 +355,7 @@ size and kernel size. The equation is given by</p>
 <div class="math">
 <p><img src="_images/math/120872b89304dc4eeb40cd046e6f6c361d8fb1c3.svg" alt="\[d_{\text{out}} = d_{\text{in}} - d_{\text{kernel}} + 1.\]"/></p>
 </div><p>Figure 3 features a one dimensional input and output. As we mentioned earlier,
-most convolutional neural networks feature two dimensional inputs and outputs,
+most convolutional deep networks feature two dimensional inputs and outputs,
 such as images. In figure 4, we show how the convolution operation behaves
 when we are using two dimensional inputs, kernels, and outputs.</p>
 <div class="figure">
@@ -454,7 +454,7 @@ two dimensional output, and there are multiple kernels at every layer.</p>
 <div class="section" id="pooling">
 <h3>Pooling<a class="headerlink" href="#pooling" title="Permalink to this headline">¶</a></h3>
 <p>Mean pooling is a method of downsampling typically used in convolutional
-neural networks. Pooling makes the representations at a subsequent layer
+deep networks. Pooling makes the representations at a subsequent layer
 approximately invariant to translations of the output from the previous
 layer <a class="footnote-reference" href="#id7" id="id6">[1]</a>. This is useful when we care about the presence of some feature
 but not necessarily the exact location of the feature within the input.</p>
@@ -586,7 +586,7 @@ the maximum value found in the patch.</p>
 </dd></dl>
 
 <p>We have now documented all the necessary parts of a convolutional
-neural network. This makes training one to classify mnist data simple.</p>
+deep network. This makes training one to classify mnist data simple.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
@@ -653,9 +653,9 @@ Conference on Machine Learning</em>, pages 118–126. ACM, 2013.</td></tr>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Models</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Layers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#fully-connected-neural-networks">Fully Connected Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fully-connected-deep-networks">Fully Connected Deep Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dropout">Dropout</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#convolutional-neural-networks">Convolutional Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#convolutional-deep-networks">Convolutional Deep Networks</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="activation.html">Activation Functions</a></li>
