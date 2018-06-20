@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Introduction to Neural Nets &#8212; Slugnet 0.0.1 documentation</title>
+    <title>Introduction to Deep Learning &#8212; Slugnet 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/caption.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -31,21 +23,22 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
-  <div class="section" id="introduction-to-neural-nets">
-<h1>Introduction to Neural Nets<a class="headerlink" href="#introduction-to-neural-nets" title="Permalink to this headline">¶</a></h1>
-<p>Slugnet is a modest experimental neural networks library intended to solidify
+  <div class="section" id="introduction-to-deep-learning">
+<h1>Introduction to Deep Learning<a class="headerlink" href="#introduction-to-deep-learning" title="Permalink to this headline">¶</a></h1>
+<p>Slugnet is a modest experimental deep learning library intended to solidify
 the author’s understanding of deep learning.</p>
 <p>The goal of this library is to mathematically document all relevant components
-of a working neural networks library. This includes models, layers, optimizers,
+of a working deep learning library. This includes models, layers, optimizers,
 activation functions, loss functions, forward propagation, backward
 propagation, and more.</p>
 <p>The mathematical documentation assumes basic understanding of discriminative
@@ -54,18 +47,18 @@ documentation will loosely follow the notation found in <em>Deep Learning</em>
 (Goodfellow, Bengio, &amp; Courville, 2016).</p>
 <p>Before looking at any code, the following sections will introduce the notation
 styles this library will follow as well as give a brief mathematical
-introduction to neural networks. In general, a neural network tries to
+introduction to deep learning. In general, a deep network tries to
 approximate some function <img class="math" src="_images/math/ba3551f80a4b0c5d2d114179c8ae9c8d88cac4b1.svg" alt="f^*"/>, where <img class="math" src="_images/math/61fd566fa831e67a5d3d66d2d09de3ce09e037a3.svg" alt="\bm{y} = f^*(\bm{x})"/>. The
-neural network implements a function <img class="math" src="_images/math/22dc284a67776565dfc53008b54300fc52dff730.svg" alt="\hat{\bm{y}} = f(\bm{x})"/>, where
+deep network implements a function <img class="math" src="_images/math/22dc284a67776565dfc53008b54300fc52dff730.svg" alt="\hat{\bm{y}} = f(\bm{x})"/>, where
 <img class="math" src="_images/math/e6b0e9d48c73483fb0ff5f5234c1297f39db1fc4.svg" alt="\hat{\bm{y}}"/> represents the prediction made by the network, and
-<img class="math" src="_images/math/11b7291c04f22276f2cfa1331a623cbb3adddf26.svg" alt="f"/> represents the model. We say a neural network is fully connected if
+<img class="math" src="_images/math/11b7291c04f22276f2cfa1331a623cbb3adddf26.svg" alt="f"/> represents the model. We say a deep network is fully connected if
 each node in every layer is connected to every node in the adjacent layer. For
-now, we will only consider fully connected neural networks.</p>
+now, we will only consider fully connected deep networks.</p>
 <div class="section" id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Neural Nets</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Deep Learning</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
@@ -86,8 +79,8 @@ now, we will only consider fully connected neural networks.</p>
 </div>
 <div class="section" id="feedforward-mode">
 <h2>Feedforward Mode<a class="headerlink" href="#feedforward-mode" title="Permalink to this headline">¶</a></h2>
-<p>When making predictions, a neural network is said to be operating in
-feedforward mode. For now, we will inspect how neural networks operate in
+<p>When making predictions, a deep network is said to be operating in
+feedforward mode. For now, we will inspect how deep networks operate in
 this mode.</p>
 <div class="figure">
 <p><img src="_images/tikz-adc8470529f14c217692ecb8a1fe29ff68ee34e9.png" alt="\tikzset{%
@@ -126,7 +119,7 @@ this mode.</p>
       \draw[-&gt;, shorten &gt;= 0.55cm, shorten &lt;= 0.5cm](7,\x) -- (10,\y);
 
 :libs: arrows,calc,positioning,shadows.blur,decorations.pathreplacing,arrows.meta" /></p>
-</div><p class="caption"><strong>Figure 1:</strong> A three layer, fully connected neural network. The first layer
+</div><p class="caption"><strong>Figure 1:</strong> A three layer, fully connected deep network. The first layer
 has five hidden units. The superscript number in parenthesis indicates the
 layer of the unit. The index in subscript represents the unit’s index. For
 example <img class="math" src="_images/math/94e4c74ab9179dddf0a85125fdf7b158af711804.svg" alt="h_3^{(4)}"/> represents the third unit of the forth layer.</p>
@@ -160,37 +153,37 @@ represent the network with the shorthand diagram below.</p>
 in a shorthand form where to units of each layer are collapsed onto
 one circle.</p>
 <p>Let’s “zoom in” on one of the layers to see what is happening under the hood
-when our neural network is running in feedforward mode. The layer
+when our deep network is running in feedforward mode. The layer
 <img class="math" src="_images/math/d78bf03971435b21b3ce658e06e60b16eb11a2e2.svg" alt="f^{(i)}(x)"/> performs the computation defined in equation 1.</p>
 <div class="math">
 <p><img src="_images/math/ab7f4e82628b0e1392ffedef00b8b8049e63feef.svg" alt="\bm{a}^{(i)} = \phi(\bm{W}^{(i)^T} \bm{x} + \bm{b}^{(i)})"/></p>
 </div><p class="caption"><strong>Equation 1:</strong> Definition of computation performed in one layer of a
-neural network. In this equation, <img class="math" src="_images/math/1d6dac747de4206d6b979a650a47600fa7ef632d.svg" alt="\bm{a}^{(i)}"/> is the activated
+deep network. In this equation, <img class="math" src="_images/math/1d6dac747de4206d6b979a650a47600fa7ef632d.svg" alt="\bm{a}^{(i)}"/> is the activated
 output, <img class="math" src="_images/math/e3bf1ef0dd807d03fb49d7b38cc22fb494d4009d.svg" alt="\phi"/> represents the activation function,
 <img class="math" src="_images/math/b144225c1c1a4b0ad1453469d24e8b9bd6627245.svg" alt="\bm{W}^{(i)^T}"/> represents a learned matrix of weights at this
 layer, <img class="math" src="_images/math/47dee745d92218e619416b6164fc6ae471beb669.svg" alt="\bm{b}^{(i)}"/> represents a learned vector of bias terms at
 this layer, and <img class="math" src="_images/math/68d8c7f34375f3f07d7cc145f5c3a959e8f20c01.svg" alt="\bm{x}"/> represents the input at this layer.</p>
-<p>Neural networks rely on a nonlinear activation function to learn nonlinear
-relationships. Without a nonlinear activation function, a neural network is
+<p>Deep networks rely on a nonlinear activation function to learn nonlinear
+relationships. Without a nonlinear activation function, a deep network is
 nothing more than a linear model. There are several choices one can make for
 activation functions, including but not limited to tanh, sigmoid, and the
 rectified linear unit, or ReLU for short.</p>
 <p>Upon completion of the feedforward operation, the prediction <img class="math" src="_images/math/4c8a5de442e480d6d39b1aadbfc02c2e5c004ad7.svg" alt="\hat{y}"/>
 is output from the final layer.</p>
-<p>Slugnet represents a neural network as a <code class="code docutils literal"><span class="pre">Model</span></code>. You can run a
-neural network in feedforward mode by calling <code class="code docutils literal"><span class="pre">model.transform(X)</span></code>
-on a model, where <code class="code docutils literal"><span class="pre">X</span></code> is a matrix of inputs. In this case <code class="code docutils literal"><span class="pre">X</span></code>
+<p>Slugnet represents a deep network as a <code class="code docutils literal notranslate"><span class="pre">Model</span></code>. You can run a
+deep network in feedforward mode by calling <code class="code docutils literal notranslate"><span class="pre">model.transform(X)</span></code>
+on a model, where <code class="code docutils literal notranslate"><span class="pre">X</span></code> is a matrix of inputs. In this case <code class="code docutils literal notranslate"><span class="pre">X</span></code>
 is a matrix to allow users of Slugnet to make several predictions
-in one call to <code class="code docutils literal"><span class="pre">model.transform</span></code>. Before you can run a model
+in one call to <code class="code docutils literal notranslate"><span class="pre">model.transform</span></code>. Before you can run a model
 in feedforward mode, it must be trained. This leads us to backpropogation and
 optimization.</p>
 </div>
 <div class="section" id="loss-backpropogation-and-optimization">
 <h2>Loss, Backpropogation, and Optimization<a class="headerlink" href="#loss-backpropogation-and-optimization" title="Permalink to this headline">¶</a></h2>
-<p>Training a neural network is similar to training traditional discriminative
+<p>Training a deep network is similar to training traditional discriminative
 models such as logistic regression. For instance, we need a loss function, we
 must compute derivatives, and we must implement some numerical algorithm to
-optimize the model. On the other hand, neural networks are somewhat unique in
+optimize the model. On the other hand, deep networks are somewhat unique in
 that they require us to compute a gradient at each layer with which we may
 learn weights. To compute this gradient, we use the backpropogation algorithm.</p>
 <p>Before we can run backpropogation, a version of the feedforward algorithm
@@ -235,7 +228,7 @@ gradient, and the gradient at each layer.</p>
 which is the first gradient computed during backpropogation. From this
 gradient, we will compute all other gradients.</p>
 <p>Once the gradient of the loss function is calculated, we may begin performing
-backpropogation on the layers of our neural network. We start from the “top”
+backpropogation on the layers of our deep network. We start from the “top”
 of the network, or the output layer. Using the loss gradient
 <img class="math" src="_images/math/e8b2587e12faf6b485e98a690455ff3f84d45db7.svg" alt="\bm{g}^{(L)}"/> we can compute the gradient of the output layer as
 defined in equation 3. The definition given in equation 4 is generalized, that
@@ -337,12 +330,13 @@ apparent as components are documented.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Neural Nets</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Deep Learning</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
@@ -372,12 +366,14 @@ apparent as components are documented.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -388,8 +384,8 @@ apparent as components are documented.</p>
       &copy;2017, <a href="https://jarrodkahn.com">Jarrod Kahn</a>.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/index.rst.txt"

@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Layers &#8212; Slugnet 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/caption.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -32,13 +24,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="layers">
@@ -48,7 +41,7 @@ by Slugnet, and their specific use cases. This includes convolutional
 neural networks and layers  associated with them.</p>
 <div class="section" id="fully-connected-neural-networks">
 <h2>Fully Connected Neural Networks<a class="headerlink" href="#fully-connected-neural-networks" title="Permalink to this headline">¶</a></h2>
-<p>Slugnet implements fully connected neural networks via the <code class="code docutils literal"><span class="pre">Dense</span></code>
+<p>Slugnet implements fully connected neural networks via the <code class="code docutils literal notranslate"><span class="pre">Dense</span></code>
 layer. When operating in feedforward mode, the dense layer computes the
 following term</p>
 <div class="math">
@@ -59,7 +52,7 @@ following term</p>
 is the activation function, <img class="math" src="_images/math/86872fb5bbd58bd98cd64a475fb814ea67d8c520.svg" alt="\bm{W}"/> are weights,
 <img class="math" src="_images/math/1d735dcd1d65f80245147548ce61a9d66202bb15.svg" alt="\bm{b}"/> is the bias term. The dense layer does not
 implement any activation function, instead it is injected
-at runtime via the <code class="code docutils literal"><span class="pre">activation</span></code> parameter. This mean
+at runtime via the <code class="code docutils literal notranslate"><span class="pre">activation</span></code> parameter. This mean
 that on feedforward, the dense layer is incredibly simple,
 it performs matrix multiplication between an input matrix
 and a matrix of weights, then adds a bias vector, and
@@ -83,7 +76,7 @@ given in the introduction section of this documentation.</p>
     \frac{\partial \ell}{\partial \bm{W}^{(i)}} &amp;=
         \frac{\partial \ell}{\partial \bm{a}^{(i)}} \bm{x}^T
 \end{flalign}"/></p>
-</div><p>When looking at the implementation of <code class="code docutils literal"><span class="pre">Dense</span></code>, there is a notable absence
+</div><p>When looking at the implementation of <code class="code docutils literal notranslate"><span class="pre">Dense</span></code>, there is a notable absence
 of <img class="math" src="_images/math/b9d73c3c4500c83029d653faaa1dcf3afd70e99f.svg" alt="\bm{W}^{(i + 1)^T}"/>
 and <img class="math" src="_images/math/b52043529fabcd9ab1b5932757104cc9c2e58f87.svg" alt="\frac{\partial \ell}{\partial \bm{a}^{(i + 1)}}"/>.
 This is because their dot product is calculated in the previous layer.
@@ -117,7 +110,7 @@ the gray nodes in the hidden dense layer.</p>
 <dl class="class">
 <dt id="slugnet.layers.Dense">
 <em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dense</code><span class="sig-paren">(</span><em>outshape</em>, <em>inshape=None</em>, <em>activation=&lt;slugnet.activation.Noop object&gt;</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dense" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">slugnet.layers.Layer</span></code></p>
 <p>A common densely connected neural network layer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -144,7 +137,7 @@ and computes update for this layers weights</p>
 
 <p>An example of using two dense layers to train a multi-layer neural
 network to classify mnist data can be seen below.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
 <span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
 <span class="kn">from</span> <span class="nn">slugnet.loss</span> <span class="kn">import</span> <span class="n">SoftmaxCategoricalCrossEntropy</span> <span class="k">as</span> <span class="n">SCCE</span>
 <span class="kn">from</span> <span class="nn">slugnet.model</span> <span class="kn">import</span> <span class="n">Model</span>
@@ -165,9 +158,9 @@ network to classify mnist data can be seen below.</p>
 </div>
 <p>If you have slugnet installed locally, this script can be
 executed by running the following command. It will output
-training and validation statistics to <code class="code docutils literal"><span class="pre">stdout</span></code> as the
+training and validation statistics to <code class="code docutils literal notranslate"><span class="pre">stdout</span></code> as the
 model is trained.</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist
 </pre></div>
 </div>
 <p>Note this snippet makes use of several components that have not
@@ -235,8 +228,8 @@ in the first layer being exluded from the subnetwork with probability
 <dl class="class">
 <dt id="slugnet.layers.Dropout">
 <em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Dropout</code><span class="sig-paren">(</span><em>p=0.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Dropout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
-<p>A layer that removes units from a network with probability <code class="code docutils literal"><span class="pre">p</span></code>.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">slugnet.layers.Layer</span></code></p>
+<p>A layer that removes units from a network with probability <code class="code docutils literal notranslate"><span class="pre">p</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -247,8 +240,8 @@ in the first layer being exluded from the subnetwork with probability
 </table>
 </dd></dl>
 
-<p>An example of using a <code class="code docutils literal"><span class="pre">Dropout</span></code> layer with slugnet is presented below.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
+<p>An example of using a <code class="code docutils literal notranslate"><span class="pre">Dropout</span></code> layer with slugnet is presented below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
 <span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span>
 <span class="kn">from</span> <span class="nn">slugnet.loss</span> <span class="kn">import</span> <span class="n">SoftmaxCategoricalCrossEntropy</span> <span class="k">as</span> <span class="n">SCCE</span>
 <span class="kn">from</span> <span class="nn">slugnet.model</span> <span class="kn">import</span> <span class="n">Model</span>
@@ -270,11 +263,11 @@ in the first layer being exluded from the subnetwork with probability
 </div>
 <p>If you have slugnet installed locally, this script can be
 run by executing the following command. It will output training
-and validation statistics to <code class="code docutils literal"><span class="pre">stdout</span></code> as the model
+and validation statistics to <code class="code docutils literal notranslate"><span class="pre">stdout</span></code> as the model
 is trained. Note that this model is slower to train than
 the model without dropout. This is widely noted in the
 literature <a class="footnote-reference" href="#id8" id="id4">[2]</a>.</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist_dropout
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python3 -m slugnet.examples.mnist_dropout
 </pre></div>
 </div>
 </div>
@@ -438,7 +431,7 @@ two dimensional output, and there are multiple kernels at every layer.</p>
 <dl class="class">
 <dt id="slugnet.layers.Convolution">
 <em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">Convolution</code><span class="sig-paren">(</span><em>nb_kernel</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>inshape=None</em>, <em>init=&lt;slugnet.initializations.GlorotUniform object&gt;</em>, <em>activation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.Convolution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">slugnet.layers.Layer</span></code></p>
 <p>A layer that implements the convolution operation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -588,13 +581,13 @@ the maximum value found in the patch.</p>
 <dl class="class">
 <dt id="slugnet.layers.MeanPooling">
 <em class="property">class </em><code class="descclassname">slugnet.layers.</code><code class="descname">MeanPooling</code><span class="sig-paren">(</span><em>pool_size</em>, <em>inshape=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/layers.html#MeanPooling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.layers.MeanPooling" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.layers.Layer</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">slugnet.layers.Layer</span></code></p>
 <p>Pool outputs using the arithmetic mean.</p>
 </dd></dl>
 
 <p>We have now documented all the necessary parts of a convolutional
 neural network. This makes training one to classify mnist data simple.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">slugnet.activation</span> <span class="kn">import</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Softmax</span>
 <span class="kn">from</span> <span class="nn">slugnet.layers</span> <span class="kn">import</span> <span class="n">Convolution</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">MeanPooling</span><span class="p">,</span> <span class="n">Flatten</span>
@@ -646,12 +639,13 @@ Conference on Machine Learning</em>, pages 118–126. ACM, 2013.</td></tr>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction to Neural Nets</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction to Deep Learning</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#table-of-contents">Table of Contents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
@@ -687,12 +681,14 @@ Conference on Machine Learning</em>, pages 118–126. ACM, 2013.</td></tr>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -703,8 +699,8 @@ Conference on Machine Learning</em>, pages 118–126. ACM, 2013.</td></tr>
       &copy;2017, <a href="https://jarrodkahn.com">Jarrod Kahn</a>.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/layers.rst.txt"

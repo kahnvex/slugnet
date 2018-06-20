@@ -1,11 +1,11 @@
-Introduction to Neural Nets
-===========================
+Introduction to Deep Learning
+=============================
 
-Slugnet is a modest experimental neural networks library intended to solidify
+Slugnet is a modest experimental deep learning library intended to solidify
 the author's understanding of deep learning.
 
 The goal of this library is to mathematically document all relevant components
-of a working neural networks library. This includes models, layers, optimizers,
+of a working deep learning library. This includes models, layers, optimizers,
 activation functions, loss functions, forward propagation, backward
 propagation, and more.
 
@@ -16,13 +16,13 @@ documentation will loosely follow the notation found in *Deep Learning*
 
 Before looking at any code, the following sections will introduce the notation
 styles this library will follow as well as give a brief mathematical
-introduction to neural networks. In general, a neural network tries to
+introduction to deep learning. In general, a deep network tries to
 approximate some function :math:`f^*`, where :math:`\bm{y} = f^*(\bm{x})`. The
-neural network implements a function :math:`\hat{\bm{y}} = f(\bm{x})`, where
+deep network implements a function :math:`\hat{\bm{y}} = f(\bm{x})`, where
 :math:`\hat{\bm{y}}` represents the prediction made by the network, and
-:math:`f` represents the model. We say a neural network is fully connected if
+:math:`f` represents the model. We say a deep network is fully connected if
 each node in every layer is connected to every node in the adjacent layer. For
-now, we will only consider fully connected neural networks.
+now, we will only consider fully connected deep networks.
 
 
 -----------------
@@ -43,8 +43,8 @@ Table of Contents
 Feedforward Mode
 ----------------
 
-When making predictions, a neural network is said to be operating in
-feedforward mode. For now, we will inspect how neural networks operate in
+When making predictions, a deep network is said to be operating in
+feedforward mode. For now, we will inspect how deep networks operate in
 this mode.
 
 .. tikz::
@@ -89,7 +89,7 @@ this mode.
 
 .. rst-class:: caption
 
-   **Figure 1:** A three layer, fully connected neural network. The first layer
+   **Figure 1:** A three layer, fully connected deep network. The first layer
    has five hidden units. The superscript number in parenthesis indicates the
    layer of the unit. The index in subscript represents the unit's index. For
    example :math:`h_3^{(4)}` represents the third unit of the forth layer.
@@ -132,7 +132,7 @@ represent the network with the shorthand diagram below.
    one circle.
 
 Let's "zoom in" on one of the layers to see what is happening under the hood
-when our neural network is running in feedforward mode. The layer
+when our deep network is running in feedforward mode. The layer
 :math:`f^{(i)}(x)` performs the computation defined in equation 1.
 
 .. math::
@@ -142,14 +142,14 @@ when our neural network is running in feedforward mode. The layer
 .. rst-class:: caption
 
    **Equation 1:** Definition of computation performed in one layer of a
-   neural network. In this equation, :math:`\bm{a}^{(i)}` is the activated
+   deep network. In this equation, :math:`\bm{a}^{(i)}` is the activated
    output, :math:`\phi` represents the activation function,
    :math:`\bm{W}^{(i)^T}` represents a learned matrix of weights at this
    layer, :math:`\bm{b}^{(i)}` represents a learned vector of bias terms at
    this layer, and :math:`\bm{x}` represents the input at this layer.
 
-Neural networks rely on a nonlinear activation function to learn nonlinear
-relationships. Without a nonlinear activation function, a neural network is
+Deep networks rely on a nonlinear activation function to learn nonlinear
+relationships. Without a nonlinear activation function, a deep network is
 nothing more than a linear model. There are several choices one can make for
 activation functions, including but not limited to tanh, sigmoid, and the
 rectified linear unit, or ReLU for short.
@@ -157,8 +157,8 @@ rectified linear unit, or ReLU for short.
 Upon completion of the feedforward operation, the prediction :math:`\hat{y}`
 is output from the final layer.
 
-Slugnet represents a neural network as a :code:`Model`. You can run a
-neural network in feedforward mode by calling :code:`model.transform(X)`
+Slugnet represents a deep network as a :code:`Model`. You can run a
+deep network in feedforward mode by calling :code:`model.transform(X)`
 on a model, where :code:`X` is a matrix of inputs. In this case :code:`X`
 is a matrix to allow users of Slugnet to make several predictions
 in one call to :code:`model.transform`. Before you can run a model
@@ -169,10 +169,10 @@ optimization.
 Loss, Backpropogation, and Optimization
 ---------------------------------------
 
-Training a neural network is similar to training traditional discriminative
+Training a deep network is similar to training traditional discriminative
 models such as logistic regression. For instance, we need a loss function, we
 must compute derivatives, and we must implement some numerical algorithm to
-optimize the model. On the other hand, neural networks are somewhat unique in
+optimize the model. On the other hand, deep networks are somewhat unique in
 that they require us to compute a gradient at each layer with which we may
 learn weights. To compute this gradient, we use the backpropogation algorithm.
 
@@ -234,7 +234,7 @@ gradient, and the gradient at each layer.
    gradient, we will compute all other gradients.
 
 Once the gradient of the loss function is calculated, we may begin performing
-backpropogation on the layers of our neural network. We start from the "top"
+backpropogation on the layers of our deep network. We start from the "top"
 of the network, or the output layer. Using the loss gradient
 :math:`\bm{g}^{(L)}` we can compute the gradient of the output layer as
 defined in equation 3. The definition given in equation 4 is generalized, that

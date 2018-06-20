@@ -4,41 +4,34 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Models &#8212; Slugnet 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/caption.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Layers" href="layers.html" />
-    <link rel="prev" title="Introduction to Neural Nets" href="index.html" />
+    <link rel="prev" title="Introduction to Deep Learning" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="module-slugnet.model">
@@ -46,7 +39,7 @@
 <dl class="class">
 <dt id="slugnet.model.Model">
 <em class="property">class </em><code class="descclassname">slugnet.model.</code><code class="descname">Model</code><span class="sig-paren">(</span><em>lr=0.1, n_epoch=400000, batch_size=32, layers=None, optimizer=&lt;slugnet.optimizers.SGD object&gt;, loss=&lt;slugnet.loss.BinaryCrossEntropy object&gt;, validation_split=0.2, metrics=['loss'], progress=True, log_interval=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.model.Model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A model implement functionality for fitting a neural network and
 making predictions.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -58,13 +51,13 @@ making predictions.</p>
 <li><strong>n_epoch</strong> (<em>int</em>) – The number of training epochs to use.</li>
 <li><strong>batch_size</strong> (<em>int</em>) – The size of each batch for training.</li>
 <li><strong>layers</strong> (<em>list</em><em>[</em><em>slugnet.layers.Layer</em><em>]</em>) – Initial layers to add the the network, more can
-be added layer using the <code class="code docutils literal"><span class="pre">model.add_layer</span></code> method.</li>
+be added layer using the <code class="code docutils literal notranslate"><span class="pre">model.add_layer</span></code> method.</li>
 <li><strong>optimizer</strong> (<em>slugnet.optimizers.Optimizer</em>) – The opimization method to use during training.</li>
 <li><strong>loss</strong> (<a class="reference internal" href="loss.html#slugnet.loss.Objective" title="slugnet.loss.Objective"><em>slugnet.loss.Objective</em></a>) – The loss function to use during training and validation.</li>
 <li><strong>validation_split</strong> (<em>float</em>) – The percent of data to use for validation,
 default is zero.</li>
 <li><strong>metrics</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The metrics to print during training, options are
-<code class="code docutils literal"><span class="pre">loss</span></code> and <code class="code docutils literal"><span class="pre">accuracy</span></code>.</li>
+<code class="code docutils literal notranslate"><span class="pre">loss</span></code> and <code class="code docutils literal notranslate"><span class="pre">accuracy</span></code>.</li>
 <li><strong>progress</strong> (<em>bool</em>) – Display progress-bar while training.</li>
 <li><strong>log_interval</strong> (<em>int</em>) – The epoch interval on which to print progress.</li>
 </ul>
@@ -75,13 +68,13 @@ default is zero.</li>
 <dl class="method">
 <dt id="slugnet.model.Model.fit">
 <code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/model.html#Model.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.model.Model.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Train the model given samples <code class="code docutils literal"><span class="pre">X</span></code> and labels or values :code`y`.</p>
+<dd><p>Train the model given samples <code class="code docutils literal notranslate"><span class="pre">X</span></code> and labels or values :code`y`.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="slugnet.model.Model.transform">
 <code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/model.html#Model.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.model.Model.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Predict the labels or values of some input matrix <code class="code docutils literal"><span class="pre">X</span></code>.</p>
+<dd><p>Predict the labels or values of some input matrix <code class="code docutils literal notranslate"><span class="pre">X</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -90,12 +83,13 @@ default is zero.</li>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction to Neural Nets</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction to Deep Learning</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#table-of-contents">Table of Contents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
@@ -112,7 +106,7 @@ default is zero.</li>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Introduction to Neural Nets</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Introduction to Deep Learning</a></li>
       <li>Next: <a href="layers.html" title="next chapter">Layers</a></li>
   </ul></li>
 </ul>
@@ -126,12 +120,14 @@ default is zero.</li>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -142,8 +138,8 @@ default is zero.</li>
       &copy;2017, <a href="https://jarrodkahn.com">Jarrod Kahn</a>.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/model.rst.txt"

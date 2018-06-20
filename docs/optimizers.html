@@ -4,21 +4,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Optimization Functions &#8212; Slugnet 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/caption.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -31,13 +23,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="module-slugnet.optimizers">
@@ -45,14 +38,29 @@
 <dl class="class">
 <dt id="slugnet.optimizers.SGD">
 <em class="property">class </em><code class="descclassname">slugnet.optimizers.</code><code class="descname">SGD</code><span class="sig-paren">(</span><em>lr=0.001</em>, <em>clip=-1</em>, <em>decay=0.0</em>, <em>lr_min=0.0</em>, <em>lr_max=inf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/optimizers.html#SGD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.optimizers.SGD" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.optimizers.Optimizer</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">slugnet.optimizers.Optimizer</span></code></p>
 <p>Optimize model parameters using common stochastic gradient descent.</p>
+<dl class="method">
+<dt id="slugnet.optimizers.SGD.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>params</em>, <em>grads</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/optimizers.html#SGD.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.optimizers.SGD.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update parameters.
+Parameters
+———-
+params : list</p>
+<blockquote>
+<div>A list of parameters in model.</div></blockquote>
+<dl class="docutils">
+<dt>grads <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd>A list of gradients in model.</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="slugnet.optimizers.RMSProp">
 <em class="property">class </em><code class="descclassname">slugnet.optimizers.</code><code class="descname">RMSProp</code><span class="sig-paren">(</span><em>rho=0.9</em>, <em>epsilon=1e-06</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/optimizers.html#RMSProp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.optimizers.RMSProp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">slugnet.optimizers.Optimizer</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">slugnet.optimizers.Optimizer</span></code></p>
 <p>RMSProp updates
 Scale learning rates by dividing with the moving average of the root mean
 squared (RMS) gradients. See <a class="footnote-reference" href="#id2" id="id1">[1]</a> for further description.</p>
@@ -84,18 +92,34 @@ Neural Networks for Machine Learning, Lecture 6.5 - rmsprop.
 Coursera. <a class="reference external" href="http://www.youtube.com/watch?v=O3sxAc4hxZU">http://www.youtube.com/watch?v=O3sxAc4hxZU</a> (formula &#64;5:20)</td></tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="slugnet.optimizers.RMSProp.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>params</em>, <em>grads</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/slugnet/optimizers.html#RMSProp.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#slugnet.optimizers.RMSProp.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update parameters.
+Parameters
+———-
+params : list</p>
+<blockquote>
+<div>A list of parameters in model.</div></blockquote>
+<dl class="docutils">
+<dt>grads <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd>A list of gradients in model.</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction to Neural Nets</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction to Deep Learning</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#table-of-contents">Table of Contents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#feedforward-mode">Feedforward Mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#loss-backpropogation-and-optimization">Loss, Backpropogation, and Optimization</a></li>
@@ -125,12 +149,14 @@ Coursera. <a class="reference external" href="http://www.youtube.com/watch?v=O3s
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -141,8 +167,8 @@ Coursera. <a class="reference external" href="http://www.youtube.com/watch?v=O3s
       &copy;2017, <a href="https://jarrodkahn.com">Jarrod Kahn</a>.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/optimizers.rst.txt"
